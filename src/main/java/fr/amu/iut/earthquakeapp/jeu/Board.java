@@ -1,7 +1,6 @@
 package fr.amu.iut.earthquakeapp.jeu;
 
-import fr.amu.iut.earthquakeapp.jeu.pieces.Pion;
-import fr.amu.iut.earthquakeapp.jeu.pieces.Tour;
+import fr.amu.iut.earthquakeapp.jeu.pieces.*;
 
 public class Board {
     private Piece[][] board;

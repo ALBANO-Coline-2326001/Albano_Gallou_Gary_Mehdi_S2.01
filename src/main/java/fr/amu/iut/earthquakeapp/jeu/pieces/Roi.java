@@ -1,6 +1,8 @@
-package fr.amu.iut.earthquakeapp.jeu;
+package fr.amu.iut.earthquakeapp.jeu.pieces;
 
-public class Roi extends Piece{
+import fr.amu.iut.earthquakeapp.jeu.Piece;
+
+public class Roi extends Piece {
 
     public Roi(boolean isWhite, int x, int y) {
         super(isWhite, x, y);

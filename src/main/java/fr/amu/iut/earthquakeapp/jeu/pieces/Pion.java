@@ -11,4 +11,7 @@ public class Pion extends Piece {
     public void move(int x, int y) {
         this.setCoordonne(x,y);
     }
+
+
+
 }
