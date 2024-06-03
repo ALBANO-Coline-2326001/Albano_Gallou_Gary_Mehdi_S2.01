@@ -1,9 +1,15 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -16,6 +22,10 @@ public class AccueilController {
 
     @FXML
     private GridPane chessBoard;
+    @FXML
+    private Label timerLabel;
+
+    private Timeline timeline;
 
     public void initialize() {
         initializeBoard();
@@ -34,4 +44,37 @@ public class AccueilController {
             }
         }
     }
+
+    public void startTimer() {
+        if (timeline != null) {
+            timeline.stop(); // Arrête le timer précédent si il est en cours
+        }
+        int startTime = 600; // 10 minutes en secondes
+        AtomicInteger timeSeconds = new AtomicInteger(startTime);
+
+        // Mise à jour de l'étiquette pour le timer
+        timerLabel.setText(timeToString(timeSeconds.get()));
+
+        // Crée un timeline pour le compte à rebours
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    int currentTime = timeSeconds.decrementAndGet();
+                    timerLabel.setText(timeToString(currentTime));
+                    if (currentTime <= 0) {
+                        timeline.stop();
+                        timerLabel.setText("Temps écoulé !");
+                    }
+                })
+        );
+        timeline.playFromStart();
+    }
+
+    private String timeToString(int time) {
+        int minutes = time / 60;
+        int seconds = time % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
 }
