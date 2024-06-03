@@ -43,5 +43,9 @@ public class Board {
         }
     }
 
+    public ArrayList<Piece>[] getBoard() {
+        return board.toArray(new ArrayList[0]);
+    }
+
     // autres méthodes...
 }
