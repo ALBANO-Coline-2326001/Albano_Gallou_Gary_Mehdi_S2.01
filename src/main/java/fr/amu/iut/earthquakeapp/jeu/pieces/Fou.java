@@ -28,6 +28,6 @@ public class Fou extends Piece {
     @Override
     public boolean isValide(int x, int y, Board chessBoard) {
 
-
+    return true;
     }
 }

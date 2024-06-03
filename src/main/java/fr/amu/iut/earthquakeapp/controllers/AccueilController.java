@@ -65,7 +65,7 @@ public class AccueilController {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Rectangle square = new Rectangle(75, 75);
-                square.setFill((i + j) % 2 == 0 ? Color.WHITE : Color.GREEN);
+                square.setFill((i + j) % 2 == 0 ? Color.rgb(235,236,208) : Color.rgb(115,149,82));
                 chessBoard.add(square, j, i);
                // Piece indice = plateau[i,j];
                // ImageView pieceImage = indice.getImage();
