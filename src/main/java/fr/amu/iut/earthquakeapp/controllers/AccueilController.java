@@ -40,40 +40,60 @@ public class AccueilController {
 
 
     private void initializeBoard() {
-        /*
-        // Crée tous les pions que l'on ajoute au plateau
+
         for (int i = 0; i < 8; i++) {
             ArrayList<Piece> row = new ArrayList<>();
+            boolean isWhite = (i <= 1);  // White pieces on rows 0 and 1
+
             for (int j = 0; j < 8; j++) {
-                boolean isWhite = i < 2; // les pièces des deux premières rangées sont blanches, les autres sont noires
-                if (i == 0 || i == 7) {
+                Piece piece = null;
+
+                if (i == 0 || i == 7) { // Main pieces on first and last rows
                     if (j == 0 || j == 7) {
-                        row.add(new Tour(isWhite, i, j, new ImageView("@../../../resources/img/images echec/cavalier_blanc.png")));
+                        piece = new Tour(isWhite, i, j);
                     } else if (j == 1 || j == 6) {
-                        row.add(new Cavalier(isWhite, i, j, new ImageView("@../../../resources/img/images echec/cavalier_blanc.png")));
+                        piece = new Cavalier(isWhite, i, j);
                     } else if (j == 2 || j == 5) {
-                        row.add(new Fou(isWhite, i, j, new ImageView("@../../../resources/img/images echec/tour.png")));
+                        piece = new Fou(isWhite, i, j);
                     } else if (j == 3) {
-                        row.add(new Reine(isWhite, i, j, new ImageView("fr/amu/iut/earthquakeapp/images/reine.png")));
-                    } else {
-                        row.add(new Roi(isWhite, i, j, new ImageView("fr/amu/iut/earthquakeapp/images/roi.png")));
+                        piece = new Reine(isWhite, i, j);
+                    } else if (j == 4) {
+                        piece = new Roi(isWhite, i, j);
                     }
+                } else if (i == 1 || i == 6) { // Pawns on second and second last rows
+                    piece = new Pion(isWhite, i, j);
+                }
+                // Add the piece or null (for empty squares) to the row
+                row.add(piece);
             }
+            // Add the completed row to the board
             plateau.add(row);
-        }*/
+        }
+
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Rectangle square = new Rectangle(75, 75);
                 square.setFill((i + j) % 2 == 0 ? Color.rgb(235,236,208) : Color.rgb(115,149,82));
                 chessBoard.add(square, j, i);
-               // Piece indice = plateau[i,j];
-               // ImageView pieceImage = indice.getImage();
-               // if (pieceImage != null) {
-               //     chessBoard.add(pieceImage, j, i);
+
+                // Set the mouse click event handler for each square
+                final int row = i;
+                final int col = j;
+                square.setOnMouseClicked(event -> handleMouseClick(row, col));
+
+                Piece indice = plateau.get(i).get(j);
+                if (indice != null) {
+                    chessBoard.add(indice.getImage(), j, i);
+                    indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+                }
                 }
             }
         }
+
+    private void handleMouseClick(int row, int col) {
+        System.out.println("Clicked row: " + row + ", col: " + col);
+    }
 
 
 

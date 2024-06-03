@@ -9,10 +9,10 @@ public class Tour extends Piece {
     public Tour(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
-            super.setImage(new ImageView("resources/img/image echec/tour_blanc.png"));
+            super.setImage(new ImageView("/img/image echec/tour_blanc.png"));
         }
         else {
-            super.setImage(new ImageView("/resources/img/image echec/tour_noir.png"));
+            super.setImage(new ImageView("/img/image echec/tour_noir.png"));
         }
         this.getImage().setFitHeight(50);
         this.getImage().setFitWidth(50);
