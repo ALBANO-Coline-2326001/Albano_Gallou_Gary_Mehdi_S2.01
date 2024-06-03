@@ -1,37 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-
 
 <?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<BorderPane fx:id="mainBP" prefHeight="600" prefWidth="950" style="-fx-background-color: #141b2d" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<BorderPane fx:id="mainBP" prefHeight="600" prefWidth="950" stylesheets="@../styles.css"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController">
 
 
     <center>
         <VBox>
             <HBox>
-
-                <Label text="Adversaire"/>
-                <Label fx:id="timerLabel"/>
+                <ImageView>
+                    <image>
+                        <Image url="@../img/image echec/joueur_noir.png"/>
+                    </image>
+                </ImageView>
+                <Label fx:id="nom2" text="Adversaire"/>
+                <Label fx:id="timerLabel2" styleClass="Timer"/>
             </HBox>
             <GridPane fx:id="chessBoard" styleClass="chess-board">
                 <!-- Chess board squares and pieces will be added dynamically in the controller -->
             </GridPane>
+            <HBox>
+                <ImageView>
+                    <image>
+                        <Image url="@../img/image echec/joueur_blanc.png"/>
+                    </image>
+                </ImageView>
+                <Label fx:id="nom1" text="LeMeilleurJoueur"/>
+                <Label fx:id="timerLabel1" styleClass="Timer"/>
+            </HBox>
         </VBox>
     </center>
 
 
     <right>
-        <HBox alignment="CENTER" spacing="20" styleClass="menu-bar">
+        <VBox alignment="CENTER" spacing="20" styleClass="menu-bar">
+            <HBox>
+                <Button text="Nouvelle partie" styleClass="play-button">
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/image echec/new_partie.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <contentDisplay>TOP</contentDisplay>
+                </Button>
+
+                <Button text="Partie" styleClass="tournament-button"/>
+                <Button text="Joueurs" styleClass="tournament-button"/>
+            </HBox>
             <Button text="Nouvelle partie" styleClass="menu-button"/>
             <ComboBox fx:id="timeOptions" prefWidth="100" styleClass="time-combo">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
                         <String fx:value="1 min"/>
+                        <String fx:value="3 min"/>
                         <String fx:value="5 min"/>
                         <String fx:value="10 min"/>
                         <String fx:value="15 min"/>
@@ -39,12 +68,17 @@
                 </items>
             </ComboBox>
             <Button text="Jouer" styleClass="play-button" onAction="#startTimer"/>
-            <Button text="Tournois" styleClass="tournament-button"/>
-        </HBox>
+            <Button text="Tournois" styleClass="tournament-button">
+                <graphic>
+                    <ImageView>
+                        <image>
+                            <Image url="@../img/image echec/medaille.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </VBox>
     </right>
 
-    <bottom>
-        <Label text="Prêt pour une nouvelle partie!" styleClass="status-label"/>
-    </bottom>
 
 </BorderPane>

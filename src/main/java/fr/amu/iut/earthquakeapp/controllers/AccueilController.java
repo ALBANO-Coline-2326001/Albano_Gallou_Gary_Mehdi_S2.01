@@ -23,7 +23,7 @@ public class AccueilController {
     @FXML
     private GridPane chessBoard;
     @FXML
-    private Label timerLabel;
+    private Label timerLabel1;
 
     private Timeline timeline;
 
@@ -34,7 +34,7 @@ public class AccueilController {
     private void initializeBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                Rectangle square = new Rectangle(50, 50);
+                Rectangle square = new Rectangle(75, 75);
                 if ((i + j) % 2 == 0) {
                     square.setFill(Color.WHITE);
                 } else {
@@ -53,7 +53,7 @@ public class AccueilController {
         AtomicInteger timeSeconds = new AtomicInteger(startTime);
 
         // Mise à jour de l'étiquette pour le timer
-        timerLabel.setText(timeToString(timeSeconds.get()));
+        timerLabel1.setText(timeToString(timeSeconds.get()));
 
         // Crée un timeline pour le compte à rebours
         timeline = new Timeline();
@@ -61,10 +61,10 @@ public class AccueilController {
         timeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1), e -> {
                     int currentTime = timeSeconds.decrementAndGet();
-                    timerLabel.setText(timeToString(currentTime));
+                    timerLabel1.setText(timeToString(currentTime));
                     if (currentTime <= 0) {
                         timeline.stop();
-                        timerLabel.setText("Temps écoulé !");
+                        timerLabel1.setText("Temps écoulé !");
                     }
                 })
         );
