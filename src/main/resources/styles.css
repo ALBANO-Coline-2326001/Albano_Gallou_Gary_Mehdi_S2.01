@@ -1,65 +1,28 @@
-/* Style général de l'arrière-plan et du texte pour le menu supérieur */
-.menu-bar {
-    -fx-background-color: #2E2E2E; /* Couleur de fond gris foncé pour le menu supérieur */
-    -fx-padding: 15px; /* Espacement autour des éléments */
-    -fx-spacing: 10px; /* Espace entre les éléments */
+.joueur{
+    -fx-background-color: #302E2B;
+    -fx-font-size: 1em;
+    -fx-text-fill: #FFF;
 }
 
+.plateau{
 
-/* Style des boutons pour correspondre à la couleur verte et à la police */
-.menu-button, .play-button, .tournament-button {
-    -fx-background-color: #4CAF50; /* Couleur de fond verte pour les boutons */
-    -fx-text-fill: white; /* Couleur de texte blanche */
-    -fx-font-family: 'Arial'; /* Police de caractères Arial */
-    -fx-font-weight: bold; /* Police en gras pour une meilleure visibilité */
-    -fx-font-size: 14px; /* Taille de police moyenne */
+    -fx-pref-width: 40em;
+    -fx-pref-height: 40em;
+
+
+}
+.partie_droite {
+    -fx-background-color: #262522;
+    -fx-hgrow: always; /* Permet à la partie droite de croître */
+}
+.buttonPlay {
+    -fx-background-color: #87C04F;
+    -fx-text-fill: #FFF;
+    -fx-pref-width: 15em;
+    -fx-pref-height: 3em;
+    -fx-font-size: 1.5em;
 }
 
-/* Style du ComboBox pour correspondre aux boutons */
-.time-combo {
-    -fx-alignment: center;
-    -fx-background-color: rgba(255, 255, 255, 0.16);
-    -fx-border-color: transparent; /* Utilisé pour supprimer les bordures */
-    -fx-border-radius: 5px;
-    -fx-border-style: none;
-    -fx-border-width: 0;
-    -fx-box-shadow: rgba(0, 0, 0, 0.1) 0px -1px 0px 0px inset; /* JavaFX ne supporte pas directement box-shadow */
-    -fx-box-sizing: border-box;
-    -fx-text-fill: rgb(251, 251, 254);
-    -fx-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
-    -fx-font-size: 13.3333px;
-    -fx-pref-height: 56px;
-    -fx-pref-width: 236px;
-    -fx-cursor: hand;
-    -fx-user-select: none;
-}
+.timer{
 
-/* Style de l'échiquier */
-.chess-board {
-    -fx-grid-lines-visible: false; /* Masquage des lignes de grille par défaut */
-    -fx-background-color: #ffffff; /* Assurer un fond cohérent */
-}
-
-/* Style des cases de l'échiquier */
-.chess-square {
-    -fx-border-color: black; /* Bordures pour les cases d'échiquier */
-    -fx-border-width: 0.5; /* Bordure fine pour une division subtile */
-}
-
-/* Cases claires et foncées sur l'échiquier */
-.light-square {
-    -fx-fill: #FFCE9E; /* Couleur beige clair pour les cases */
-}
-
-.dark-square {
-    -fx-fill: #D18B47; /* Couleur marron foncé pour les cases */
-}
-
-/* Style du label de statut en bas */
-.status-label {
-    -fx-background-color: #2E2E2E; /* Gris foncé assorti à la barre supérieure */
-    -fx-text-fill: white; /* Texte blanc pour la visibilité */
-    -fx-font-family: 'Arial'; /* Police cohérente */
-    -fx-alignment: center; /* Alignement central du texte */
-    -fx-padding: 10px; /* Espacement esthétique */
 }
