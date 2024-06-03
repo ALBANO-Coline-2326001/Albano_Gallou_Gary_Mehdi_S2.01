@@ -8,11 +8,10 @@ public abstract class Piece {
     private int x;
     private int y;
 
-    public Piece(boolean isWhite, int x, int y, ImageView image) {
+    public Piece(boolean isWhite, int x, int y) {
         this.isWhite = isWhite;
         this.x = x;
         this.y = y;
-        this.image = image;
 
     }
 
@@ -35,6 +34,10 @@ public abstract class Piece {
 
     public ImageView getImage() {
         return image;
+    }
+
+    public void setImage(ImageView image) {
+        this.image = image;
     }
 
 }

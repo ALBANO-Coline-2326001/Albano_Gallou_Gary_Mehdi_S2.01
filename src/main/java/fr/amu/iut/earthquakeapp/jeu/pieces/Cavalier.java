@@ -6,8 +6,14 @@ import javafx.scene.image.ImageView;
 
 public class Cavalier extends Piece {
 
-    public Cavalier(boolean isWhite, int x, int y, ImageView image) {
-        super(isWhite, x, y, image);
+    public Cavalier(boolean isWhite, int x, int y) {
+        super(isWhite, x, y);
+        if (isWhite) {
+            super.setImage(new ImageView("/resources/img/images echec/cavalier_blanc.png"));
+        }
+        else {
+            super.setImage(new ImageView("/resources/img/images echec/cavalier_noir.png"));
+        }
         this.getImage().setFitHeight(50);
         this.getImage().setFitWidth(50);
     }
@@ -19,6 +25,6 @@ public class Cavalier extends Piece {
 
     @Override
     public void isValide(int x, int y, Board chessBoard) {
-
     }
+
 }
