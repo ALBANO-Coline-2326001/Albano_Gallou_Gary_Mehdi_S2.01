@@ -18,16 +18,48 @@ public class Tour extends Piece {
         this.getImage().setFitWidth(50);
     }
 
-    @Override
-    public void move(int x, int y) {
+    //@Override
+    //public void move(int x, int y) {
 
-        this.setCoordonne(x,y);
-    }
+        //this.setCoordonne(x,y);
+    //}
 
     @Override
     public boolean isValide(int x, int y, Board chessBoard) {
+        // Vérifier si le mouvement est horizontal ou vertical
+        if (x != getX() && y != getY()) {
+            return false;
+        }
 
+        // Vérifier si le chemin est bloqué
+        if (x == getX()) {
+            // Mouvement vertical
+            int startY = Math.min(y, getY());
+            int endY = Math.max(y, getY());
+            for (int i = startY; i <= endY; i++) {
+                Piece piece = chessBoard.getPiece(x, i);
+                if (piece != null && piece.isWhite() == isWhite()) {
+                    return false;
+                }
+            }
+        } else {
+            // Mouvement horizontal
+            int startX = Math.min(x, getX());
+            int endX = Math.max(x, getX());
+            for (int i = startX; i <= endX; i++) {
+                Piece piece = chessBoard.getPiece(i, y);
+                if (piece != null && piece.isWhite() == isWhite()) {
+                    return false;
+                }
+            }
+        }
 
-        return false;
+        // Vérifier si la case d'arrivée est occupée par une pièce de la même couleur
+        Piece destinationPiece = chessBoard.getPiece(x, y);
+        if (destinationPiece != null && destinationPiece.isWhite() == isWhite()) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -18,10 +18,18 @@ public class Pion extends Piece {
         this.getImage().setFitWidth(50);
     }
 
-    @Override
-    public void move(int x, int y) {
-        this.setCoordonne(x,y);
-    }
+    //@Override
+    //public void move(int x, int y, Board board) {
+            // Vérifier si le mouvement est valide
+        //if (isValide(x, y, board)) {
+            // Mettre à jour les coordonnées
+            //this.setCoordonne(x, y);
+        //} else {
+            // Gérer l'erreur
+            //System.out.println("Invalid move");
+        //}
+       // this.setCoordonne(x,y);
+   // }
 
     @Override
     public boolean isValide(int x, int y, Board chessBoard) {
@@ -49,8 +57,5 @@ public class Pion extends Piece {
         // Vérifier si le pion a déjà bougé
         // Cette logique est simplifiée et suppose que les pions commencent aux rangées 1 et 6
         return isWhite() ? getX() != 6 : getX() != 1;
+        }
     }
-    }
-
-
-

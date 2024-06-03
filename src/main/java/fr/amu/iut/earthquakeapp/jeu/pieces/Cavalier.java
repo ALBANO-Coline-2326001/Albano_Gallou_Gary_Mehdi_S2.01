@@ -18,10 +18,10 @@ public class Cavalier extends Piece {
         this.getImage().setFitWidth(50);
     }
 
-    @Override
-    public void move(int x, int y) {
-          this.setCoordonne(x,y);
-    }
+    //@Override
+    //public void move(int x, int y) {
+          //this.setCoordonne(x,y);
+    //}
 
     @Override
     public boolean isValide(int x, int y, Board chessBoard) {
