@@ -1,0 +1,28 @@
+.joueur{
+    -fx-background-color: #302E2B;
+    -fx-font-size: 1em;
+    -fx-text-fill: #FFF;
+}
+
+.plateau{
+
+    -fx-pref-width: 40em;
+    -fx-pref-height: 40em;
+
+
+}
+.partie_droite {
+    -fx-background-color: #262522;
+    -fx-hgrow: always; /* Permet à la partie droite de croître */
+}
+.buttonPlay {
+    -fx-background-color: #87C04F;
+    -fx-text-fill: #FFF;
+    -fx-pref-width: 15em;
+    -fx-pref-height: 3em;
+    -fx-font-size: 1.5em;
+}
+
+.timer{
+
+}
