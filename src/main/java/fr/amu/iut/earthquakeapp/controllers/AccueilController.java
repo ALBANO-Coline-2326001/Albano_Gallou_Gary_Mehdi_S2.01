@@ -38,12 +38,14 @@ public class AccueilController {
                 if ((i + j) % 2 == 0) {
                     square.setFill(Color.WHITE);
                 } else {
-                    square.setFill(Color.GRAY);
+                    square.setFill(Color.GREEN);
                 }
                 chessBoard.add(square, j, i);
             }
         }
     }
+
+
 
     public void startTimer() {
         if (timeline != null) {

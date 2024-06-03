@@ -77,7 +77,14 @@
                     </ImageView>
                 </graphic>
             </Button>
+            <HBox>
+                <Label fx:id="jouentnombre" text="144 328"/>
+                <Label fx:id="jouent" text="JOUENT"/>
+                <Label fx:id="partienombre" text="13 459 965" />
+                <Label fx:id="partie" text="PARTIES" />
+            </HBox>
         </VBox>
+
     </right>
 
 
