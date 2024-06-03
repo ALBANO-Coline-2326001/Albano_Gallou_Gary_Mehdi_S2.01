@@ -10,8 +10,7 @@ public class Pion extends Piece {
         super(isWhite, x, y);
         if (isWhite) {
             super.setImage(new ImageView("/resources/img/images echec/cavalier_blanc.png"));
-        }
-        else {
+        } else {
             super.setImage(new ImageView("/resources/img/images echec/cavalier_noir.png"));
         }
         this.getImage().setFitHeight(50);
@@ -20,16 +19,16 @@ public class Pion extends Piece {
 
     //@Override
     //public void move(int x, int y, Board board) {
-            // Vérifier si le mouvement est valide
-        //if (isValide(x, y, board)) {
-            // Mettre à jour les coordonnées
-            //this.setCoordonne(x, y);
-        //} else {
-            // Gérer l'erreur
-            //System.out.println("Invalid move");
-        //}
-       // this.setCoordonne(x,y);
-   // }
+    // Vérifier si le mouvement est valide
+    //if (isValide(x, y, board)) {
+    // Mettre à jour les coordonnées
+    //this.setCoordonne(x, y);
+    //} else {
+    // Gérer l'erreur
+    //System.out.println("Invalid move");
+    //}
+    // this.setCoordonne(x,y);
+    // }
 
     @Override
     public boolean isValide(int x, int y, Board chessBoard) {
@@ -57,5 +56,12 @@ public class Pion extends Piece {
         // Vérifier si le pion a déjà bougé
         // Cette logique est simplifiée et suppose que les pions commencent aux rangées 1 et 6
         return isWhite() ? getX() != 6 : getX() != 1;
-        }
     }
+
+
+    @Override
+    public void move(int x, int y) {
+
+    }
+}
+

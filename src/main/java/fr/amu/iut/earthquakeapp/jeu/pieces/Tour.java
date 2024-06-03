@@ -18,6 +18,11 @@ public class Tour extends Piece {
         this.getImage().setFitWidth(50);
     }
 
+    @Override
+    public void move(int x, int y) {
+
+    }
+
     //@Override
     //public void move(int x, int y) {
 

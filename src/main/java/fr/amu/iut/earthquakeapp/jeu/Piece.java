@@ -25,6 +25,8 @@ public abstract class Piece {
 
     //abstract public void move(int x, int y, Board chessBoard);
 
+    public abstract void move(int x, int y);
+
     abstract public boolean isValide(int x, int y, Board chessBoard);
 
     public int[] getCoordonne() {

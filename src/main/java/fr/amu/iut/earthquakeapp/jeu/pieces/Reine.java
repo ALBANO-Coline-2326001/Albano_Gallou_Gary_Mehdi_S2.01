@@ -28,4 +28,9 @@ public  class Reine extends Piece {
 
         return false;
     }
+    @Override
+    public void move(int x, int y) {
+
+    }
+
 }

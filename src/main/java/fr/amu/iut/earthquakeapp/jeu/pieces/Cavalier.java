@@ -28,4 +28,10 @@ public class Cavalier extends Piece {
         return false;
     }
 
+    @Override
+    public void move(int x, int y) {
+
+    }
+
+
 }

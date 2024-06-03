@@ -18,11 +18,45 @@
 .buttonPlay {
     -fx-background-color: #87C04F;
     -fx-text-fill: #FFF;
-    -fx-pref-width: 15em;
-    -fx-pref-height: 3em;
+    -fx-pref-width: 14em;
+    -fx-pref-height: 2.5em;
     -fx-font-size: 1.5em;
 }
 
 .timer{
+
+}
+
+.tournoisBox{
+    -fx-pref-height: 30em;
+}
+
+.tournois{
+    -fx-background-color: #1E1E1B;
+    -fx-text-fill: #FFF;
+    -fx-pref-width: 21em;
+    -fx-pref-height: 3em;
+}
+
+.infosEnLigne{
+    -fx-pref-height: 8em;
+
+}
+.infosEnLigneTxt{
+    -fx-text-fill: #FFF;
+    -fx-font-size: 0.9em;
+
+}
+
+.choixMinuteur{
+    -fx-pref-width: 21em;
+    -fx-pref-height: 3em;
+    -fx-background-color: #3C3B39;
+
+}
+
+.combo-box .list-cell {
+    -fx-alignment: center;
+    -fx-text-fill: #FFF;
 
 }
