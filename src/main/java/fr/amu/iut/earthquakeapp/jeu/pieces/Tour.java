@@ -1,6 +1,8 @@
-package fr.amu.iut.earthquakeapp.jeu;
+package fr.amu.iut.earthquakeapp.jeu.pieces;
 
-public class Tour extends Piece{
+import fr.amu.iut.earthquakeapp.jeu.Piece;
+
+public class Tour extends Piece {
 
 
     public Tour(boolean isWhite, int x, int y) {
