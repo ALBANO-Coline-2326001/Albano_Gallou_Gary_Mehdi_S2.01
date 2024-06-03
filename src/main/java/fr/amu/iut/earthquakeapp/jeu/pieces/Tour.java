@@ -11,6 +11,6 @@ public class Tour extends Piece {
 
     @Override
     public void move(int x, int y) {
-
+          this.setCoordonne(x,y);
     }
 }
