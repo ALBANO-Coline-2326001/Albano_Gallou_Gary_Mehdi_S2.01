@@ -30,6 +30,7 @@ public abstract class Piece {
     }
 
     abstract public void move(int x, int y);
+    abstract public void isValide(int x, int y,Board chessBoard);
 
     public int[] getCoordonne(){
         return new int[]{x,y};

@@ -3,9 +3,9 @@ package fr.amu.iut.earthquakeapp.jeu;
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
 
 public class Board {
-    private Piece[][] board;
+    /*    private Piece[][] board;*/
 
-    public Board() {
+  /*  public Board() {
         board = new Piece[8][8];
         // initialiser le plateau avec les pièces
         // 0 = case vide
@@ -40,4 +40,6 @@ public class Board {
     }
 
     // autres méthodes...
+}
+   */
 }
