@@ -17,7 +17,8 @@ public class MoveController {
     private int x;
     private int y;
 
-    public void movePiece(){
+    public void movePion(){
+
 
     }
 

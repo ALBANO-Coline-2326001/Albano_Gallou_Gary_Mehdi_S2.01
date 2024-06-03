@@ -24,7 +24,8 @@ public class Cavalier extends Piece {
     }
 
     @Override
-    public void isValide(int x, int y, Board chessBoard) {
+    public boolean isValide(int x, int y, Board chessBoard) {
+        return false;
     }
 
 }

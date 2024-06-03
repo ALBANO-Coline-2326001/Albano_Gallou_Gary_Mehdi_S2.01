@@ -35,5 +35,13 @@ public class Board {
         }
     }
 
+    public Piece getPiece(int x, int y) {
+        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            return board.get(x).get(y);
+        } else {
+            return null;
+        }
+    }
+
     // autres méthodes...
 }
