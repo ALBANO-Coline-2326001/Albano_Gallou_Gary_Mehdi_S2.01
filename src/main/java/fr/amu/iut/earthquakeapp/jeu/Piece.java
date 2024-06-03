@@ -13,10 +13,34 @@ public abstract class Piece {
 
     }
 
-    abstract public void move();
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    abstract public void move(int x, int y);
 
     public int[] getCoordonne(){
         return new int[]{x,y};
     }
 
+    public void setCoordonne(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public boolean isWhite() {
+        return isWhite;
+    }
 }
