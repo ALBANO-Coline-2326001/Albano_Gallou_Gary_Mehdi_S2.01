@@ -1,6 +1,8 @@
 package fr.amu.iut.earthquakeapp.jeu;
 
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 
 public class Board {
@@ -33,6 +35,22 @@ public class Board {
             }
             board.add(row);
         }
+    }
+
+    public Piece getPiece(int x, int y) {
+        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            return board.get(x).get(y);
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<Piece>[] getBoard() {
+        return board.toArray(new ArrayList[0]);
+    }
+
+    public Node getBoardPane() {
+        return null;
     }
 
     // autres méthodes...

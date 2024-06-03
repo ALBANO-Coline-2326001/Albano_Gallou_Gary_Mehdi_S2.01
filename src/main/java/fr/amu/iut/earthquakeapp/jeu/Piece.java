@@ -15,9 +15,17 @@ public abstract class Piece {
 
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     abstract public void move(int x, int y);
 
-    abstract public void isValide(int x, int y, Board chessBoard);
+    abstract public boolean isValide(int x, int y, Board chessBoard);
 
     public int[] getCoordonne() {
         return new int[]{x, y};
