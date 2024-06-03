@@ -26,6 +26,11 @@ public class AccueilController {
 
     private MoveController moveController; ;
 
+    private Piece selectedPiece = null;
+    private ImageView selectedImageView = null;
+    private int selectedRow = -1;
+    private int selectedCol = -1;
+
     @FXML
     private GridPane chessBoard;
     @FXML
@@ -36,6 +41,7 @@ public class AccueilController {
     public void initialize() {
         this.moveController = MoveController.getInstance();
         initializeBoard();
+        affichage();
     }
 
 
@@ -69,8 +75,10 @@ public class AccueilController {
             // Add the completed row to the board
             plateau.add(row);
         }
+    }
 
 
+    private void affichage() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Rectangle square = new Rectangle(75, 75);
@@ -92,7 +100,68 @@ public class AccueilController {
         }
 
     private void handleMouseClick(int row, int col) {
-        System.out.println("Clicked row: " + row + ", col: " + col);
+        System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
+
+        Piece clickedPiece = plateau.get(row).get(col);
+        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
+
+        // Si une pièce est déjà sélectionnée
+        if (selectedPiece != null) {
+            // Vérifie si la case cliquée est différente de la case originale et si la pièce peut être déplacée
+            if (row != selectedRow || col != selectedCol) {
+                // Tente de déplacer la pièce
+                if (movePiece(selectedRow, selectedCol, row, col, clickedPiece)) {
+                    // Le déplacement a réussi, enlève l'image précédente
+                    chessBoard.getChildren().remove(selectedImageView);
+                    if (clickedImageView != null) {
+                        chessBoard.getChildren().remove(clickedImageView); // Enlève l'image de la pièce capturée
+                    }
+                    chessBoard.add(selectedImageView, col, row);
+
+                    // Mettre à jour la structure de données du plateau
+                    plateau.get(selectedRow).set(selectedCol, null);
+                    plateau.get(row).set(col, selectedPiece);
+
+                    // Réinitialiser la sélection
+                    selectedPiece = null;
+                    selectedImageView = null;
+                    selectedRow = -1;
+                    selectedCol = -1;
+                } else {
+                    // Le déplacement est invalide, réinitialiser la sélection
+                    selectedPiece = null;
+                    selectedImageView = null;
+                    selectedRow = -1;
+                    selectedCol = -1;
+                }
+            } else {
+                // Clic sur la même pièce, la désélectionner
+                selectedPiece = null;
+                selectedImageView = null;
+                selectedRow = -1;
+                selectedCol = -1;
+            }
+        } else if (clickedPiece != null) {
+            // Aucune pièce n'est sélectionnée et le joueur a cliqué sur une pièce
+            selectedPiece = clickedPiece;
+            selectedImageView = clickedImageView;
+            selectedRow = row;
+            selectedCol = col;
+        }
+    }
+
+
+    private void resetSelection() {
+        selectedPiece = null;
+        selectedImageView = null;
+        selectedRow = -1;
+        selectedCol = -1;
+    }
+
+
+    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
+
+        return true;  // Retourne false si le déplacement n'est pas valide
     }
 
 
