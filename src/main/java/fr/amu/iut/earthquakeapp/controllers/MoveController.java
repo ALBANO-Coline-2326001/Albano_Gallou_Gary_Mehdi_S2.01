@@ -36,11 +36,20 @@ public class MoveController {
                 if (piece != null) {
                     piece.getImage().setOnMouseClicked(event -> {
                         Piece clickedPiece = (Piece) event.getSource();
-                        deplacement = (observable, oldValue, newValue) -> {
-                            x = (int) newValue / 50;
-                            y = (int) newValue / 50;
-                            clickedPiece.move(x, y);
-                        };
+
+                        chessBoard.getBoardPane().setOnMouseClicked(event1 -> {
+                            x = (int) event1.getX() / 50;
+                            y = (int) event1.getY() / 50;
+                            if (clickedPiece.isValide(x, y, chessBoard)){
+                                clickedPiece.move(x, y);
+                            } else {
+
+                            }
+
+                            chessBoard.getBoardPane().setOnMouseClicked(null);
+
+                        });
+
                         // Effectuer l'action souhaitée
                         System.out.println("Piece clicked: " + clickedPiece);
                         // Gérer le clic ici

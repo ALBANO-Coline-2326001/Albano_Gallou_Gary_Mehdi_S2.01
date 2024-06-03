@@ -1,6 +1,8 @@
 package fr.amu.iut.earthquakeapp.jeu;
 
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 
 public class Board {
@@ -45,6 +47,10 @@ public class Board {
 
     public ArrayList<Piece>[] getBoard() {
         return board.toArray(new ArrayList[0]);
+    }
+
+    public Node getBoardPane() {
+        return null;
     }
 
     // autres méthodes...
