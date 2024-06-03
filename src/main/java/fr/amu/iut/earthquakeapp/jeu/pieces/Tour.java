@@ -6,13 +6,10 @@ import javafx.scene.image.ImageView;
 
 public class Tour extends Piece {
 
-    private ImageView image;
-
-    public Tour(boolean isWhite, int x, int y) {
-        super(isWhite, x, y);
-        this.image = image;
-        this.image.setFitHeight(50);
-        this.image.setFitWidth(50);
+    public Tour(boolean isWhite, int x, int y, ImageView image) {
+        super(isWhite, x, y, image);
+        this.getImage().setFitHeight(50);
+        this.getImage().setFitWidth(50);
     }
 
     @Override

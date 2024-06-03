@@ -1,42 +1,30 @@
 package fr.amu.iut.earthquakeapp.jeu;
 
-public abstract class Piece {
+import javafx.scene.image.ImageView;
 
+public abstract class Piece {
+    private ImageView image;
     private boolean isWhite;
     private int x;
     private int y;
 
-    public Piece(boolean isWhite,int x, int y) {
+    public Piece(boolean isWhite, int x, int y, ImageView image) {
         this.isWhite = isWhite;
         this.x = x;
         this.y = y;
+        this.image = image;
 
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getX() {
-        return x;
     }
 
     abstract public void move(int x, int y);
-    abstract public void isValide(int x, int y,Board chessBoard);
 
-    public int[] getCoordonne(){
-        return new int[]{x,y};
+    abstract public void isValide(int x, int y, Board chessBoard);
+
+    public int[] getCoordonne() {
+        return new int[]{x, y};
     }
 
-    public void setCoordonne(int x, int y){
+    public void setCoordonne(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -44,4 +32,9 @@ public abstract class Piece {
     public boolean isWhite() {
         return isWhite;
     }
+
+    public ImageView getImage() {
+        return image;
+    }
+
 }

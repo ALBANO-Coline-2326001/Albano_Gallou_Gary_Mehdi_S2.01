@@ -22,9 +22,11 @@
                 <Label fx:id="nom2" text="Adversaire"/>
                 <Label fx:id="timerLabel2" styleClass="Timer"/>
             </HBox>
+
             <GridPane fx:id="chessBoard" styleClass="chess-board">
                 <!-- Chess board squares and pieces will be added dynamically in the controller -->
             </GridPane>
+
             <HBox>
                 <ImageView>
                     <image>
