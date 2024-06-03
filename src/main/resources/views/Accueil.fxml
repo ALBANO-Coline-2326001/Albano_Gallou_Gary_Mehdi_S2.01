@@ -14,7 +14,9 @@
     <center>
         <VBox>
             <HBox>
+
                 <Label text="Adversaire"/>
+                <Label fx:id="timerLabel"/>
             </HBox>
             <GridPane fx:id="chessBoard" styleClass="chess-board">
                 <!-- Chess board squares and pieces will be added dynamically in the controller -->
@@ -36,7 +38,7 @@
                     </FXCollections>
                 </items>
             </ComboBox>
-            <Button text="Jouer" styleClass="play-button"/>
+            <Button text="Jouer" styleClass="play-button" onAction="#startTimer"/>
             <Button text="Tournois" styleClass="tournament-button"/>
         </HBox>
     </right>
