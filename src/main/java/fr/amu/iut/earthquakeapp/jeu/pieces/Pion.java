@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 
 public class Pion extends Piece {
 
-    public Pion(boolean isWhite, int x, int y, ImageView image) {
+    public Pion(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
             super.setImage(new ImageView("/resources/img/images echec/cavalier_blanc.png"));

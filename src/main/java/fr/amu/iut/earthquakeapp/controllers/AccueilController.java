@@ -24,6 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AccueilController {
 
+    private MoveController moveController; ;
+
     @FXML
     private GridPane chessBoard;
     @FXML
@@ -32,6 +34,7 @@ public class AccueilController {
     private Timeline timeline;
 
     public void initialize() {
+        this.moveController = MoveController.getInstance();
         initializeBoard();
     }
 
