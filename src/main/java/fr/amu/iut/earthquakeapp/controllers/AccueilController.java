@@ -200,10 +200,7 @@ public class AccueilController {
         );
         timeline.playFromStart();
 
-        nbpartie.set(nbpartie.get() + 1);
-        playerData.setGamesPlayed(nbpartie.get());
-        playerData.writeDataToFile("playerData.json");
-        startPlay = true;
+
     }
 
 
@@ -217,5 +214,12 @@ public class AccueilController {
         int minutes = time / 60;
         int seconds = time % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+    public void start(){
+        startTimer();
+        nbpartie.set(nbpartie.get() + 1);
+        playerData.setGamesPlayed(nbpartie.get());
+        playerData.writeDataToFile("playerData.json");
+        startPlay = true;
     }
 }

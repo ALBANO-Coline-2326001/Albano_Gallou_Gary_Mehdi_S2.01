@@ -101,7 +101,7 @@
                                     </ComboBox>
 
 
-                                    <Button  fx:id="jouer" text="Jouer" styleClass="buttonPlay" onAction="#startTimer"/>
+                                    <Button  fx:id="jouer" text="Jouer" styleClass="buttonPlay" onAction="#start"/>
                                     <VBox alignment="CENTER" styleClass="tournoisBox">
                                         <Button text="Tournois" styleClass="tournois">
                                             <graphic>
