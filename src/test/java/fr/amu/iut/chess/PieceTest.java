@@ -3,6 +3,7 @@ package fr.amu.iut.chess;
 
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import fr.amu.iut.earthquakeapp.jeu.pieces.Pion;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,6 @@ public class PieceTest {
     @BeforeEach
     public void init(){
 
-        Scene scene = new Scene(
         pion = new Pion(true, 0, 0);
         pionAdverse = new Pion(false, 0, 0);
     }

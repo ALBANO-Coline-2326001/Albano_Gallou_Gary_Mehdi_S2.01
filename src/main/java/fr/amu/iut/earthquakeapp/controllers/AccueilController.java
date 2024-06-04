@@ -1,10 +1,14 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
+import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -28,11 +32,17 @@ public class AccueilController {
     private boolean isWhiteTurn = true;
 
     private MoveController moveController;
+    @FXML
+    private Button jouer;
+    @FXML
+    private Tab Partie;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
     private int selectedRow = -1;
     private int selectedCol = -1;
+    private IntegerProperty nbpartie = new SimpleIntegerProperty(0);
+    private PlayerData playerData = new PlayerData();
 
     @FXML
     private GridPane chessBoard;
@@ -52,6 +62,12 @@ public class AccueilController {
         this.moveController = MoveController.getInstance();
         initializeBoard();
         affichage();
+
+    }
+
+
+    public Button getJouer() {
+        return jouer;
     }
 
     private void initializeBoard() {
@@ -175,6 +191,19 @@ public class AccueilController {
                 })
         );
         timeline.playFromStart();
+
+        nbpartie.set(nbpartie.get() + 1);
+        playerData.setGamesPlayed(nbpartie.get());
+        playerData.writeDataToFile("playerData.json");
+    }
+
+
+    public void showData(){
+        if (Partie.isSelected()){
+            playerData.readDataFromFile("playerData.json");
+
+        }
+
     }
 
     private String timeToString(int time) {
