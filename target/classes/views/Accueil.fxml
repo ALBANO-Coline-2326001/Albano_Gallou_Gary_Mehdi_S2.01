@@ -20,7 +20,7 @@
                     <Label fx:id="timerLabel2"/>
                 </HBox>
 
-                <HBox alignment="CENTER" styleClass="joueur">
+                <HBox alignment="CENTER_LEFT" styleClass="joueur">
                     <GridPane fx:id="chessBoard" styleClass="plateau" VBox.vgrow="ALWAYS">
                         <!-- Chess board squares and pieces will be added dynamically in the controller -->
                     </GridPane>
@@ -43,13 +43,13 @@
                         <Tab text="Nouvelle partie" >
                             <content>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="20" >
-
-                                    <ComboBox fx:id="timeOptions" prefWidth="150">
+                                    <ComboBox fx:id="timeOptions" prefWidth="150" styleClass="choixMinuteur combo-box">
                                         <items>
                                             <FXCollections fx:factory="observableArrayList">
                                                 <HBox>
                                                     <ImageView>
                                                         <image>
+                                                            <Image url="@../img/image echec/chrono.png"/>
                                                         </image>
                                                     </ImageView>
                                                     <Label text="1 min"/>
@@ -57,6 +57,7 @@
                                                 <HBox>
                                                     <ImageView>
                                                         <image>
+                                                            <Image url="@../img/image echec/chrono.png"/>
                                                         </image>
                                                     </ImageView>
                                                     <Label text="3 min"/>
@@ -64,6 +65,7 @@
                                                 <HBox>
                                                     <ImageView>
                                                         <image>
+                                                            <Image url="@../img/image echec/chrono.png"/>
                                                         </image>
                                                     </ImageView>
                                                     <Label text="5 min"/>
@@ -79,13 +81,25 @@
                                                 <HBox>
                                                     <ImageView>
                                                         <image>
+                                                            <Image url="@../img/image echec/chrono.png"/>
                                                         </image>
                                                     </ImageView>
                                                     <Label text="15 min"/>
                                                 </HBox>
                                             </FXCollections>
                                         </items>
+                                        <value>
+                                            <HBox>
+                                                <ImageView>
+                                                    <image>
+                                                        <Image url="@../img/image echec/chrono.png"/>
+                                                    </image>
+                                                </ImageView>
+                                                <Label text="10 min"/>
+                                            </HBox>
+                                        </value>
                                     </ComboBox>
+
 
                                     <Button text="Jouer" styleClass="buttonPlay" onAction="#startTimer"/>
                                     <VBox alignment="CENTER" styleClass="tournoisBox">

@@ -55,10 +55,18 @@
 
 }
 
+/* styles.css */
 .combo-box .list-cell {
-    -fx-alignment: center;
-    -fx-text-fill: #FFF;
+    -fx-alignment: center-left;
+}
 
+.combo-box .list-cell .label {
+    -fx-alignment: center;
+    -fx-graphic-text-gap: 10px; /* Espacement entre l'image et le texte */
+}
+
+.combo-box .combo-box-popup .list-view .list-cell {
+    -fx-alignment: center-left;
 }
 
 .tab {

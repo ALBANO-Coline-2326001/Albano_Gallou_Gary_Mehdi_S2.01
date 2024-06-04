@@ -4,6 +4,7 @@ import fr.amu.iut.earthquakeapp.jeu.Board;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class MoveController {
 
     private ObservableList<ObservableList<Piece>> pieces;
     private static MoveController instance ;
+    @FXML
     private static Board chessBoard;
     private int x;
     private int y;
@@ -29,7 +31,7 @@ public class MoveController {
         return instance;
     }
 
-
+/*
     public void move(){
         for (ArrayList<Piece> row : chessBoard.getBoard()) {
             for (Piece piece : row) {
@@ -59,5 +61,5 @@ public class MoveController {
         }
 
     }
-
+*/
 }
