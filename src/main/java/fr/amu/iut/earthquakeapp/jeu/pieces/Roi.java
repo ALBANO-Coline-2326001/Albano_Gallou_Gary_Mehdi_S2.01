@@ -9,10 +9,10 @@ public class Roi extends Piece {
     public Roi(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
-            super.setImage(new ImageView("/resources/img/images echec/cavalier_blanc.png"));
+            super.setImage(new ImageView("/img/image echec/roi_blanc.png"));
         }
         else {
-            super.setImage(new ImageView("/resources/img/images echec/cavalier_noir.png"));
+            super.setImage(new ImageView("/img/image echec/roi_noir.png"));
         }
         this.getImage().setFitHeight(50);
         this.getImage().setFitWidth(50);
