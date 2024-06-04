@@ -14,8 +14,8 @@ public class Tour extends Piece {
         else {
             super.setImage(new ImageView("/img/image echec/tour_noir.png"));
         }
-        this.getImage().setFitHeight(50);
-        this.getImage().setFitWidth(50);
+        this.getImage().setFitHeight(75);
+        this.getImage().setFitWidth(75);
     }
 
     @Override

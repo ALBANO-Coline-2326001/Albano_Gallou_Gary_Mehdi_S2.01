@@ -14,8 +14,8 @@ public class Roi extends Piece {
         else {
             super.setImage(new ImageView("/img/image echec/roi_noir.png"));
         }
-        this.getImage().setFitHeight(50);
-        this.getImage().setFitWidth(50);
+        this.getImage().setFitHeight(75);
+        this.getImage().setFitWidth(75);
     }
 
     //@Override

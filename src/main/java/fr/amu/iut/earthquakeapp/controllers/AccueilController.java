@@ -6,6 +6,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -38,7 +40,14 @@ public class AccueilController {
     private ArrayList<ArrayList<Piece>> plateau = new ArrayList<>();
     private Timeline timeline;
 
+    @FXML
+    private TabPane tabPane;
+
+    @FXML
     public void initialize() {
+        for (Tab tab : tabPane.getTabs()) {
+            tab.setClosable(false);
+        }
         this.moveController = MoveController.getInstance();
         initializeBoard();
         affichage();
