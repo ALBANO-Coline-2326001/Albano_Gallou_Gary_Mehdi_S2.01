@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.util.Callback?>
+
 <BorderPane fx:id="mainBP" prefHeight="500" prefWidth="1000" stylesheets="@../styles.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController">
@@ -36,69 +37,98 @@
                 </HBox>
             </VBox>
 
-            <VBox></VBox>
-
             <VBox styleClass="partie_droite" HBox.hgrow="ALWAYS">
-                <VBox alignment="TOP_CENTER" spacing="20" styleClass="partie_droite" VBox.vgrow="ALWAYS">
-                    <HBox>
-                        <Button text="Nouvelle partie">
-                            <graphic>
-                                <ImageView>
-                                    <image>
-                                        <Image url="@../img/image echec/new_partie.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <contentDisplay>TOP</contentDisplay>
-                        </Button>
-                        <Button text="Partie" styleClass="tournament-button"/>
-                        <Button text="Joueurs" styleClass="tournament-button"/>
-                    </HBox>
+                <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <tabs>
+                        <Tab text="Nouvelle partie" >
+                            <content>
+                                <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="20" >
 
-                    <ComboBox fx:id="timeOptions" prefWidth="100" styleClass="choixMinuteur">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="1 min"/>
-                                <String fx:value="3 min"/>
-                                <String fx:value="5 min"/>
-                                <String fx:value="10 min"/>
-                                <String fx:value="15 min"/>
-                            </FXCollections>
-                        </items>
-                        <value>
-                            <String fx:value="10 min"/>
-                        </value>
-                    </ComboBox>
+                                    <ComboBox fx:id="timeOptions" prefWidth="150">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <HBox>
+                                                    <ImageView>
+                                                        <image>
+                                                        </image>
+                                                    </ImageView>
+                                                    <Label text="1 min"/>
+                                                </HBox>
+                                                <HBox>
+                                                    <ImageView>
+                                                        <image>
+                                                        </image>
+                                                    </ImageView>
+                                                    <Label text="3 min"/>
+                                                </HBox>
+                                                <HBox>
+                                                    <ImageView>
+                                                        <image>
+                                                        </image>
+                                                    </ImageView>
+                                                    <Label text="5 min"/>
+                                                </HBox>
+                                                <HBox>
+                                                    <ImageView>
+                                                        <image>
+                                                            <Image url="@../img/image echec/chrono.png"/>
+                                                        </image>
+                                                    </ImageView>
+                                                    <Label text="10 min"/>
+                                                </HBox>
+                                                <HBox>
+                                                    <ImageView>
+                                                        <image>
+                                                        </image>
+                                                    </ImageView>
+                                                    <Label text="15 min"/>
+                                                </HBox>
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
 
-
-                    <Button text="Jouer" styleClass="buttonPlay" onAction="#startTimer"/>
-                    <VBox alignment="CENTER" styleClass="tournoisBox">
-                        <Button text="Tournois" styleClass="tournois">
-                            <graphic>
-                                <ImageView fitHeight="40" fitWidth="40">
-                                        <Image url="@../img/image echec/medaille.png"/>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                    </VBox>
-
-                    <HBox alignment="BOTTOM_CENTER" styleClass="infosEnLigne">
-                        <HBox>
-                            <ImageView>
-                               <Image url="@../img/image echec/message.png"/>
-                            </ImageView>
-                        </HBox>
-                        <HBox>
-                            <Label fx:id="jouentnombre" text="144 328 " styleClass="infosEnLigneTxt"/>
-                            <Label fx:id="jouent" text="JOUENT"/>
-                        </HBox>
-                        <HBox>
-                            <Label fx:id="partienombre" text="13 459 965" styleClass="infosEnLigneTxt"/>
-                            <Label fx:id="partie" text="PARTIES" />
-                        </HBox>
-                    </HBox>
-
-                </VBox>
+                                    <Button text="Jouer" styleClass="buttonPlay" onAction="#startTimer"/>
+                                    <VBox alignment="CENTER" styleClass="tournoisBox">
+                                        <Button text="Tournois" styleClass="tournois">
+                                            <graphic>
+                                                <ImageView fitHeight="40" fitWidth="40">
+                                                    <Image url="@../img/image echec/medaille.png"/>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+                                    </VBox>
+                                    <HBox alignment="BOTTOM_CENTER" styleClass="infosEnLigne">
+                                        <HBox>
+                                            <ImageView>
+                                                <image>
+                                                    <Image url="@../img/image echec/message.png"/>
+                                                </image>
+                                            </ImageView>
+                                        </HBox>
+                                        <HBox>
+                                            <Label fx:id="jouentnombre" text="144 328 " styleClass="infosEnLigneTxt"/>
+                                            <Label fx:id="jouent" text="JOUENT"/>
+                                        </HBox>
+                                        <HBox>
+                                            <Label fx:id="partienombre" text="13 459 965" styleClass="infosEnLigneTxt"/>
+                                            <Label fx:id="partie" text="PARTIES" />
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
+                            </content>
+                        </Tab>
+                        <Tab text="Partie">
+                            <content>
+                                <Label text="Contenu du tab Partie"/>
+                            </content>
+                        </Tab>
+                        <Tab text="Joueurs">
+                            <content>
+                                <Label text="Contenu du tab Joueurs"/>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
             </VBox>
         </HBox>
     </center>
