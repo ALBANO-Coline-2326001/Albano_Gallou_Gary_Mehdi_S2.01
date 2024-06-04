@@ -26,7 +26,7 @@ public class Accueil extends Application {
         System.setProperty("http.agent", "Gluon Mobile/1.0.3");
         scene = new Scene(loader.load());
         stage.setTitle("Echec Viewer");
-        stage.getIcons().add(new Image("img/iconSismicViewer.png"));
+        stage.getIcons().add(new Image("img/iconDame.png"));
         stage.setScene(scene);
         stage.show();
     }
