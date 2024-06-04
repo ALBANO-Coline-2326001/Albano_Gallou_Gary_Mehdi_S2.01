@@ -25,12 +25,11 @@ public class PlayerData {
     public void writeDataToFile(String filename) {
         try (PrintWriter writer = new PrintWriter(new File(filename))) {
             StringBuilder sb = new StringBuilder();
-            sb.append("Games Played,");
-            sb.append("Score");
-            sb.append('\n');
-
+            sb.append("Games Played ,");
             sb.append(this.gamesPlayed);
             sb.append(',');
+            sb.append('\n');
+            sb.append("Score");
             sb.append(this.score);
             sb.append('\n');
 

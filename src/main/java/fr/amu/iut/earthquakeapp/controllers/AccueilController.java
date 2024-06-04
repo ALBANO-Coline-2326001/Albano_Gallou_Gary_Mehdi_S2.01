@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AccueilController {
     private boolean isWhiteTurn = true;
+    private boolean startPlay = false;
 
     private MoveController moveController;
     @FXML
@@ -122,6 +123,10 @@ public class AccueilController {
     }
 
     private void handleMouseClick(int row, int col) {
+        if (!startPlay) {
+            System.out.println("non");
+        }
+        else {
         System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
 
         Piece clickedPiece = plateau.get(row).get(col);
@@ -152,6 +157,7 @@ public class AccueilController {
             selectedRow = row;
             selectedCol = col;
         }
+    }
     }
 
     private void resetSelection() {
@@ -197,15 +203,13 @@ public class AccueilController {
         nbpartie.set(nbpartie.get() + 1);
         playerData.setGamesPlayed(nbpartie.get());
         playerData.writeDataToFile("playerData.json");
+        startPlay = true;
     }
 
 
     public void showData(){
-        if (Partie.isSelected()){
             donnee.setText(PlayerData.readDataFromFile("playerData.json"));
             donnee.setTextFill(Color.WHITE);
-
-        }
 
     }
 
