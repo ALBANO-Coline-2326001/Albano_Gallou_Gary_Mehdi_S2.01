@@ -46,23 +46,27 @@
     -fx-text-fill: #FFF;
     -fx-font-size: 0.9em;
 
+
 }
 
-.choixMinuteur{
-    -fx-pref-width: 21em;
-    -fx-pref-height: 3em;
+.combo-box{
     -fx-background-color: #3C3B39;
-
+    -fx-alignment: center-bottom;
+    -fx-pref-height: 4em;
+    -fx-pref-width: 21em;
 }
 
 /* styles.css */
 .combo-box .list-cell {
-    -fx-alignment: center-left;
+    -fx-background-color: #3C3B39;
+    -fx-text-fill: #FFF;
 }
 
 .combo-box .list-cell .label {
-    -fx-alignment: center;
     -fx-graphic-text-gap: 10px; /* Espacement entre l'image et le texte */
+    -fx-text-fill: #FFF;
+    -fx-font-size: 1.2em;
+
 }
 
 .combo-box .combo-box-popup .list-view .list-cell {

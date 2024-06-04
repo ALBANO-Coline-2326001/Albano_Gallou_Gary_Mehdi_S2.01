@@ -38,12 +38,12 @@
             </VBox>
 
             <VBox styleClass="partie_droite" HBox.hgrow="ALWAYS">
-                <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" prefHeight="200.0" prefWidth="300.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <tabs>
                         <Tab text="Nouvelle partie" fx:id="NVP" onSelectionChanged="#showData">
                             <content>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="20" >
-                                    <ComboBox fx:id="timeOptions" prefWidth="150" styleClass="choixMinuteur combo-box">
+                                    <ComboBox fx:id="timeOptions" prefWidth="150" styleClass="combo-box">
                                         <items>
                                             <FXCollections fx:factory="observableArrayList">
                                                 <HBox>
@@ -111,19 +111,19 @@
                                             </graphic>
                                         </Button>
                                     </VBox>
-                                    <HBox alignment="BOTTOM_CENTER" styleClass="infosEnLigne">
-                                        <HBox>
+                                    <HBox alignment="BOTTOM_CENTER" spacing="2" styleClass="infosEnLigne">
+                                        <HBox alignment="BOTTOM_LEFT">
                                             <ImageView>
                                                 <image>
                                                     <Image url="@../img/image echec/message.png"/>
                                                 </image>
                                             </ImageView>
                                         </HBox>
-                                        <HBox>
+                                        <HBox alignment="BOTTOM_CENTER">
                                             <Label fx:id="jouentnombre" text="144 328 " styleClass="infosEnLigneTxt"/>
                                             <Label fx:id="jouent" text="JOUENT"/>
                                         </HBox>
-                                        <HBox>
+                                        <HBox alignment="BOTTOM_CENTER">
                                             <Label fx:id="partienombre" text="13 459 965" styleClass="infosEnLigneTxt"/>
                                             <Label fx:id="partie" text="PARTIES" />
                                         </HBox>

@@ -15,7 +15,6 @@ public abstract class Piece {
         this.isWhite = isWhite;
         this.x = x;
         this.y = y;
-
     }
 
     public int getX() {
@@ -26,11 +25,11 @@ public abstract class Piece {
         return y;
     }
 
-    //abstract public void move(int x, int y, Board chessBoard);
+    public void move(int x, int y) {
+        setCoordonne(x, y);
+    }
 
-    public abstract void move(int x, int y);
-
-    abstract public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau);
+    public abstract boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau);
 
     public int[] getCoordonne() {
         return new int[]{x, y};
