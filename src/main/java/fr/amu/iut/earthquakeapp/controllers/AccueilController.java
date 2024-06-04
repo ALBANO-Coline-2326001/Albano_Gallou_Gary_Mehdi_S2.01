@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public class AccueilController {
+    private boolean isWhiteTurn = true;
 
     private MoveController moveController;
 
