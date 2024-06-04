@@ -4,6 +4,8 @@ import fr.amu.iut.earthquakeapp.jeu.Board;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 public class Tour extends Piece {
 
     public Tour(boolean isWhite, int x, int y) {
@@ -30,7 +32,7 @@ public class Tour extends Piece {
     //}
 
     @Override
-    public boolean isValide(int x, int y, Board chessBoard) {
+    public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>>  chessBoard) {
         // Vérifier si le mouvement est horizontal ou vertical
         if (x != getX() && y != getY()) {
             return false;
@@ -42,7 +44,7 @@ public class Tour extends Piece {
             int startY = Math.min(y, getY());
             int endY = Math.max(y, getY());
             for (int i = startY; i <= endY; i++) {
-                Piece piece = chessBoard.getPiece(x, i);
+                Piece piece = chessBoard.get(x).get( i);
                 if (piece != null && piece.isWhite() == isWhite()) {
                     return false;
                 }
@@ -52,7 +54,7 @@ public class Tour extends Piece {
             int startX = Math.min(x, getX());
             int endX = Math.max(x, getX());
             for (int i = startX; i <= endX; i++) {
-                Piece piece = chessBoard.getPiece(i, y);
+                Piece piece = chessBoard.get(i).get( y);
                 if (piece != null && piece.isWhite() == isWhite()) {
                     return false;
                 }
@@ -60,7 +62,7 @@ public class Tour extends Piece {
         }
 
         // Vérifier si la case d'arrivée est occupée par une pièce de la même couleur
-        Piece destinationPiece = chessBoard.getPiece(x, y);
+        Piece destinationPiece = chessBoard.get(x).get( y);
         if (destinationPiece != null && destinationPiece.isWhite() == isWhite()) {
             return false;
         }

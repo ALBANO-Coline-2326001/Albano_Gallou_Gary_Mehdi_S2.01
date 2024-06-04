@@ -4,6 +4,8 @@ import fr.amu.iut.earthquakeapp.jeu.Board;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 public class Pion extends Piece {
 
     public Pion(boolean isWhite, int x, int y) {
@@ -31,21 +33,21 @@ public class Pion extends Piece {
     // }
 
     @Override
-    public boolean isValide(int x, int y, Board chessBoard) {
+    public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>>  chessBoard) {
         // Vérifier si le mouvement est valide pour un pion
         // Cette logique est simplifiée et ne couvre pas tous les cas (comme la prise en passant)
         int direction = isWhite() ? -1 : 1;
 
-        if (chessBoard.getPiece(getX() + direction, getY()) != null) {
+        if (chessBoard.get(getX() + direction ).get(getY()) != null) {
             // Le pion est bloqué par une autre pièce
             return false;
-        } else if (y == getY() && x == getX() + direction && chessBoard.getPiece(x, y) == null) {
+        } else if (y == getY() && x == getX() + direction && chessBoard.get(x).get( y) == null) {
             // Avancer d'une case
             return true;
-        } else if ((y == getY() + 1 || y == getY() - 1) && x == getX() + direction && chessBoard.getPiece(x, y) != null && chessBoard.getPiece(x, y).isWhite() != isWhite()) {
+        } else if ((y == getY() + 1 || y == getY() - 1) && x == getX() + direction && chessBoard.get(x).get( y) != null && chessBoard.get(x).get( y).isWhite() != isWhite()) {
             // Capturer en diagonale
             return true;
-        } else if (!hasMoved() && y == getY() && x == getX() + 2 * direction && chessBoard.getPiece(x, y) == null && chessBoard.getPiece(getX() + direction, getY()) == null) {
+        } else if (!hasMoved() && y == getY() && x == getX() + 2 * direction && chessBoard.get(x).get( y) == null && chessBoard.get(getX() + direction).get( getY()) == null) {
             // Avancer de deux cases
             return true;
         }

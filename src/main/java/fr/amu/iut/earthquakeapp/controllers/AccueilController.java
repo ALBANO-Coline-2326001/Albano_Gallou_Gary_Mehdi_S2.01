@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AccueilController {
 
-    private MoveController moveController; ;
+    //private MoveController moveController; ;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
@@ -48,7 +48,7 @@ public class AccueilController {
         for (Tab tab : tabPane.getTabs()) {
             tab.setClosable(false);
         }
-        this.moveController = MoveController.getInstance();
+        //this.moveController = MoveController.getInstance();
         initializeBoard();
         affichage();
     }

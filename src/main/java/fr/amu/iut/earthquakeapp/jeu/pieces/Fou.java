@@ -4,6 +4,8 @@ import fr.amu.iut.earthquakeapp.jeu.Board;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 public class Fou extends Piece {
 
 
@@ -26,7 +28,7 @@ public class Fou extends Piece {
         }
 
     @Override
-    public boolean isValide(int x, int y, Board chessBoard) {
+    public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> chessBoard) {
 
     return true;
     }

@@ -2,6 +2,8 @@ package fr.amu.iut.earthquakeapp.jeu;
 
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 public abstract class Piece {
     private ImageView image;
     private boolean isWhite;
@@ -27,7 +29,7 @@ public abstract class Piece {
 
     public abstract void move(int x, int y);
 
-    abstract public boolean isValide(int x, int y, Board chessBoard);
+    abstract public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>>  chessBoard);
 
     public int[] getCoordonne() {
         return new int[]{x, y};
