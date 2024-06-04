@@ -8,15 +8,25 @@ import java.util.ArrayList;
 
 public class Pion extends Piece {
 
+    private boolean fristmove = true;
+    private static int dernierId =0;
     public Pion(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
             super.setImage(new ImageView("/img/image echec/pion_blanc.png"));
-        } else {
-            super.setImage(new ImageView("/img/image echec/pion_noir.png"));
+            super.setNom("Pion" + dernierId + "blanc");
+
         }
+
+        else {
+            super.setImage(new ImageView("/img/image echec/pion_noir.png"));
+            super.setNom("Pion" + dernierId + "noir");
+        }
+
         this.getImage().setFitHeight(75);
         this.getImage().setFitWidth(75);
+        ++dernierId;
+
     }
 
     //@Override
@@ -33,26 +43,30 @@ public class Pion extends Piece {
     // }
 
     @Override
-    public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>>  chessBoard) {
-        // Vérifier si le mouvement est valide pour un pion
-        // Cette logique est simplifiée et ne couvre pas tous les cas (comme la prise en passant)
-        int direction = isWhite() ? -1 : 1;
+    public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
+        int direction = isWhite() ? 1 : -1;
+        int startRow = isWhite() ? 6 : 1;
 
-        if (chessBoard.get(getX() + direction ).get(getY()) != null) {
-            // Le pion est bloqué par une autre pièce
-            return false;
-        } else if (y == getY() && x == getX() + direction && chessBoard.get(x).get( y) == null) {
-            // Avancer d'une case
-            return true;
-        } else if ((y == getY() + 1 || y == getY() - 1) && x == getX() + direction && chessBoard.get(x).get( y) != null && chessBoard.get(x).get( y).isWhite() != isWhite()) {
-            // Capturer en diagonale
-            return true;
-        } else if (!hasMoved() && y == getY() && x == getX() + 2 * direction && chessBoard.get(x).get( y) == null && chessBoard.get(getX() + direction).get( getY()) == null) {
-            // Avancer de deux cases
+        System.out.println(getX());
+        // Avancer d'une case
+        if (x == getX() + direction && y == getY() && plateau.get(x).get(y) == null ) {
             return true;
         }
+
+        // Avancer de deux cases depuis la position initiale
+        if (x == getX() + 2 * direction && y == getY()  &&
+                plateau.get(x).get(y) == null && plateau.get(getX() + direction).get(getY()) == null && fristmove) {
+            fristmove = false;
+            return true;
+        }/*
+        // Capturer une pièce en diagonale
+        if (x == getX() + direction && (y == getY() + 1 || y == getY() - 1) &&
+                plateau.get(x).get(y) != null && plateau.get(x).get(y).isWhite() != isWhite()) {
+            return true;
+        }*/
         return false;
     }
+
 
     private boolean hasMoved() {
         // Vérifier si le pion a déjà bougé
@@ -63,7 +77,7 @@ public class Pion extends Piece {
 
     @Override
     public void move(int x, int y) {
-
+        this.setCoordonne(x, y);  // Met à jour les coordonnées internes de la pièce
     }
 }
 

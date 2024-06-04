@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 
 public class Board {
+/*
     private ArrayList<ArrayList<Piece>> board;
 
     public Board() {
@@ -53,5 +54,11 @@ public class Board {
         return null;
     }
 
-    // autres méthodes...
+    // autres méthodes...*/
 }
+
+
+
+
+
+
