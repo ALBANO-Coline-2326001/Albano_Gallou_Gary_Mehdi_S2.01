@@ -36,6 +36,8 @@ public class AccueilController {
     private Button jouer;
     @FXML
     private Tab Partie;
+    @FXML
+    private Label donnee;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
@@ -200,7 +202,8 @@ public class AccueilController {
 
     public void showData(){
         if (Partie.isSelected()){
-            playerData.readDataFromFile("playerData.json");
+            donnee.setText(PlayerData.readDataFromFile("playerData.json"));
+            donnee.setTextFill(Color.WHITE);
 
         }
 
