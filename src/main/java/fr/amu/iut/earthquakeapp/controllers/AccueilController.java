@@ -21,6 +21,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -267,21 +269,31 @@ public class AccueilController {
 
     public boolean finJeu(){
 
+
         boolean roiBlancPresent = false;
         boolean roiNoirAbsent = true;
 
+        // Expressions régulières pour correspondre aux noms des pièces
+        Pattern patternRoiBlanc = Pattern.compile("Roi\\d+blanc");
+        Pattern patternRoiNoir = Pattern.compile("Roi\\d+noir");
+
         for (ArrayList<Piece> ligne : plateau) {
             for (Piece piece : ligne) {
-                if(piece != null) {
-                    if (piece.getNom().equals("Roi0blanc")) {
+                if (piece != null) {
+                    String nom = piece.getNom();
+                    Matcher matcherRoiBlanc = patternRoiBlanc.matcher(nom);
+                    Matcher matcherRoiNoir = patternRoiNoir.matcher(nom);
+
+                    if (matcherRoiBlanc.matches()) {
                         roiBlancPresent = true;
                     }
-                    if (piece.getNom().equals("Roi1noir")) {
+                    if (matcherRoiNoir.matches()) {
                         roiNoirAbsent = false;
                     }
                 }
             }
         }
+
 
         if (roiBlancPresent && roiNoirAbsent) {
             System.out.println("Le roi blanc est présent et le roi noir est absent. ROI BLANC GAGNE");
