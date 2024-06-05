@@ -45,8 +45,6 @@
 .infosEnLigneTxt{
     -fx-text-fill: #FFF;
     -fx-font-size: 0.9em;
-
-
 }
 
 .combo-box{
@@ -105,4 +103,9 @@
 
 .tab-header-area .tab-header-background {
     -fx-background-color: #262522;
+}
+
+.minuteur{
+    -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
+
 }
