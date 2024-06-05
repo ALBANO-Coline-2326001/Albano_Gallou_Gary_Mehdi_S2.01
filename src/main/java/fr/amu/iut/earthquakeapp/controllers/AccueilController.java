@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.scene.control.ComboBox;
+
+
 
 
 /**
@@ -42,6 +45,8 @@ public class AccueilController {
     private Tab Partie;
     @FXML
     private Label donnee;
+    @FXML
+    private ComboBox<String> timeOptions;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
@@ -54,6 +59,9 @@ public class AccueilController {
     private GridPane chessBoard;
     @FXML
     private Label timerLabel1;
+
+    @FXML
+    private Label timerLabel2;
     private ArrayList<ArrayList<Piece>> plateau = new ArrayList<>();
     private Timeline timeline;
 
@@ -224,10 +232,19 @@ public class AccueilController {
         if (timeline != null) {
             timeline.stop(); // Arrête le timer précédent s'il est en cours
         }
-        int startTime = 600; // 10 minutes en secondes
-        AtomicInteger timeSeconds = new AtomicInteger(startTime);
 
+        // Lire la durée sélectionnée par l'utilisateur dans la ComboBox
+        String selectedTime = timeOptions.getValue();
+        int startTime;
+        if (selectedTime != null) {
+            startTime = Integer.parseInt(selectedTime.split(" ")[0]) * 60; // Convertir les minutes en secondes
+        } else {
+            startTime = 600; // Durée par défaut de 10 minutes en secondes
+        }
+
+        AtomicInteger timeSeconds = new AtomicInteger(startTime);
         timerLabel1.setText(timeToString(timeSeconds.get()));
+        timerLabel2.setText(timeToString(timeSeconds.get()));
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -235,16 +252,17 @@ public class AccueilController {
                 new KeyFrame(Duration.seconds(1), e -> {
                     int currentTime = timeSeconds.decrementAndGet();
                     timerLabel1.setText(timeToString(currentTime));
+                    timerLabel2.setText(timeToString(currentTime));
                     if (currentTime <= 0) {
                         timeline.stop();
                         timerLabel1.setText("Temps écoulé !");
+                        timerLabel2.setText("Temps écoulé !");
                     }
                 })
         );
         timeline.playFromStart();
-
-
     }
+
 
 
     public void showData(){
