@@ -11,6 +11,7 @@
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController">
 
+
     <center>
         <HBox>
             <VBox styleClass="joueur" HBox.hgrow="ALWAYS">
@@ -34,6 +35,8 @@
                     </ImageView>
                     <Label fx:id="nom1" text="LeMeilleurJoueur" styleClass="joueur"/>
                     <Label fx:id="timerLabel1" />
+
+                    <Label fx:id="timerLabel" text="10:10" styleClass="minuteur" />
                 </HBox>
             </VBox>
 
