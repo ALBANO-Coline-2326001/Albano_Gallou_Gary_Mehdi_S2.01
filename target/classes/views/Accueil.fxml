@@ -27,16 +27,16 @@
                     </GridPane>
                 </HBox>
 
-                <HBox styleClass="joueur">
+                <HBox styleClass="joueur espace" alignment="CENTER_LEFT">
                     <ImageView>
                         <image>
                             <Image url="@../img/image echec/joueur_blanc.png"/>
                         </image>
                     </ImageView>
                     <Label fx:id="nom1" text="LeMeilleurJoueur" styleClass="joueur"/>
-                    <Label fx:id="timerLabel1" />
+                    <Pane prefWidth="300"/>
+                   <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur"><Label fx:id="timerLabel1" /></HBox>
 
-                    <Label fx:id="timerLabel" text="10:10" styleClass="minuteur" />
                 </HBox>
             </VBox>
 
