@@ -1,5 +1,6 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
+import fr.amu.iut.earthquakeapp.Accueil;
 import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
@@ -20,6 +21,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -65,15 +68,25 @@ public class AccueilController {
         this.moveController = MoveController.getInstance();
         initializeBoard();
         affichage();
+        startPlay = false;
 
     }
 
-
-    public Button getJouer() {
-        return jouer;
+    public void afficherNomsDesPieces() {
+        for (ArrayList<Piece> ligne : plateau) {
+            for (Piece piece : ligne) {
+                if (piece != null){
+                    System.out.print(piece.getNom() + " ");
+                }
+            }
+            System.out.println();  // Pour passer à la ligne suivante après chaque ligne du plateau
+        }
     }
 
     private void initializeBoard() {
+        if(!plateau.isEmpty()){
+            plateau.clear();
+        }
         for (int i = 0; i < 8; i++) {
             ArrayList<Piece> row = new ArrayList<>();
             boolean isWhite = (i <= 1);  // White pieces on rows 0 and 1
@@ -117,12 +130,14 @@ public class AccueilController {
                 if (indice != null) {
                     chessBoard.add(indice.getImage(), j, i);
                     indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+
                 }
             }
         }
     }
 
     private void handleMouseClick(int row, int col) {
+        System.out.println(finJeu());
         if (!startPlay) {
             System.out.println("non");
         }
@@ -158,7 +173,21 @@ public class AccueilController {
             selectedCol = col;
         }
     }
+        if (finJeu()){
+            recommencerPartie();
+        }
     }
+
+    public void recommencerPartie() {
+        initializeBoard();
+        chessBoard.getChildren().clear();
+        affichage();
+        // Réinitialiser le plateau de jeu
+        // Rafraîchir l'affichage de l'échiquier
+        startPlay = false; // Réinitialiser le contrôle de jeu
+        afficherNomsDesPieces();
+    }
+
 
     private void resetSelection() {
         selectedPiece = null;
@@ -182,6 +211,9 @@ public class AccueilController {
 
             // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
             selectedImageView = newImageView;
+
+
+
 
             return true;
         }
@@ -226,12 +258,53 @@ public class AccueilController {
         int seconds = time % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
+
     public void start(){
         startTimer();
         nbpartie.set(nbpartie.get() + 1);
         playerData.setGamesPlayed(nbpartie.get());
         playerData.writeDataToFile("playerData.json");
         startPlay = true;
+    }
+
+    public boolean finJeu(){
+
+
+        boolean roiBlancPresent = false;
+        boolean roiNoirAbsent = true;
+
+        // Expressions régulières pour correspondre aux noms des pièces
+        Pattern patternRoiBlanc = Pattern.compile("Roi\\d+blanc");
+        Pattern patternRoiNoir = Pattern.compile("Roi\\d+noir");
+
+        for (ArrayList<Piece> ligne : plateau) {
+            for (Piece piece : ligne) {
+                if (piece != null) {
+                    String nom = piece.getNom();
+                    Matcher matcherRoiBlanc = patternRoiBlanc.matcher(nom);
+                    Matcher matcherRoiNoir = patternRoiNoir.matcher(nom);
+
+                    if (matcherRoiBlanc.matches()) {
+                        roiBlancPresent = true;
+                    }
+                    if (matcherRoiNoir.matches()) {
+                        roiNoirAbsent = false;
+                    }
+                }
+            }
+        }
+
+
+        if (roiBlancPresent && roiNoirAbsent) {
+            System.out.println("Le roi blanc est présent et le roi noir est absent. ROI BLANC GAGNE");
+            return true;
+            // Ajoutez ici les actions à entreprendre lorsque le roi blanc est présent et le roi noir est absent
+        } else if (!roiBlancPresent && !roiNoirAbsent) {
+            System.out.println("roi noir gagne");
+            return true;
+            // Ajoutez ici les actions à entreprendre lorsque les conditions ne sont pas remplies
+        }
+        return false;
     }
 }
 
