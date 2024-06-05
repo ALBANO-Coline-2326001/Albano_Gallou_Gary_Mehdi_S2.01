@@ -194,6 +194,7 @@ public class AccueilController {
         // Rafraîchir l'affichage de l'échiquier
         startPlay = false; // Réinitialiser le contrôle de jeu
         afficherNomsDesPieces();
+        timeline.stop();
     }
 
 
@@ -255,8 +256,7 @@ public class AccueilController {
                     timerLabel2.setText(timeToString(currentTime));
                     if (currentTime <= 0) {
                         timeline.stop();
-                        timerLabel1.setText("Temps écoulé !");
-                        timerLabel2.setText("Temps écoulé !");
+                        recommencerPartie();
                     }
                 })
         );
