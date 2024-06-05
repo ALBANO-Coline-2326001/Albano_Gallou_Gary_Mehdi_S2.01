@@ -172,6 +172,17 @@ public class AccueilController {
             plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
             plateau.get(toRow).set(toCol, targetPiece);  // Placer la pièce dans la nouvelle position
             targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
+
+            // Supprimer l'écouteur d'événements de la pièce d'origine
+            selectedImageView.setOnMouseClicked(null);
+
+            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
+            ImageView newImageView = targetPiece.getImage();
+            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
+
+            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
+            selectedImageView = newImageView;
+
             return true;
         }
         return false;

@@ -43,5 +43,6 @@ public class Pion extends Piece {
     @Override
     public void move(int x, int y) {
         setCoordonne(x, y);
+        fristMove = false;
     }
 }
