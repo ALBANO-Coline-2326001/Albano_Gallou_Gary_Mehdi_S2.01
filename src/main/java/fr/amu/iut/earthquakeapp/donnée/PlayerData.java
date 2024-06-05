@@ -7,30 +7,29 @@ import java.io.*;
 import java.util.*;
 
 public class PlayerData {
-    private IntegerProperty gamesPlayed;
-    private IntegerProperty score;
+    private int gamesPlayed;
+    private int score;
 
     public PlayerData() {
-        this.gamesPlayed = new SimpleIntegerProperty(0);
-        this.score = new SimpleIntegerProperty(0);
+     gamesPlayed = 0;
+       score = 0;
     }
 
     public void setGamesPlayed(int gamesPlayed) {
-        this.gamesPlayed.set(gamesPlayed);
+        this.gamesPlayed = gamesPlayed;
     }
     public void setScore(int score) {
-        this.score.set(score);
+        this.score = score;
     }
 
     public void writeDataToFile(String filename) {
         try (PrintWriter writer = new PrintWriter(new File(filename))) {
             StringBuilder sb = new StringBuilder();
-            sb.append("Games Played,");
-            sb.append("Score");
-            sb.append('\n');
-
+            sb.append("Games Played ,");
             sb.append(this.gamesPlayed);
             sb.append(',');
+            sb.append('\n');
+            sb.append("Score");
             sb.append(this.score);
             sb.append('\n');
 
@@ -41,20 +40,19 @@ public class PlayerData {
         }
     }
 
-    public static PlayerData readDataFromFile(String filename) {
+    public static String readDataFromFile(String filename) {
+        StringBuilder fileContent = new StringBuilder();
+
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line = reader.readLine(); // skip header
-            line = reader.readLine(); // read data
-
-            String[] data = line.split(",");
-            int gamesPlayed = Integer.parseInt(data[0]);
-            int score = Integer.parseInt(data[1]);
-
-            return new PlayerData();
-
+            String line;
+            while ((line = reader.readLine()) != null) {
+                fileContent.append(line).append("\n");
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return null;
         }
+
+        return fileContent.toString();
     }
 }

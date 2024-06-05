@@ -40,7 +40,7 @@
             <VBox styleClass="partie_droite" HBox.hgrow="ALWAYS">
                 <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" prefHeight="200.0" prefWidth="300.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                     <tabs>
-                        <Tab text="Nouvelle partie" fx:id="NVP" onSelectionChanged="#showData">
+                        <Tab text="Nouvelle partie" fx:id="NVP" >
                             <content>
                                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="20" >
                                     <ComboBox fx:id="timeOptions" prefWidth="150" styleClass="combo-box">
@@ -101,7 +101,7 @@
                                     </ComboBox>
 
 
-                                    <Button  fx:id="jouer" text="Jouer" styleClass="buttonPlay" onAction="#startTimer"/>
+                                    <Button  fx:id="jouer" text="Jouer" styleClass="buttonPlay" onAction="#start"/>
                                     <VBox alignment="CENTER" styleClass="tournoisBox">
                                         <Button text="Tournois" styleClass="tournois">
                                             <graphic>
@@ -131,7 +131,7 @@
                                 </VBox>
                             </content>
                         </Tab>
-                        <Tab text="Partie" fx:id="Partie">
+                        <Tab text="Partie" fx:id="Partie" onSelectionChanged="#showData">
                             <content>
                                 <Label fx:id="donnee" text="Contenu du tab Partie"/>
                             </content>

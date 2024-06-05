@@ -30,12 +30,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AccueilController {
     private boolean isWhiteTurn = true;
+    private boolean startPlay = false;
 
     private MoveController moveController;
     @FXML
     private Button jouer;
     @FXML
     private Tab Partie;
+    @FXML
+    private Label donnee;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
@@ -120,6 +123,10 @@ public class AccueilController {
     }
 
     private void handleMouseClick(int row, int col) {
+        if (!startPlay) {
+            System.out.println("non");
+        }
+        else {
         System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
 
         Piece clickedPiece = plateau.get(row).get(col);
@@ -150,6 +157,7 @@ public class AccueilController {
             selectedRow = row;
             selectedCol = col;
         }
+    }
     }
 
     private void resetSelection() {
@@ -192,17 +200,13 @@ public class AccueilController {
         );
         timeline.playFromStart();
 
-        nbpartie.set(nbpartie.get() + 1);
-        playerData.setGamesPlayed(nbpartie.get());
-        playerData.writeDataToFile("playerData.json");
+
     }
 
 
     public void showData(){
-        if (Partie.isSelected()){
-            playerData.readDataFromFile("playerData.json");
-
-        }
+            donnee.setText(PlayerData.readDataFromFile("playerData.json"));
+            donnee.setTextFill(Color.WHITE);
 
     }
 
@@ -210,5 +214,12 @@ public class AccueilController {
         int minutes = time / 60;
         int seconds = time % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+    public void start(){
+        startTimer();
+        nbpartie.set(nbpartie.get() + 1);
+        playerData.setGamesPlayed(nbpartie.get());
+        playerData.writeDataToFile("playerData.json");
+        startPlay = true;
     }
 }

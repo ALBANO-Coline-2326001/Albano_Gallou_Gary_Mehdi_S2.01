@@ -58,13 +58,11 @@
 
 /* styles.css */
 .combo-box .list-cell {
-    -fx-alignment: ;
     -fx-background-color: #3C3B39;
     -fx-text-fill: #FFF;
 }
 
 .combo-box .list-cell .label {
-    -fx-alignment:;
     -fx-graphic-text-gap: 10px; /* Espacement entre l'image et le texte */
     -fx-text-fill: #FFF;
     -fx-font-size: 1.2em;
