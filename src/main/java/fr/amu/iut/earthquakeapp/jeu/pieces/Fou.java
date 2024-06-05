@@ -25,14 +25,35 @@ public class Fou extends Piece {
 
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
-        // Insérez votre logique de validation spécifique pour le mouvement du fou ici
-        // Assurez-vous de respecter les règles du jeu d'échecs pour le mouvement du fou
-
-        // Par exemple, vous pouvez vérifier si le déplacement est diagonal
         int deltaX = Math.abs(x - getX());
         int deltaY = Math.abs(y - getY());
 
-        return deltaX == deltaY;
-    }
+        // Vérifier que le mouvement est diagonal
+        if (deltaX != deltaY) {
+            return false;
+        }
 
+        // Déterminer la direction du mouvement
+        int xDirection = (x - getX()) > 0 ? 1 : -1;
+        int yDirection = (y - getY()) > 0 ? 1 : -1;
+
+        // Vérifier qu'il n'y a pas de pièces sur le chemin
+        int currentX = getX() + xDirection;
+        int currentY = getY() + yDirection;
+        while (currentX != x && currentY != y) {
+            if (plateau.get(currentX).get(currentY) != null) {
+                return false;
+            }
+            currentX += xDirection;
+            currentY += yDirection;
+        }
+
+        // Vérifier la case de destination
+        Piece destinationPiece = plateau.get(x).get(y);
+        if (destinationPiece != null && destinationPiece.isWhite() == this.isWhite()) {
+            return false;
+        }
+
+        return true;
+    }
 }
