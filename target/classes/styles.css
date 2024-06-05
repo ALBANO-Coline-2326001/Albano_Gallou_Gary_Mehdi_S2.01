@@ -107,5 +107,15 @@
 
 .minuteur{
     -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
+    -fx-background-color: #989795;
+    -fx-font-size: 2em;
+
+
+}
+.minuteur1{
+    -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
+    -fx-background-color: #989795;
+    -fx-font-size: 2em;
+
 
 }

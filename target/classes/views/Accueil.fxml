@@ -18,7 +18,8 @@
                 <HBox styleClass="joueur">
                     <ImageView><Image url="@../img/image echec/joueur_noir.png"/></ImageView>
                     <Label fx:id="nom2" styleClass="joueur" text="Adversaire"/>
-                    <Label fx:id="timerLabel2"/>
+                    <Pane prefWidth="300"/>
+                    <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur1"><Label fx:id="timerLabel2" /></HBox>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" styleClass="joueur">
@@ -27,15 +28,15 @@
                     </GridPane>
                 </HBox>
 
-                <HBox styleClass="joueur" alignment="CENTER_RIGHT">
+                <HBox styleClass="joueur espace" alignment="CENTER_LEFT">
                     <ImageView>
                         <image>
                             <Image url="@../img/image echec/joueur_blanc.png"/>
                         </image>
                     </ImageView>
                     <Label fx:id="nom1" text="LeMeilleurJoueur" styleClass="joueur"/>
-
-                   <HBox><Label fx:id="timerLabel1" styleClass="minuteur"/></HBox>
+                    <Pane prefWidth="300"/>
+                   <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur"><Label fx:id="timerLabel1" /></HBox>
 
                 </HBox>
             </VBox>
@@ -49,57 +50,15 @@
                                     <ComboBox fx:id="timeOptions" prefWidth="150" styleClass="combo-box">
                                         <items>
                                             <FXCollections fx:factory="observableArrayList">
-                                                <HBox>
-                                                    <ImageView>
-                                                        <image>
-                                                            <Image url="@../img/image echec/chrono.png"/>
-                                                        </image>
-                                                    </ImageView>
-                                                    <Label text="1 min"/>
-                                                </HBox>
-                                                <HBox>
-                                                    <ImageView>
-                                                        <image>
-                                                            <Image url="@../img/image echec/chrono.png"/>
-                                                        </image>
-                                                    </ImageView>
-                                                    <Label text="3 min"/>
-                                                </HBox>
-                                                <HBox>
-                                                    <ImageView>
-                                                        <image>
-                                                            <Image url="@../img/image echec/chrono.png"/>
-                                                        </image>
-                                                    </ImageView>
-                                                    <Label text="5 min"/>
-                                                </HBox>
-                                                <HBox>
-                                                    <ImageView>
-                                                        <image>
-                                                            <Image url="@../img/image echec/chrono.png"/>
-                                                        </image>
-                                                    </ImageView>
-                                                    <Label text="10 min"/>
-                                                </HBox>
-                                                <HBox>
-                                                    <ImageView>
-                                                        <image>
-                                                            <Image url="@../img/image echec/chrono.png"/>
-                                                        </image>
-                                                    </ImageView>
-                                                    <Label text="15 min"/>
-                                                </HBox>
+                                                <String fx:value="1 min"/>
+                                                <String fx:value="3 min"/>
+                                                <String fx:value="5 min"/>
+                                                <String fx:value="10 min"/>
+                                                <String fx:value="15 min"/>
                                             </FXCollections>
                                         </items>
                                         <value>
-                                            <HBox>
-                                                <ImageView>
-                                                    <image>
-                                                        <Image url="@../img/image echec/chrono.png"/>
-                                                    </image>
-                                                </ImageView>
-                                                <Label text="10 min"/>
-                                            </HBox>
+                                            <String fx:value="10 min"/>
                                         </value>
                                     </ComboBox>
 

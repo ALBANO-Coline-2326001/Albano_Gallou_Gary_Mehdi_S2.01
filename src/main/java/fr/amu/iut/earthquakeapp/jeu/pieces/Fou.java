@@ -11,8 +11,8 @@ public class Fou extends Piece {
 
     public Fou(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
-        setImage(isWhite ? new ImageView("/img/image echec/fou_blanc.png") : new ImageView("/img/image echec/fou_noir.png"));
-        setNom("Fou" + dernierId + (isWhite ? "blanc" : "noir"));
+        setImage(isWhite ? new ImageView("/img/image echec/fou_noir.png") : new ImageView("/img/image echec/fou_blanc.png"));
+        setNom("Fou" + dernierId + (isWhite ? "noir" : "blanc"));
         getImage().setFitHeight(75);
         getImage().setFitWidth(75);
         dernierId++;

@@ -12,8 +12,8 @@ public class Pion extends Piece {
 
     public Pion(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
-        setImage(isWhite ? new ImageView("/img/image echec/pion_blanc.png") : new ImageView("/img/image echec/pion_noir.png"));
-        setNom("Pion" + dernierId + (isWhite ? "blanc" : "noir"));
+        setImage(isWhite ? new ImageView("/img/image echec/pion_noir.png") : new ImageView("/img/image echec/pion_blanc.png"));
+        setNom("Pion" + dernierId + (isWhite ? "noir" : "blanc"));
         getImage().setFitHeight(75);
         getImage().setFitWidth(75);
         dernierId++;
