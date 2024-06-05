@@ -47,4 +47,13 @@ public class Roi extends Piece {
 
         return true;
     }
+
+    public boolean isDead(int x, int y, ArrayList<ArrayList<Piece>> plateau){
+        // Verifier si la case ou se trouve le roi vient d'être prise
+        if (this == plateau.get(x).get(y) ){
+
+        }
+        return false;
+
+    }
 }
