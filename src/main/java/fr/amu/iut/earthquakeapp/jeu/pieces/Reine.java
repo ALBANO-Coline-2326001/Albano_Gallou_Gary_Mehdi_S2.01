@@ -12,11 +12,11 @@ public class Reine extends Piece {
     public Reine(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
-            super.setImage(new ImageView("/img/image echec/dame_blanc.png"));
-            super.setNom("Reine" + dernierId + "blanc");
-        } else {
             super.setImage(new ImageView("/img/image echec/dame_noir.png"));
             super.setNom("Reine" + dernierId + "noir");
+        } else {
+            super.setImage(new ImageView("/img/image echec/dame_blanc.png"));
+            super.setNom("Reine" + dernierId + "blanc");
         }
 
         this.getImage().setFitHeight(75);
