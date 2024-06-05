@@ -34,14 +34,22 @@ import java.util.regex.Pattern;
 public class AccueilController {
     private boolean isWhiteTurn = true;
     private boolean startPlay = false;
-
-    private MoveController moveController;
-    @FXML
-    private Button jouer;
-    @FXML
-    private Tab Partie;
     @FXML
     private Label donnee;
+
+    @FXML
+    private Button joueurContreJoueur;
+
+    @FXML
+    private Button joueurContreBot;
+    @FXML
+    private Tab Partie;
+
+    @FXML
+    private Label timerLabel1;
+
+
+    private boolean isBotMode = false;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
@@ -52,10 +60,9 @@ public class AccueilController {
 
     @FXML
     private GridPane chessBoard;
-    @FXML
-    private Label timerLabel1;
+
     private ArrayList<ArrayList<Piece>> plateau = new ArrayList<>();
-    private Timeline timeline;
+
 
     @FXML
     private TabPane tabPane;
@@ -65,7 +72,7 @@ public class AccueilController {
         for (Tab tab : tabPane.getTabs()) {
             tab.setClosable(false);
         }
-        this.moveController = MoveController.getInstance();
+
         initializeBoard();
         affichage();
         startPlay = false;
@@ -114,50 +121,38 @@ public class AccueilController {
             plateau.add(row);
         }
     }
-
-    private void affichage() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Rectangle square = new Rectangle(75, 75);
-                square.setFill((i + j) % 2 == 0 ? Color.rgb(235, 236, 208) : Color.rgb(115, 149, 82));
-                chessBoard.add(square, j, i);
-
-                final int row = i;
-                final int col = j;
-                square.setOnMouseClicked(event -> handleMouseClick(row, col));
-
-                Piece indice = plateau.get(i).get(j);
-                if (indice != null) {
-                    chessBoard.add(indice.getImage(), j, i);
-                    indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
-
-                }
-            }
-        }
-    }
-
     private void handleMouseClick(int row, int col) {
-        System.out.println(finJeu());
-        if (!startPlay) {
-            System.out.println("non");
+        // Si le jeu n'a pas encore commencé, ignorez le clic
+        if(isWhiteTurn) {
+            System.out.println("C'est au tour des blancs");
         }
         else {
+            System.out.println("C'est au tour des noirs");
+        }
+        if (!startPlay) {
+            return;
+        }
+
         System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
 
         Piece clickedPiece = plateau.get(row).get(col);
-        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
 
-        if (selectedPiece != null) {
+
+        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
+        //emplacement a bouger selectionné
+        if (selectedPiece != null ) {
             if (row != selectedRow || col != selectedCol) {
                 if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
                     chessBoard.getChildren().remove(selectedImageView);
                     if (clickedImageView != null) {
+                        System.out.println("Pièce capturée : " + clickedPiece.getNom());
                         chessBoard.getChildren().remove(clickedImageView);
                     }
                     chessBoard.add(selectedImageView, col, row);
 
                     plateau.get(selectedRow).set(selectedCol, null);
                     plateau.get(row).set(col, selectedPiece);
+                    isWhiteTurn = !isWhiteTurn;
 
                     resetSelection();
                 } else {
@@ -166,34 +161,22 @@ public class AccueilController {
             } else {
                 resetSelection();
             }
-        } else if (clickedPiece != null) {
+        }
+        //if premiere piece cliquée
+        else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) {
             selectedPiece = clickedPiece;
             selectedImageView = clickedImageView;
             selectedRow = row;
             selectedCol = col;
         }
-    }
+        // Si le mode Joueur contre Bot est activé et que c'est le tour du bot, faites-le jouer
+        /* if (isBotMode && !isWhiteTurn) {
+            botPlay();
+            isWhiteTurn = !isWhiteTurn;
+        }*/
         if (finJeu()){
             recommencerPartie();
         }
-    }
-
-    public void recommencerPartie() {
-        initializeBoard();
-        chessBoard.getChildren().clear();
-        affichage();
-        // Réinitialiser le plateau de jeu
-        // Rafraîchir l'affichage de l'échiquier
-        startPlay = false; // Réinitialiser le contrôle de jeu
-        afficherNomsDesPieces();
-    }
-
-
-    private void resetSelection() {
-        selectedPiece = null;
-        selectedImageView = null;
-        selectedRow = -1;
-        selectedCol = -1;
     }
 
     private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
@@ -220,7 +203,85 @@ public class AccueilController {
         return false;
     }
 
+
+    private void botPlay() {
+        // Parcourez le plateau pour trouver le premier mouvement valide que le bot peut jouer
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = plateau.get(i).get(j);
+                if (piece != null && !piece.isWhite()) { // Si la pièce est une pièce du bot
+                    for (int x = 0; x < 8; x++) {
+                        for (int y = 0; y < 8; y++) {
+                            if (piece.isValide(x, y, plateau)) { // Si le mouvement est valide
+                                // Jouez le mouvement
+                                movePiece(i, j, x, y, piece);
+                                // Changez de tour
+                                isWhiteTurn = !isWhiteTurn;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void affichage() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Rectangle square = new Rectangle(75, 75);
+                square.setFill((i + j) % 2 == 0 ? Color.rgb(235, 236, 208) : Color.rgb(115, 149, 82));
+                chessBoard.add(square, j, i);
+
+                final int row = i;
+                final int col = j;
+                square.setOnMouseClicked(event -> handleMouseClick(row, col));
+
+                Piece indice = plateau.get(i).get(j);
+                if (indice != null) {
+                    chessBoard.add(indice.getImage(), j, i);
+                    indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+
+                }
+            }
+        }
+    }
+
+
+
+    public void recommencerPartie() {
+        initializeBoard();
+        chessBoard.getChildren().clear();
+        affichage();
+        // Réinitialiser le plateau de jeu
+        // Rafraîchir l'affichage de l'échiquier
+        startPlay = false; // Réinitialiser le contrôle de jeu
+        afficherNomsDesPieces();
+    }
+
+
+    private void resetSelection() {
+        selectedPiece = null;
+        selectedImageView = null;
+        selectedRow = -1;
+        selectedCol = -1;
+    }
+
+
+    public void showData(){
+        donnee.setText(PlayerData.readDataFromFile("playerData.json"));
+        donnee.setTextFill(Color.WHITE);
+
+    }
+    private Timeline timeline;
+    private String timeToString(int time) {
+        int minutes = time / 60;
+        int seconds = time % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
     public void startTimer() {
+
+
         if (timeline != null) {
             timeline.stop(); // Arrête le timer précédent s'il est en cours
         }
@@ -247,17 +308,9 @@ public class AccueilController {
     }
 
 
-    public void showData(){
-            donnee.setText(PlayerData.readDataFromFile("playerData.json"));
-            donnee.setTextFill(Color.WHITE);
 
-    }
 
-    private String timeToString(int time) {
-        int minutes = time / 60;
-        int seconds = time % 60;
-        return String.format("%02d:%02d", minutes, seconds);
-    }
+
 
     public void start(){
         startTimer();
@@ -306,6 +359,23 @@ public class AccueilController {
         }
         return false;
     }
+
+    @FXML
+    public void JoueurContreJoueur() {
+        isBotMode = false; // Le mode Joueur contre Joueur est activé
+        recommencerPartie();
+        startPlay = true;
+    }
+
+    @FXML
+    public void JoueurContreBot() {
+        isBotMode = true; // Le mode Joueur contre Bot est activé
+        recommencerPartie();
+        startPlay = true;
+    }
+
+
+
 }
 
 

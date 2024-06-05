@@ -38,6 +38,7 @@ public class Pion extends Piece {
         // Capturer une pièce en diagonale
         return x == getX() + direction && (y == getY() + 1 || y == getY() - 1) &&
                 plateau.get(x).get(y) != null && plateau.get(x).get(y).isWhite() != isWhite();
+
     }
 
     @Override
