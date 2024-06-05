@@ -19,7 +19,7 @@
                     <ImageView><Image url="@../img/image echec/joueur_noir.png"/></ImageView>
                     <Label fx:id="nom2" styleClass="joueur" text="Adversaire"/>
                     <Pane prefWidth="300"/>
-                    <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur"><Label fx:id="timerLabel2" /></HBox>
+                    <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur1"><Label fx:id="timerLabel2" /></HBox>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" styleClass="joueur">
