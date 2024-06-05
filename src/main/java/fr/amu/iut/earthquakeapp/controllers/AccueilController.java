@@ -96,7 +96,7 @@ public class AccueilController {
         }
         for (int i = 0; i < 8; i++) {
             ArrayList<Piece> row = new ArrayList<>();
-            boolean isWhite = (i <= 1);  // White pieces on rows 0 and 1
+            boolean isWhite = (i >= 6);  // White pieces on rows 6 and 7
 
             for (int j = 0; j < 8; j++) {
                 Piece piece = null;
