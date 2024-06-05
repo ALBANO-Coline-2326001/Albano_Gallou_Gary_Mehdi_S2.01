@@ -12,11 +12,11 @@ public class Roi extends Piece {
     public Roi(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
-            super.setImage(new ImageView("/img/image echec/roi_noir.png"));
-            super.setNom("Roi" + dernierId + "noir");
-        } else {
             super.setImage(new ImageView("/img/image echec/roi_blanc.png"));
             super.setNom("Roi" + dernierId + "blanc");
+        } else {
+            super.setImage(new ImageView("/img/image echec/roi_noir.png"));
+            super.setNom("Roi" + dernierId + "noir");
         }
 
         this.getImage().setFitHeight(75);
