@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  */
 
 public class AccueilController {
-    private boolean isWhiteTurn = false;
+    private boolean isWhiteTurn = true;
     private boolean startPlay = false;
     @FXML
     private Label donnee;

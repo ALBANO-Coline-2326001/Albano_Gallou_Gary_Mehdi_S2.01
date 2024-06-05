@@ -21,7 +21,7 @@ public class Pion extends Piece {
 
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
-        int direction = isWhite() ? 1 : -1;
+        int direction = isWhite() ? -1 : 1;
 
         // Avancer d'une case
         if (x == getX() + direction && y == getY() && plateau.get(x).get(y) == null) {
