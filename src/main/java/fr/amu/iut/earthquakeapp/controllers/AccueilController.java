@@ -126,13 +126,8 @@ public class AccueilController {
             plateau.add(row);
         }
     }
+    @FXML
     private void handleMouseClick(int row, int col) {
-        // Si le jeu n'a pas encore commencé, ignorez le clic
-        if (isWhiteTurn) {
-            System.out.println("C'est au tour des blancs");
-        } else {
-            System.out.println("C'est au tour des noirs");
-        }
         if (!startPlay) {
             return;
         }
@@ -142,9 +137,8 @@ public class AccueilController {
         Piece clickedPiece = plateau.get(row).get(col);
         ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
 
-        clearHighlights(); // Efface les anciennes surbrillances
+        clearHighlights();
 
-        // Emplacement à bouger sélectionné
         if (selectedPiece != null) {
             if (row != selectedRow || col != selectedCol) {
                 if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
@@ -157,7 +151,20 @@ public class AccueilController {
 
                     plateau.get(selectedRow).set(selectedCol, null);
                     plateau.get(row).set(col, selectedPiece);
+
+                    // Ne mettez à jour le tour et ne démarrez les timers que si le mouvement est valide
                     isWhiteTurn = !isWhiteTurn;
+
+                    if (isWhiteTurn) {
+                        whiteTimeline.stop();
+                        whiteTimeline.playFromStart();
+                    } else {
+                        blackTimeline.stop();
+                        blackTimeline.playFromStart();
+                        if (isBotMode) { // Si c'est le tour du bot et que le mode joueur contre bot est activé
+                            botPlay(); // Fait jouer le bot de manière aléatoire
+                        }
+                    }
 
                     resetSelection();
                 } else {
@@ -167,28 +174,22 @@ public class AccueilController {
             } else {
                 resetSelection();
             }
-        } else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) { // Première pièce cliquée
+        } else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) {
             selectedPiece = clickedPiece;
             selectedImageView = clickedImageView;
             selectedRow = row;
             selectedCol = col;
 
-            // Met en surbrillance les cases valides
             highlightValidMoves(clickedPiece);
 
-            if (isWhiteTurn) {
-                whiteTimeline.stop();
-                blackTimeline.playFromStart();
-            } else {
-                whiteTimeline.playFromStart();
-                blackTimeline.stop();
-            }
+            // Aucun changement de tour ici
         }
 
         if (finJeu()) {
             recommencerPartie();
         }
     }
+
 
 
 
@@ -236,7 +237,7 @@ public class AccueilController {
 
 
     private void botPlay() {
-        // Parcourez le plateau pour trouver le premier mouvement valide que le bot peut jouer
+        // Parcourez le plateau pour trouver une pièce du bot et un mouvement valide
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece piece = plateau.get(i).get(j);
@@ -248,7 +249,7 @@ public class AccueilController {
                                 movePiece(i, j, x, y, piece);
                                 // Changez de tour
                                 isWhiteTurn = !isWhiteTurn;
-                                return;
+                                return; // Sortir de la méthode après avoir joué un mouvement
                             }
                         }
                     }
@@ -256,6 +257,7 @@ public class AccueilController {
             }
         }
     }
+
     private void affichage() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
