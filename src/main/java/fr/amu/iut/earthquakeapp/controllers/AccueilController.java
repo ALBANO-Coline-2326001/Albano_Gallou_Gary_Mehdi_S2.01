@@ -9,10 +9,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -48,6 +45,8 @@ public class AccueilController {
     @FXML
     private Label timerLabel1;
 
+    @FXML
+    private Label timerLabel2;
 
     private boolean isBotMode = false;
 
@@ -66,6 +65,9 @@ public class AccueilController {
 
     @FXML
     private TabPane tabPane;
+
+    @FXML
+    private ComboBox<String> timeOptions;
 
     @FXML
     public void initialize() {
@@ -249,6 +251,7 @@ public class AccueilController {
 
 
     public void recommencerPartie() {
+        startTimer();
         initializeBoard();
         chessBoard.getChildren().clear();
         affichage();
@@ -280,15 +283,22 @@ public class AccueilController {
     }
 
     public void startTimer() {
-
-
         if (timeline != null) {
             timeline.stop(); // Arrête le timer précédent s'il est en cours
         }
-        int startTime = 600; // 10 minutes en secondes
-        AtomicInteger timeSeconds = new AtomicInteger(startTime);
 
+        // Lire la durée sélectionnée par l'utilisateur dans la ComboBox
+        String selectedTime = timeOptions.getValue();
+        int startTime;
+        if (selectedTime != null) {
+            startTime = Integer.parseInt(selectedTime.split(" ")[0]) * 60; // Convertir les minutes en secondes
+        } else {
+            startTime = 600; // Durée par défaut de 10 minutes en secondes
+        }
+
+        AtomicInteger timeSeconds = new AtomicInteger(startTime);
         timerLabel1.setText(timeToString(timeSeconds.get()));
+        timerLabel2.setText(timeToString(timeSeconds.get()));
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -296,15 +306,14 @@ public class AccueilController {
                 new KeyFrame(Duration.seconds(1), e -> {
                     int currentTime = timeSeconds.decrementAndGet();
                     timerLabel1.setText(timeToString(currentTime));
+                    timerLabel2.setText(timeToString(currentTime));
                     if (currentTime <= 0) {
                         timeline.stop();
-                        timerLabel1.setText("Temps écoulé !");
+                        recommencerPartie();
                     }
                 })
         );
         timeline.playFromStart();
-
-
     }
 
 
@@ -312,8 +321,8 @@ public class AccueilController {
 
 
 
+
     public void start(){
-        startTimer();
         nbpartie.set(nbpartie.get() + 1);
         playerData.setGamesPlayed(nbpartie.get());
         playerData.writeDataToFile("playerData.json");
