@@ -161,6 +161,7 @@ public class AccueilController {
 
                     resetSelection();
                 } else {
+                    // Ne réinitialise la sélection que si le mouvement n'est pas valide
                     resetSelection();
                 }
             } else {
@@ -190,6 +191,7 @@ public class AccueilController {
     }
 
 
+
     private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
         if (targetPiece.isValide(toRow, toCol, plateau)) {
             plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
@@ -214,6 +216,8 @@ public class AccueilController {
         return false;
     }
     private void highlightValidMoves(Piece piece) {
+        clearHighlights(); // Efface les anciennes surbrillances
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (piece.isValide(i, j, plateau)) {
@@ -225,6 +229,7 @@ public class AccueilController {
             }
         }
     }
+
 
     private void clearHighlights() {
         chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
