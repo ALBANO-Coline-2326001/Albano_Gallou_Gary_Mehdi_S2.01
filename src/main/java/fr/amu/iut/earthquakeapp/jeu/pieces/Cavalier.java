@@ -11,11 +11,11 @@ public class Cavalier extends Piece {
     public Cavalier(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
-            super.setImage(new ImageView("/img/image echec/cavalier_noir.png"));
-            super.setNom("Cavalier" + dernierId + "noir");
-        } else {
             super.setImage(new ImageView("/img/image echec/cavalier_blanc.png"));
             super.setNom("Cavalier" + dernierId + "blanc");
+        } else {
+            super.setImage(new ImageView("/img/image echec/cavalier_noir.png"));
+            super.setNom("Cavalier" + dernierId + "noir");
         }
 
         this.getImage().setFitHeight(75);
@@ -27,6 +27,7 @@ public class Cavalier extends Piece {
     public void move(int x, int y) {
         setCoordonne(x, y);
     }
+
 
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
@@ -48,4 +49,5 @@ public class Cavalier extends Piece {
 
         return true;
     }
+
 }

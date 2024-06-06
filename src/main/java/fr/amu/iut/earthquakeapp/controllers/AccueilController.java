@@ -1,6 +1,7 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
 import fr.amu.iut.earthquakeapp.Accueil;
+import fr.amu.iut.earthquakeapp.donnée.GameStats;
 import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
@@ -9,10 +10,8 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -23,9 +22,6 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.scene.control.ComboBox;
-
-
 
 
 /**
@@ -37,16 +33,30 @@ import javafx.scene.control.ComboBox;
 public class AccueilController {
     private boolean isWhiteTurn = true;
     private boolean startPlay = false;
-
-    private MoveController moveController;
-    @FXML
-    private Button jouer;
-    @FXML
-    private Tab Partie;
     @FXML
     private Label donnee;
+
+    private GameStats donnePartie;
+
     @FXML
-    private ComboBox<String> timeOptions;
+    private Button joueurContreJoueur;
+
+    @FXML
+    private Button joueurContreBot;
+    @FXML
+    private Tab Partie;
+
+    @FXML
+    private Label timerLabel1;
+
+    @FXML
+    private Label timerLabel2;
+
+    private Timeline whiteTimeline;
+    private Timeline blackTimeline;
+    private String tempsRestantNoir;
+    private String tempsRestantBlanc;
+    private boolean isBotMode = false;
 
     private Piece selectedPiece = null;
     private ImageView selectedImageView = null;
@@ -57,23 +67,22 @@ public class AccueilController {
 
     @FXML
     private GridPane chessBoard;
-    @FXML
-    private Label timerLabel1;
 
-    @FXML
-    private Label timerLabel2;
     private ArrayList<ArrayList<Piece>> plateau = new ArrayList<>();
-    private Timeline timeline;
+
 
     @FXML
     private TabPane tabPane;
+
+    @FXML
+    private ComboBox<String> timeOptions;
 
     @FXML
     public void initialize() {
         for (Tab tab : tabPane.getTabs()) {
             tab.setClosable(false);
         }
-        this.moveController = MoveController.getInstance();
+
         initializeBoard();
         affichage();
         startPlay = false;
@@ -97,7 +106,7 @@ public class AccueilController {
         }
         for (int i = 0; i < 8; i++) {
             ArrayList<Piece> row = new ArrayList<>();
-            boolean isWhite = (i <= 1);  // White pieces on rows 0 and 1
+            boolean isWhite = (i >= 6);  // White pieces on rows 6 and 7
 
             for (int j = 0; j < 8; j++) {
                 Piece piece = null;
@@ -122,6 +131,137 @@ public class AccueilController {
             plateau.add(row);
         }
     }
+    @FXML
+    private void handleMouseClick(int row, int col) {
+        if (!startPlay) {
+            return;
+        }
+
+        System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
+
+        Piece clickedPiece = plateau.get(row).get(col);
+        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
+
+        clearHighlights();
+
+        if (selectedPiece != null) {
+            if (row != selectedRow || col != selectedCol) {
+                if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
+                    chessBoard.getChildren().remove(selectedImageView);
+                    if (clickedImageView != null) {
+                        System.out.println("Pièce capturée : " + clickedPiece.getNom());
+                        chessBoard.getChildren().remove(clickedImageView);
+                    }
+                    chessBoard.add(selectedImageView, col, row);
+
+                    plateau.get(selectedRow).set(selectedCol, null);
+                    plateau.get(row).set(col, selectedPiece);
+
+                    // Ne mettez à jour le tour et ne démarrez les timers que si le mouvement est valide
+                    isWhiteTurn = !isWhiteTurn;
+
+                    if (isWhiteTurn) {
+                        blackTimeline.stop();
+                        whiteTimeline.playFromStart();
+                    } else {
+                        whiteTimeline.stop();
+                        blackTimeline.playFromStart();
+                        if (isBotMode) { // Si c'est le tour du bot et que le mode joueur contre bot est activé
+                            botPlay(); // Fait jouer le bot de manière aléatoire
+                        }
+                    }
+
+                    resetSelection();
+                } else {
+                    // Ne réinitialise la sélection que si le mouvement n'est pas valide
+                    resetSelection();
+                }
+            } else {
+                resetSelection();
+            }
+        } else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) {
+            selectedPiece = clickedPiece;
+            selectedImageView = clickedImageView;
+            selectedRow = row;
+            selectedCol = col;
+
+            highlightValidMoves(clickedPiece);
+
+            // Aucun changement de tour ici
+        }
+
+        if (finJeu()) {
+            recommencerPartie();
+        }
+    }
+
+
+
+
+    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
+        if (targetPiece.isValide(toRow, toCol, plateau)) {
+            // Appeler la méthode move de la pièce
+            targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
+
+            plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
+            plateau.get(toRow).set(toCol, targetPiece);  // Placer la pièce dans la nouvelle position
+
+            // Supprimer l'écouteur d'événements de la pièce d'origine
+            selectedImageView.setOnMouseClicked(null);
+
+            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
+            ImageView newImageView = targetPiece.getImage();
+            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
+
+            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
+            selectedImageView = newImageView;
+
+            return true;
+        }
+        return false;
+    }
+    private void highlightValidMoves(Piece piece) {
+        clearHighlights(); // Efface les anciennes surbrillances
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (piece.isValide(i, j, plateau)) {
+                    Rectangle highlight = new Rectangle(75, 75, Color.YELLOW);
+                    highlight.setOpacity(0.5); // Ajustez l'opacité selon vos préférences
+                    highlight.setMouseTransparent(true); // Permet à la souris de cliquer à travers le rectangle
+                    chessBoard.add(highlight, j, i);
+                }
+            }
+        }
+    }
+
+
+    private void clearHighlights() {
+        chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
+    }
+
+
+    private void botPlay() {
+        // Parcourez le plateau pour trouver une pièce du bot et un mouvement valide
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = plateau.get(i).get(j);
+                if (piece != null && !piece.isWhite()) { // Si la pièce est une pièce du bot
+                    for (int x = 0; x < 8; x++) {
+                        for (int y = 0; y < 8; y++) {
+                            if (piece.isValide(x, y, plateau)) { // Si le mouvement est valide
+                                // Jouez le mouvement
+                                movePiece(i, j, x, y, piece);
+                                // Changez de tour
+                                isWhiteTurn = !isWhiteTurn;
+                                return; // Sortir de la méthode après avoir joué un mouvement
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private void affichage() {
         for (int i = 0; i < 8; i++) {
@@ -138,63 +278,26 @@ public class AccueilController {
                 if (indice != null) {
                     chessBoard.add(indice.getImage(), j, i);
                     indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+                    indice.getImage().setOnMouseEntered(event -> indice.getImage().setCursor(Cursor.HAND));
+                    indice.getImage().setOnMouseExited(event -> indice.getImage().setCursor(Cursor.DEFAULT));
+
 
                 }
             }
         }
     }
 
-    private void handleMouseClick(int row, int col) {
-        System.out.println(finJeu());
-        if (!startPlay) {
-            System.out.println("non");
-        }
-        else {
-        System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
 
-        Piece clickedPiece = plateau.get(row).get(col);
-        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
-
-        if (selectedPiece != null) {
-            if (row != selectedRow || col != selectedCol) {
-                if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
-                    chessBoard.getChildren().remove(selectedImageView);
-                    if (clickedImageView != null) {
-                        chessBoard.getChildren().remove(clickedImageView);
-                    }
-                    chessBoard.add(selectedImageView, col, row);
-
-                    plateau.get(selectedRow).set(selectedCol, null);
-                    plateau.get(row).set(col, selectedPiece);
-
-                    resetSelection();
-                } else {
-                    resetSelection();
-                }
-            } else {
-                resetSelection();
-            }
-        } else if (clickedPiece != null) {
-            selectedPiece = clickedPiece;
-            selectedImageView = clickedImageView;
-            selectedRow = row;
-            selectedCol = col;
-        }
-    }
-        if (finJeu()){
-            recommencerPartie();
-        }
-    }
 
     public void recommencerPartie() {
         initializeBoard();
+        isWhiteTurn=true;
         chessBoard.getChildren().clear();
         affichage();
         // Réinitialiser le plateau de jeu
         // Rafraîchir l'affichage de l'échiquier
         startPlay = false; // Réinitialiser le contrôle de jeu
         afficherNomsDesPieces();
-        timeline.stop();
     }
 
 
@@ -205,33 +308,26 @@ public class AccueilController {
         selectedCol = -1;
     }
 
-    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
-        if (targetPiece.isValide(toRow, toCol, plateau)) {
-            plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
-            plateau.get(toRow).set(toCol, targetPiece);  // Placer la pièce dans la nouvelle position
-            targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
 
-            // Supprimer l'écouteur d'événements de la pièce d'origine
-            selectedImageView.setOnMouseClicked(null);
+    public void showData(){
+        donnee.setText(PlayerData.readDataFromFile("playerData.json"));
+        donnee.setTextFill(Color.WHITE);
 
-            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
-            ImageView newImageView = targetPiece.getImage();
-            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
-
-            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
-            selectedImageView = newImageView;
-
-
-
-
-            return true;
-        }
-        return false;
+    }
+    private Timeline timeline;
+    private Timeline timeline2;
+    private String timeToString(int time) {
+        int minutes = time / 60;
+        int seconds = time % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     public void startTimer() {
-        if (timeline != null) {
-            timeline.stop(); // Arrête le timer précédent s'il est en cours
+        if (whiteTimeline != null) {
+            whiteTimeline.stop(); // Arrête le timer précédent du joueur blanc s'il est en cours
+        }
+        if (blackTimeline != null) {
+            blackTimeline.stop(); // Arrête le timer précédent du joueur noir s'il est en cours
         }
 
         // Lire la durée sélectionnée par l'utilisateur dans la ComboBox
@@ -243,42 +339,59 @@ public class AccueilController {
             startTime = 600; // Durée par défaut de 10 minutes en secondes
         }
 
-        AtomicInteger timeSeconds = new AtomicInteger(startTime);
-        timerLabel1.setText(timeToString(timeSeconds.get()));
-        timerLabel2.setText(timeToString(timeSeconds.get()));
+        AtomicInteger whiteTimeSeconds = new AtomicInteger(startTime);
+        AtomicInteger blackTimeSeconds = new AtomicInteger(startTime);
+        timerLabel1.setText(timeToString(whiteTimeSeconds.get()));
+        timerLabel2.setText(timeToString(blackTimeSeconds.get()));
 
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(
+        whiteTimeline = new Timeline();
+        whiteTimeline.setCycleCount(Timeline.INDEFINITE);
+        whiteTimeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1), e -> {
-                    int currentTime = timeSeconds.decrementAndGet();
+                    int currentTime = whiteTimeSeconds.decrementAndGet();
                     timerLabel1.setText(timeToString(currentTime));
-                    timerLabel2.setText(timeToString(currentTime));
                     if (currentTime <= 0) {
-                        timeline.stop();
+                        whiteTimeline.stop();
                         recommencerPartie();
                     }
                 })
         );
-        timeline.playFromStart();
+
+        blackTimeline = new Timeline();
+        blackTimeline.setCycleCount(Timeline.INDEFINITE);
+        blackTimeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    int currentTime = blackTimeSeconds.decrementAndGet();
+                    timerLabel2.setText(timeToString(currentTime));
+                    if (currentTime <= 0) {
+                        blackTimeline.stop();
+                        recommencerPartie();
+                    }
+                })
+        );
+
+
+    }
+
+    public void stopWhiteTimer() {
+        if (whiteTimeline != null) {
+            whiteTimeline.stop();
+        }
+    }
+
+    // Méthode pour arrêter le timer du joueur noir
+    public void stopBlackTimer() {
+        if (blackTimeline != null) {
+            blackTimeline.stop();
+        }
     }
 
 
 
-    public void showData(){
-            donnee.setText(PlayerData.readDataFromFile("playerData.json"));
-            donnee.setTextFill(Color.WHITE);
 
-    }
 
-    private String timeToString(int time) {
-        int minutes = time / 60;
-        int seconds = time % 60;
-        return String.format("%02d:%02d", minutes, seconds);
-    }
 
     public void start(){
-        startTimer();
         nbpartie.set(nbpartie.get() + 1);
         playerData.setGamesPlayed(nbpartie.get());
         playerData.writeDataToFile("playerData.json");
@@ -308,6 +421,7 @@ public class AccueilController {
                     if (matcherRoiNoir.matches()) {
                         roiNoirAbsent = false;
                     }
+
                 }
             }
         }
@@ -315,15 +429,53 @@ public class AccueilController {
 
         if (roiBlancPresent && roiNoirAbsent) {
             System.out.println("Le roi blanc est présent et le roi noir est absent. ROI BLANC GAGNE");
+            stopWhiteTimer();
+            stopBlackTimer();
+            tempsRestantNoir = timerLabel2.getText();
+            tempsRestantBlanc = timerLabel1.getText();
+
+            System.out.println(tempsRestantNoir + "sec");
+            System.out.println(tempsRestantBlanc + "sec");
+
+
             return true;
             // Ajoutez ici les actions à entreprendre lorsque le roi blanc est présent et le roi noir est absent
         } else if (!roiBlancPresent && !roiNoirAbsent) {
             System.out.println("roi noir gagne");
+            stopWhiteTimer();
+            stopBlackTimer();
+            tempsRestantNoir = timerLabel2.getText();
+            tempsRestantBlanc = timerLabel1.getText();
+
+            System.out.println(tempsRestantNoir + "sec");
+            System.out.println(tempsRestantBlanc + "sec");
+
             return true;
             // Ajoutez ici les actions à entreprendre lorsque les conditions ne sont pas remplies
         }
         return false;
     }
+
+
+    @FXML
+    public void JoueurContreJoueur() {
+        isBotMode = false; // Le mode Joueur contre Joueur est activé
+        recommencerPartie();
+        startPlay = true;
+        startTimer();
+    }
+
+    @FXML
+    public void JoueurContreBot() {
+        isBotMode = true; // Le mode Joueur contre Bot est activé
+        recommencerPartie();
+        startPlay = true;
+        startTimer();
+
+    }
+
+
+
 }
 
 

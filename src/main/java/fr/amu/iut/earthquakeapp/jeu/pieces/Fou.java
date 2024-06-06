@@ -11,8 +11,8 @@ public class Fou extends Piece {
 
     public Fou(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
-        setImage(isWhite ? new ImageView("/img/image echec/fou_noir.png") : new ImageView("/img/image echec/fou_blanc.png"));
-        setNom("Fou" + dernierId + (isWhite ? "noir" : "blanc"));
+        setImage(isWhite ? new ImageView("/img/image echec/fou_blanc.png") : new ImageView("/img/image echec/fou_noir.png"));
+        setNom("Fou" + dernierId + (isWhite ? "blanc" : "noir"));
         getImage().setFitHeight(75);
         getImage().setFitWidth(75);
         dernierId++;
@@ -37,10 +37,18 @@ public class Fou extends Piece {
         int xDirection = (x - getX()) > 0 ? 1 : -1;
         int yDirection = (y - getY()) > 0 ? 1 : -1;
 
+        // Vérifier que les indices sont dans les limites du plateau
+        if (x < 0 || x >= plateau.size() || y < 0 || y >= plateau.get(0).size()) {
+            return false;
+        }
+
         // Vérifier qu'il n'y a pas de pièces sur le chemin
         int currentX = getX() + xDirection;
         int currentY = getY() + yDirection;
         while (currentX != x && currentY != y) {
+            if (currentX < 0 || currentX >= plateau.size() || currentY < 0 || currentY >= plateau.get(0).size()) {
+                return false;
+            }
             if (plateau.get(currentX).get(currentY) != null) {
                 return false;
             }
@@ -56,4 +64,5 @@ public class Fou extends Piece {
 
         return true;
     }
+
 }

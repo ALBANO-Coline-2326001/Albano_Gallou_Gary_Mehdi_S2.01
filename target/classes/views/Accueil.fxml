@@ -15,7 +15,7 @@
     <center>
         <HBox>
             <VBox styleClass="joueur" HBox.hgrow="ALWAYS">
-                <HBox styleClass="joueur">
+                <HBox>
                     <ImageView><Image url="@../img/image echec/joueur_noir.png"/></ImageView>
                     <Label fx:id="nom2" styleClass="joueur" text="Adversaire"/>
                     <Pane prefWidth="300"/>
@@ -63,8 +63,17 @@
                                     </ComboBox>
 
 
-                                    <Button  fx:id="jouer" text="Jouer" styleClass="buttonPlay" onAction="#start"/>
-                                    <VBox alignment="CENTER" styleClass="tournoisBox">
+                                    <Button  fx:id="bot" text="Jouer" styleClass="buttonPlay" onAction="#JoueurContreBot"/>
+                                    <VBox alignment="CENTER" styleClass="tournoisBox" spacing="3">
+
+                                        <Button fx:id="JoueurAmis" text="Jouer avec un ami" styleClass="tournois" onAction="#JoueurContreJoueur">
+                                            <graphic>
+                                                <ImageView fitHeight="40" fitWidth="40">
+                                                    <Image url="@../img/image echec/main.png"/>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+
                                         <Button text="Tournois" styleClass="tournois">
                                             <graphic>
                                                 <ImageView fitHeight="40" fitWidth="40">
