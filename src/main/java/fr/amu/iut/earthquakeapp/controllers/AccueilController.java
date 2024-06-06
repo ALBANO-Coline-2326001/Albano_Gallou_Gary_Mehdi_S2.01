@@ -251,7 +251,6 @@ public class AccueilController {
 
 
     public void recommencerPartie() {
-        startTimer();
         initializeBoard();
         chessBoard.getChildren().clear();
         affichage();
@@ -352,6 +351,7 @@ public class AccueilController {
                     if (matcherRoiNoir.matches()) {
                         roiNoirAbsent = false;
                     }
+
                 }
             }
         }
@@ -359,10 +359,13 @@ public class AccueilController {
 
         if (roiBlancPresent && roiNoirAbsent) {
             System.out.println("Le roi blanc est présent et le roi noir est absent. ROI BLANC GAGNE");
+            timeline.stop();
             return true;
             // Ajoutez ici les actions à entreprendre lorsque le roi blanc est présent et le roi noir est absent
         } else if (!roiBlancPresent && !roiNoirAbsent) {
             System.out.println("roi noir gagne");
+            timeline.stop();
+
             return true;
             // Ajoutez ici les actions à entreprendre lorsque les conditions ne sont pas remplies
         }
@@ -374,6 +377,7 @@ public class AccueilController {
         isBotMode = false; // Le mode Joueur contre Joueur est activé
         recommencerPartie();
         startPlay = true;
+        startTimer();
     }
 
     @FXML
@@ -381,6 +385,8 @@ public class AccueilController {
         isBotMode = true; // Le mode Joueur contre Bot est activé
         recommencerPartie();
         startPlay = true;
+        startTimer();
+
     }
 
 
