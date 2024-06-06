@@ -22,9 +22,8 @@
     -fx-pref-height: 2.5em;
     -fx-font-size: 1.5em;
 }
-
-.timer{
-
+.buttonPlay:hover {
+    -fx-background-color: #87be0f;
 }
 
 .tournoisBox{
@@ -36,6 +35,10 @@
     -fx-text-fill: #FFF;
     -fx-pref-width: 21em;
     -fx-pref-height: 3em;
+}
+
+.tournois:hover{
+    -fx-background-color: rgba(30, 30, 27, 0.7);
 }
 
 .infosEnLigne{

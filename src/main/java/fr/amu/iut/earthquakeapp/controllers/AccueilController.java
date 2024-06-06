@@ -9,6 +9,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -254,6 +255,9 @@ public class AccueilController {
                 if (indice != null) {
                     chessBoard.add(indice.getImage(), j, i);
                     indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+                    indice.getImage().setOnMouseEntered(event -> indice.getImage().setCursor(Cursor.HAND));
+                    indice.getImage().setOnMouseExited(event -> indice.getImage().setCursor(Cursor.DEFAULT));
+
 
                 }
             }
@@ -342,8 +346,7 @@ public class AccueilController {
                 })
         );
 
-        whiteTimeline.playFromStart();
-        blackTimeline.playFromStart();
+
     }
 
     public void stopWhiteTimer() {
