@@ -48,6 +48,8 @@ public class AccueilController {
     @FXML
     private Label timerLabel2;
 
+    private Timeline whiteTimeline;
+    private Timeline blackTimeline;
     private boolean isBotMode = false;
 
     private Piece selectedPiece = null;
@@ -170,6 +172,16 @@ public class AccueilController {
             selectedImageView = clickedImageView;
             selectedRow = row;
             selectedCol = col;
+            if(isWhiteTurn){
+
+                whiteTimeline.stop();
+                blackTimeline.playFromStart();
+            }
+            else {
+                whiteTimeline.playFromStart();
+                blackTimeline.stop();
+            }
+
         }
         // Si le mode Joueur contre Bot est activé et que c'est le tour du bot, faites-le jouer
         /* if (isBotMode && !isWhiteTurn) {
@@ -275,6 +287,7 @@ public class AccueilController {
 
     }
     private Timeline timeline;
+    private Timeline timeline2;
     private String timeToString(int time) {
         int minutes = time / 60;
         int seconds = time % 60;
@@ -282,8 +295,11 @@ public class AccueilController {
     }
 
     public void startTimer() {
-        if (timeline != null) {
-            timeline.stop(); // Arrête le timer précédent s'il est en cours
+        if (whiteTimeline != null) {
+            whiteTimeline.stop(); // Arrête le timer précédent du joueur blanc s'il est en cours
+        }
+        if (blackTimeline != null) {
+            blackTimeline.stop(); // Arrête le timer précédent du joueur noir s'il est en cours
         }
 
         // Lire la durée sélectionnée par l'utilisateur dans la ComboBox
@@ -295,26 +311,53 @@ public class AccueilController {
             startTime = 600; // Durée par défaut de 10 minutes en secondes
         }
 
-        AtomicInteger timeSeconds = new AtomicInteger(startTime);
-        timerLabel1.setText(timeToString(timeSeconds.get()));
-        timerLabel2.setText(timeToString(timeSeconds.get()));
+        AtomicInteger whiteTimeSeconds = new AtomicInteger(startTime);
+        AtomicInteger blackTimeSeconds = new AtomicInteger(startTime);
+        timerLabel1.setText(timeToString(whiteTimeSeconds.get()));
+        timerLabel2.setText(timeToString(blackTimeSeconds.get()));
 
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(
+        whiteTimeline = new Timeline();
+        whiteTimeline.setCycleCount(Timeline.INDEFINITE);
+        whiteTimeline.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(1), e -> {
-                    int currentTime = timeSeconds.decrementAndGet();
+                    int currentTime = whiteTimeSeconds.decrementAndGet();
                     timerLabel1.setText(timeToString(currentTime));
-                    timerLabel2.setText(timeToString(currentTime));
                     if (currentTime <= 0) {
-                        timeline.stop();
+                        whiteTimeline.stop();
                         recommencerPartie();
                     }
                 })
         );
-        timeline.playFromStart();
+
+        blackTimeline = new Timeline();
+        blackTimeline.setCycleCount(Timeline.INDEFINITE);
+        blackTimeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    int currentTime = blackTimeSeconds.decrementAndGet();
+                    timerLabel2.setText(timeToString(currentTime));
+                    if (currentTime <= 0) {
+                        blackTimeline.stop();
+                        recommencerPartie();
+                    }
+                })
+        );
+
+        whiteTimeline.playFromStart();
+        blackTimeline.playFromStart();
     }
 
+    public void stopWhiteTimer() {
+        if (whiteTimeline != null) {
+            whiteTimeline.stop();
+        }
+    }
+
+    // Méthode pour arrêter le timer du joueur noir
+    public void stopBlackTimer() {
+        if (blackTimeline != null) {
+            blackTimeline.stop();
+        }
+    }
 
 
 
@@ -359,12 +402,14 @@ public class AccueilController {
 
         if (roiBlancPresent && roiNoirAbsent) {
             System.out.println("Le roi blanc est présent et le roi noir est absent. ROI BLANC GAGNE");
-            timeline.stop();
+            stopWhiteTimer();
+            stopBlackTimer();
             return true;
             // Ajoutez ici les actions à entreprendre lorsque le roi blanc est présent et le roi noir est absent
         } else if (!roiBlancPresent && !roiNoirAbsent) {
             System.out.println("roi noir gagne");
-            timeline.stop();
+            stopWhiteTimer();
+            stopBlackTimer();
 
             return true;
             // Ajoutez ici les actions à entreprendre lorsque les conditions ne sont pas remplies
