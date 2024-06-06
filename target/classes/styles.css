@@ -57,6 +57,10 @@
     -fx-pref-width: 21em;
 }
 
+.combo-box:hover {
+    -fx-background-color: rgba(60, 59, 57, 0.6);
+}
+
 /* styles.css */
 .combo-box .list-cell {
     -fx-background-color: #3C3B39;

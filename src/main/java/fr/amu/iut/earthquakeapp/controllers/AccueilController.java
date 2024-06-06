@@ -128,10 +128,9 @@ public class AccueilController {
     }
     private void handleMouseClick(int row, int col) {
         // Si le jeu n'a pas encore commencé, ignorez le clic
-        if(isWhiteTurn) {
+        if (isWhiteTurn) {
             System.out.println("C'est au tour des blancs");
-        }
-        else {
+        } else {
             System.out.println("C'est au tour des noirs");
         }
         if (!startPlay) {
@@ -141,11 +140,12 @@ public class AccueilController {
         System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
 
         Piece clickedPiece = plateau.get(row).get(col);
-
-
         ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
-        //emplacement a bouger selectionné
-        if (selectedPiece != null ) {
+
+        clearHighlights(); // Efface les anciennes surbrillances
+
+        // Emplacement à bouger sélectionné
+        if (selectedPiece != null) {
             if (row != selectedRow || col != selectedCol) {
                 if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
                     chessBoard.getChildren().remove(selectedImageView);
@@ -166,33 +166,29 @@ public class AccueilController {
             } else {
                 resetSelection();
             }
-        }
-        //if premiere piece cliquée
-        else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) {
+        } else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) { // Première pièce cliquée
             selectedPiece = clickedPiece;
             selectedImageView = clickedImageView;
             selectedRow = row;
             selectedCol = col;
-            if(isWhiteTurn){
 
+            // Met en surbrillance les cases valides
+            highlightValidMoves(clickedPiece);
+
+            if (isWhiteTurn) {
                 whiteTimeline.stop();
                 blackTimeline.playFromStart();
-            }
-            else {
+            } else {
                 whiteTimeline.playFromStart();
                 blackTimeline.stop();
             }
-
         }
-        // Si le mode Joueur contre Bot est activé et que c'est le tour du bot, faites-le jouer
-        /* if (isBotMode && !isWhiteTurn) {
-            botPlay();
-            isWhiteTurn = !isWhiteTurn;
-        }*/
-        if (finJeu()){
+
+        if (finJeu()) {
             recommencerPartie();
         }
     }
+
 
     private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
         if (targetPiece.isValide(toRow, toCol, plateau)) {
@@ -216,6 +212,22 @@ public class AccueilController {
             return true;
         }
         return false;
+    }
+    private void highlightValidMoves(Piece piece) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (piece.isValide(i, j, plateau)) {
+                    Rectangle highlight = new Rectangle(75, 75, Color.YELLOW);
+                    highlight.setOpacity(0.5); // Ajustez l'opacité selon vos préférences
+                    highlight.setMouseTransparent(true); // Permet à la souris de cliquer à travers le rectangle
+                    chessBoard.add(highlight, j, i);
+                }
+            }
+        }
+    }
+
+    private void clearHighlights() {
+        chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
     }
 
 

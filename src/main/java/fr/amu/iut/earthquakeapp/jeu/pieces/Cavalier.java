@@ -28,6 +28,7 @@ public class Cavalier extends Piece {
         setCoordonne(x, y);
     }
 
+
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
         int deltaX = Math.abs(x - getX());
@@ -48,4 +49,5 @@ public class Cavalier extends Piece {
 
         return true;
     }
+
 }
