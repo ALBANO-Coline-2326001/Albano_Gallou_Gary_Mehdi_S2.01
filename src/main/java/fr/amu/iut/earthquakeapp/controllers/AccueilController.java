@@ -1,6 +1,7 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
 import fr.amu.iut.earthquakeapp.Accueil;
+import fr.amu.iut.earthquakeapp.donnée.GameStats;
 import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import fr.amu.iut.earthquakeapp.jeu.pieces.*;
@@ -35,6 +36,8 @@ public class AccueilController {
     @FXML
     private Label donnee;
 
+    private GameStats donnePartie;
+
     @FXML
     private Button joueurContreJoueur;
 
@@ -51,6 +54,8 @@ public class AccueilController {
 
     private Timeline whiteTimeline;
     private Timeline blackTimeline;
+    private String tempsRestantNoir;
+    private String tempsRestantBlanc;
     private boolean isBotMode = false;
 
     private Piece selectedPiece = null;
@@ -156,10 +161,10 @@ public class AccueilController {
                     isWhiteTurn = !isWhiteTurn;
 
                     if (isWhiteTurn) {
-                        whiteTimeline.stop();
+                        blackTimeline.stop();
                         whiteTimeline.playFromStart();
                     } else {
-                        blackTimeline.stop();
+                        whiteTimeline.stop();
                         blackTimeline.playFromStart();
                         if (isBotMode) { // Si c'est le tour du bot et que le mode joueur contre bot est activé
                             botPlay(); // Fait jouer le bot de manière aléatoire
@@ -426,18 +431,31 @@ public class AccueilController {
             System.out.println("Le roi blanc est présent et le roi noir est absent. ROI BLANC GAGNE");
             stopWhiteTimer();
             stopBlackTimer();
+            tempsRestantNoir = timerLabel2.getText();
+            tempsRestantBlanc = timerLabel1.getText();
+
+            System.out.println(tempsRestantNoir + "sec");
+            System.out.println(tempsRestantBlanc + "sec");
+
+
             return true;
             // Ajoutez ici les actions à entreprendre lorsque le roi blanc est présent et le roi noir est absent
         } else if (!roiBlancPresent && !roiNoirAbsent) {
             System.out.println("roi noir gagne");
             stopWhiteTimer();
             stopBlackTimer();
+            tempsRestantNoir = timerLabel2.getText();
+            tempsRestantBlanc = timerLabel1.getText();
+
+            System.out.println(tempsRestantNoir + "sec");
+            System.out.println(tempsRestantBlanc + "sec");
 
             return true;
             // Ajoutez ici les actions à entreprendre lorsque les conditions ne sont pas remplies
         }
         return false;
     }
+
 
     @FXML
     public void JoueurContreJoueur() {
