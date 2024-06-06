@@ -15,7 +15,7 @@
     <center>
         <HBox>
             <VBox styleClass="joueur" HBox.hgrow="ALWAYS">
-                <HBox styleClass="joueur">
+                <HBox>
                     <ImageView><Image url="@../img/image echec/joueur_noir.png"/></ImageView>
                     <Label fx:id="nom2" styleClass="joueur" text="Adversaire"/>
                     <Pane prefWidth="300"/>

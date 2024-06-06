@@ -40,7 +40,6 @@ public class Pion extends Piece {
         if (fristMove && x == getX() + 2 * direction && y == getY() &&
                 plateau.get(getX() + direction).get(getY()) == null && plateau.get(x).get(y) == null &&
                 plateau.get(x - direction).get(y) == null) {
-            fristMove = false;
             return true;
         }
 

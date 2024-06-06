@@ -194,9 +194,11 @@ public class AccueilController {
 
     private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
         if (targetPiece.isValide(toRow, toCol, plateau)) {
+            // Appeler la méthode move de la pièce
+            targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
+
             plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
             plateau.get(toRow).set(toCol, targetPiece);  // Placer la pièce dans la nouvelle position
-            targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
 
             // Supprimer l'écouteur d'événements de la pièce d'origine
             selectedImageView.setOnMouseClicked(null);
@@ -207,9 +209,6 @@ public class AccueilController {
 
             // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
             selectedImageView = newImageView;
-
-
-
 
             return true;
         }
@@ -285,6 +284,7 @@ public class AccueilController {
 
     public void recommencerPartie() {
         initializeBoard();
+        isWhiteTurn=true;
         chessBoard.getChildren().clear();
         affichage();
         // Réinitialiser le plateau de jeu
