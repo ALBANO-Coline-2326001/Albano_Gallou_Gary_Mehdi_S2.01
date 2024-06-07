@@ -460,7 +460,7 @@ public class AccueilController {
             stopBlackTimer();
             tempsRestantNoir = timerLabel2.getText();
             tempsRestantBlanc = timerLabel1.getText();
-
+            donnePartie = new GameStats(nomLoginJ1,nomLoginJ2,tempsRestantNoir,tempsRestantBlanc ,"1/0");
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -474,6 +474,7 @@ public class AccueilController {
             tempsRestantNoir = timerLabel2.getText();
             tempsRestantBlanc = timerLabel1.getText();
 
+            donnePartie = new GameStats(nomLoginJ1,nomLoginJ2,tempsRestantNoir,tempsRestantBlanc ,"0/1");
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
