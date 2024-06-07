@@ -4,3 +4,13 @@
 ## ALBANO Coline, GALLOU Loic, GARY Felicité, MEHDI Yousra
 
 L'objectif de la SAE est de développer un jeu d'échec similaire au jeu d'échec en ligne disponible sur le site https://www.chess.com/. Le jeu d'échec est un jeu de stratégie qui se joue sur un plateau de 64 cases. Chaque joueur dispose de 16 pièces qui se déplacent sur le plateau de jeu. Le but du jeu est de mettre en échec et mat le roi adverse. Le jeu d'échec est un jeu de réflexion qui nécessite une bonne stratégie pour gagner la partie.
+
+## Répartition des tâches :
+
+ALBANO Coline : 
+
+GALLOU Loic : 
+
+GARY Felicité : 
+
+MEHDI Yousra : 
