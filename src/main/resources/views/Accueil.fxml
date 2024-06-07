@@ -17,7 +17,7 @@
             <VBox styleClass="joueur" HBox.hgrow="ALWAYS">
                 <HBox>
                     <ImageView><Image url="@../img/image echec/joueur_noir.png"/></ImageView>
-                    <Label  styleClass="joueur" text="Adversaire"/>
+                    <Label fx:id="pseudoJ2"  styleClass="joueur" text="Adversaire"/>
                     <Pane prefWidth="300"/>
                     <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur1"><Label fx:id="timerLabel2" /></HBox>
                 </HBox>
@@ -34,7 +34,7 @@
                             <Image url="@../img/image echec/joueur_blanc.png"/>
                         </image>
                     </ImageView>
-                    <Label  text="LeMeilleurJoueur" styleClass="joueur"/>
+                    <Label  fx:id="pseudoJ1" text="LeMeilleurJoueur" styleClass="joueur"/>
                     <Pane prefWidth="300"/>
                    <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur"><Label fx:id="timerLabel1" /></HBox>
 

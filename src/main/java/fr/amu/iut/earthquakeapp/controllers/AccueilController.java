@@ -41,6 +41,12 @@ public class AccueilController {
     @FXML
     private Label donnee;
 
+    @FXML
+    private Label pseudoJ1;
+
+    @FXML
+    private Label pseudoJ2;
+
     private GameStats donnePartie;
 
     @FXML
@@ -533,6 +539,9 @@ public class AccueilController {
     public void ButtonLogin(){
         nomLoginJ1 = nomJ1.getText();
         nomLoginJ2 = nomJ2.getText();
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
+
 
     }
 
