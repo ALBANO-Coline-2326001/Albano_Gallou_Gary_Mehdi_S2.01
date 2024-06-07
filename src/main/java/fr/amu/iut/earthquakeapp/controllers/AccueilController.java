@@ -1,5 +1,6 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
+import fr.amu.iut.earthquakeapp.Accueil;
 import fr.amu.iut.earthquakeapp.donnée.GameStats;
 import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
@@ -9,14 +10,19 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -39,6 +45,8 @@ public class AccueilController {
 
     @FXML
     private Button joueurContreJoueur;
+
+
 
     @FXML
     private Button joueurContreBot;
@@ -75,8 +83,6 @@ public class AccueilController {
 
     @FXML
     private ComboBox<String> timeOptions;
-    private Timeline timeline;
-    private Timeline timeline2;
 
     @FXML
     public void initialize() {
@@ -93,7 +99,7 @@ public class AccueilController {
     public void afficherNomsDesPieces() {
         for (ArrayList<Piece> ligne : plateau) {
             for (Piece piece : ligne) {
-                if (piece != null) {
+                if (piece != null){
                     System.out.print(piece.getNom() + " ");
                 }
             }
@@ -102,7 +108,7 @@ public class AccueilController {
     }
 
     private void initializeBoard() {
-        if (!plateau.isEmpty()) {
+        if(!plateau.isEmpty()){
             plateau.clear();
         }
         for (int i = 0; i < 8; i++) {
@@ -132,7 +138,6 @@ public class AccueilController {
             plateau.add(row);
         }
     }
-
     @FXML
     private void handleMouseClick(int row, int col) {
         if (!startPlay) {
@@ -197,6 +202,9 @@ public class AccueilController {
         }
     }
 
+
+
+
     private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
         if (targetPiece.isValide(toRow, toCol, plateau)) {
             // Appeler la méthode move de la pièce
@@ -219,7 +227,6 @@ public class AccueilController {
         }
         return false;
     }
-
     private void highlightValidMoves(Piece piece) {
         clearHighlights(); // Efface les anciennes surbrillances
 
@@ -235,9 +242,11 @@ public class AccueilController {
         }
     }
 
+
     private void clearHighlights() {
         chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
     }
+
 
     private void botPlay() {
         // Parcourez le plateau pour trouver une pièce du bot et un mouvement valide
@@ -285,9 +294,11 @@ public class AccueilController {
         }
     }
 
+
+
     public void recommencerPartie() {
         initializeBoard();
-        isWhiteTurn = true;
+        isWhiteTurn=true;
         chessBoard.getChildren().clear();
         affichage();
         // Réinitialiser le plateau de jeu
@@ -296,6 +307,7 @@ public class AccueilController {
         afficherNomsDesPieces();
     }
 
+
     private void resetSelection() {
         selectedPiece = null;
         selectedImageView = null;
@@ -303,12 +315,14 @@ public class AccueilController {
         selectedCol = -1;
     }
 
-    public void showData() {
+
+    public void showData(){
         donnee.setText(PlayerData.readDataFromFile("playerData.json"));
         donnee.setTextFill(Color.WHITE);
 
     }
-
+    private Timeline timeline;
+    private Timeline timeline2;
     private String timeToString(int time) {
         int minutes = time / 60;
         int seconds = time % 60;
@@ -380,14 +394,18 @@ public class AccueilController {
     }
 
 
-    public void start() {
+
+
+
+
+    public void start(){
         nbpartie.set(nbpartie.get() + 1);
         playerData.setGamesPlayed(nbpartie.get());
         playerData.writeDataToFile("playerData.json");
         startPlay = true;
     }
 
-    public boolean finJeu() {
+    public boolean finJeu(){
 
 
         boolean roiBlancPresent = false;
@@ -448,10 +466,12 @@ public class AccueilController {
 
     @FXML
     public void JoueurContreJoueur() {
+        Login();
         isBotMode = false; // Le mode Joueur contre Joueur est activé
         recommencerPartie();
         startPlay = true;
         startTimer();
+
     }
 
     @FXML
@@ -462,6 +482,39 @@ public class AccueilController {
         startTimer();
 
     }
+
+
+    @FXML
+    public void Login(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void lanceTournoie(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Tournoi.fxml"));
+            System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Tournament Mode");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
