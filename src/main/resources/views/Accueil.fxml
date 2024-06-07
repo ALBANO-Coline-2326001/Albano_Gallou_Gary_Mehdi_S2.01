@@ -74,7 +74,7 @@
                                             </graphic>
                                         </Button>
 
-                                        <Button text="Tournois" styleClass="tournois">
+                                        <Button text="Tournois" styleClass="tournois" onAction="#lanceTournoie">
                                             <graphic>
                                                 <ImageView fitHeight="40" fitWidth="40">
                                                     <Image url="@../img/image echec/medaille.png"/>
