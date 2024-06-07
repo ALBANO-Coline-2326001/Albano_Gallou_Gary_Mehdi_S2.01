@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="mainBP" prefHeight="250" prefWidth="500" stylesheets="@../css/Login.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController">
+            fx:controller="fr.amu.iut.earthquakeapp.controllers.LoginController">
     <center>
         <VBox alignment="CENTER" spacing="10.0" fillWidth="true" styleClass="fond">
             <TextField fx:id="nomJ1" promptText="Entrez nom J1" prefHeight="20" prefWidth="60"/>

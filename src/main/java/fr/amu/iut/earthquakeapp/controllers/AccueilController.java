@@ -46,8 +46,7 @@ public class AccueilController {
     @FXML
     private Button joueurContreJoueur;
 
-    @FXML
-    private Button bLogin;
+
 
     @FXML
     private Button joueurContreBot;
@@ -467,11 +466,12 @@ public class AccueilController {
 
     @FXML
     public void JoueurContreJoueur() {
+        Login();
         isBotMode = false; // Le mode Joueur contre Joueur est activé
         recommencerPartie();
         startPlay = true;
         startTimer();
-        Login();
+
     }
 
     @FXML
@@ -483,15 +483,11 @@ public class AccueilController {
 
     }
 
-    @FXML
-    public void ButtonLogin(){
 
-    }
     @FXML
     public void Login(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
-            System.setProperty("http.agent", "Gluon Mobile/1.0.3");
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setTitle("Login");
