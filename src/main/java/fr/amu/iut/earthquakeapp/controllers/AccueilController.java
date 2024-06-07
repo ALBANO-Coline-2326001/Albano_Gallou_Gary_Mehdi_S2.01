@@ -47,6 +47,9 @@ public class AccueilController {
     private Button joueurContreJoueur;
 
     @FXML
+    private Button bLogin;
+
+    @FXML
     private Button joueurContreBot;
     @FXML
     private Tab Partie;
@@ -468,6 +471,7 @@ public class AccueilController {
         recommencerPartie();
         startPlay = true;
         startTimer();
+        Login();
     }
 
     @FXML
@@ -477,6 +481,26 @@ public class AccueilController {
         startPlay = true;
         startTimer();
 
+    }
+
+    @FXML
+    public void ButtonLogin(){
+
+    }
+    @FXML
+    public void Login(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
+            System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

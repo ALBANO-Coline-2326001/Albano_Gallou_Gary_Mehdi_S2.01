@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.util.Callback?>
 
-<BorderPane fx:id="mainBP" prefHeight="500" prefWidth="1000" stylesheets="@../styles.css"
+<BorderPane fx:id="mainBP" prefHeight="500" prefWidth="1000" stylesheets="@../css/styles.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController">
 
