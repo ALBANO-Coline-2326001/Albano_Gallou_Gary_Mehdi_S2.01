@@ -10,14 +10,19 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -472,6 +477,22 @@ public class AccueilController {
         startPlay = true;
         startTimer();
 
+    }
+
+    @FXML
+    public void lanceTournoie(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Tournoi.fxml"));
+            System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Tournament Mode");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
