@@ -17,7 +17,7 @@
             <VBox styleClass="joueur" HBox.hgrow="ALWAYS">
                 <HBox>
                     <ImageView><Image url="@../img/image echec/joueur_noir.png"/></ImageView>
-                    <Label fx:id="nom2" styleClass="joueur" text="Adversaire"/>
+                    <Label  styleClass="joueur" text="Adversaire"/>
                     <Pane prefWidth="300"/>
                     <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur1"><Label fx:id="timerLabel2" /></HBox>
                 </HBox>
@@ -34,7 +34,7 @@
                             <Image url="@../img/image echec/joueur_blanc.png"/>
                         </image>
                     </ImageView>
-                    <Label fx:id="nom1" text="LeMeilleurJoueur" styleClass="joueur"/>
+                    <Label  text="LeMeilleurJoueur" styleClass="joueur"/>
                     <Pane prefWidth="300"/>
                    <HBox alignment="CENTER_RIGHT" minHeight="18" maxHeight="40" minWidth="140" styleClass="minuteur"><Label fx:id="timerLabel1" /></HBox>
 
@@ -109,7 +109,11 @@
                         </Tab>
                         <Tab text="Joueurs">
                             <content>
-                                <Label text="Contenu du tab Joueurs"/>
+                                <VBox alignment="CENTER" spacing="10.0" fillWidth="true" styleClass="fond">
+                                    <TextField fx:id="nomJ1" promptText="Entrez nom J1" prefHeight="20" prefWidth="60"/>
+                                    <TextField fx:id="nomJ2" promptText="Entrez nom J2" prefHeight="20" prefWidth="60"/>
+                                    <Button fx:id="bLogin" text="Entrer" onAction="#ButtonLogin"/>
+                                </VBox>
                             </content>
                         </Tab>
                     </tabs>
