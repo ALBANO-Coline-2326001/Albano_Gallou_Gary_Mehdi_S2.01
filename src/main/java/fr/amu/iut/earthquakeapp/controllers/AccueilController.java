@@ -1,6 +1,5 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
-import fr.amu.iut.earthquakeapp.Accueil;
 import fr.amu.iut.earthquakeapp.donnée.GameStats;
 import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
@@ -76,6 +75,8 @@ public class AccueilController {
 
     @FXML
     private ComboBox<String> timeOptions;
+    private Timeline timeline;
+    private Timeline timeline2;
 
     @FXML
     public void initialize() {
@@ -92,7 +93,7 @@ public class AccueilController {
     public void afficherNomsDesPieces() {
         for (ArrayList<Piece> ligne : plateau) {
             for (Piece piece : ligne) {
-                if (piece != null){
+                if (piece != null) {
                     System.out.print(piece.getNom() + " ");
                 }
             }
@@ -101,7 +102,7 @@ public class AccueilController {
     }
 
     private void initializeBoard() {
-        if(!plateau.isEmpty()){
+        if (!plateau.isEmpty()) {
             plateau.clear();
         }
         for (int i = 0; i < 8; i++) {
@@ -131,6 +132,7 @@ public class AccueilController {
             plateau.add(row);
         }
     }
+
     @FXML
     private void handleMouseClick(int row, int col) {
         if (!startPlay) {
@@ -195,9 +197,6 @@ public class AccueilController {
         }
     }
 
-
-
-
     private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
         if (targetPiece.isValide(toRow, toCol, plateau)) {
             // Appeler la méthode move de la pièce
@@ -220,6 +219,7 @@ public class AccueilController {
         }
         return false;
     }
+
     private void highlightValidMoves(Piece piece) {
         clearHighlights(); // Efface les anciennes surbrillances
 
@@ -235,11 +235,9 @@ public class AccueilController {
         }
     }
 
-
     private void clearHighlights() {
         chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
     }
-
 
     private void botPlay() {
         // Parcourez le plateau pour trouver une pièce du bot et un mouvement valide
@@ -287,11 +285,9 @@ public class AccueilController {
         }
     }
 
-
-
     public void recommencerPartie() {
         initializeBoard();
-        isWhiteTurn=true;
+        isWhiteTurn = true;
         chessBoard.getChildren().clear();
         affichage();
         // Réinitialiser le plateau de jeu
@@ -300,7 +296,6 @@ public class AccueilController {
         afficherNomsDesPieces();
     }
 
-
     private void resetSelection() {
         selectedPiece = null;
         selectedImageView = null;
@@ -308,14 +303,12 @@ public class AccueilController {
         selectedCol = -1;
     }
 
-
-    public void showData(){
+    public void showData() {
         donnee.setText(PlayerData.readDataFromFile("playerData.json"));
         donnee.setTextFill(Color.WHITE);
 
     }
-    private Timeline timeline;
-    private Timeline timeline2;
+
     private String timeToString(int time) {
         int minutes = time / 60;
         int seconds = time % 60;
@@ -387,18 +380,14 @@ public class AccueilController {
     }
 
 
-
-
-
-
-    public void start(){
+    public void start() {
         nbpartie.set(nbpartie.get() + 1);
         playerData.setGamesPlayed(nbpartie.get());
         playerData.writeDataToFile("playerData.json");
         startPlay = true;
     }
 
-    public boolean finJeu(){
+    public boolean finJeu() {
 
 
         boolean roiBlancPresent = false;
@@ -473,7 +462,6 @@ public class AccueilController {
         startTimer();
 
     }
-
 
 
 }

@@ -1,6 +1,7 @@
 package fr.amu.iut.earthquakeapp.jeu;
 
 import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 
 /**
@@ -8,8 +9,8 @@ import java.util.ArrayList;
  * Cette classe sera héritée par toutes les autres pièces spécifiques du jeu.
  */
 public abstract class Piece {
-    private ImageView image;  // Image représentant la pièce
     private final boolean isWhite;  // Couleur de la pièce : true pour blanc, false pour noir
+    private ImageView image;  // Image représentant la pièce
     private String nom;       // Nom de la pièce (Roi, Reine, Cavalier, etc.)
     private int x;            // Coordonnée x de la pièce sur l'échiquier
     private int y;            // Coordonnée y de la pièce sur l'échiquier
@@ -58,9 +59,9 @@ public abstract class Piece {
     /**
      * Méthode abstraite pour vérifier si un mouvement est valide.
      *
-     * @param x        Coordonnée x de destination.
-     * @param y        Coordonnée y de destination.
-     * @param plateau  Plateau de jeu contenant toutes les pièces.
+     * @param x       Coordonnée x de destination.
+     * @param y       Coordonnée y de destination.
+     * @param plateau Plateau de jeu contenant toutes les pièces.
      * @return true si le mouvement est valide, false sinon.
      */
     public abstract boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau);
