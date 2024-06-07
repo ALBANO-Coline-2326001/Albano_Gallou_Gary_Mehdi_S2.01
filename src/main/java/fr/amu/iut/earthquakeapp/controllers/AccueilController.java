@@ -539,8 +539,8 @@ public class AccueilController {
     public void ButtonLogin(){
         nomLoginJ1 = nomJ1.getText();
         nomLoginJ2 = nomJ2.getText();
-        pseudoJ1.setText(nomLoginJ1);
-        pseudoJ2.setText(nomLoginJ2);
+        pseudoJ2.setText(nomLoginJ1);
+        pseudoJ1.setText(nomLoginJ2);
 
 
     }
