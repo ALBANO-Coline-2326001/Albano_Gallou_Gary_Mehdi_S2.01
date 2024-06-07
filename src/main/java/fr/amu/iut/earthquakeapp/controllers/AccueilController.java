@@ -41,10 +41,30 @@ public class AccueilController {
     @FXML
     private Label donnee;
 
+    @FXML
+    private Label pseudoJ1;
+
+    @FXML
+    private Label pseudoJ2;
+
     private GameStats donnePartie;
 
     @FXML
     private Button joueurContreJoueur;
+    @FXML
+    private String nomLoginJ1;
+
+    @FXML
+    private String nomLoginJ2;
+
+    @FXML
+    private Button bLogin;
+
+    @FXML
+    private TextField nomJ1;
+
+    @FXML
+    private TextField nomJ2;
 
 
 
@@ -466,7 +486,6 @@ public class AccueilController {
 
     @FXML
     public void JoueurContreJoueur() {
-        Login();
         isBotMode = false; // Le mode Joueur contre Joueur est activé
         recommencerPartie();
         startPlay = true;
@@ -515,6 +534,16 @@ public class AccueilController {
         }
     }
 
+
+    @FXML
+    public void ButtonLogin(){
+        nomLoginJ1 = nomJ1.getText();
+        nomLoginJ2 = nomJ2.getText();
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
+
+
+    }
 
 
 }
