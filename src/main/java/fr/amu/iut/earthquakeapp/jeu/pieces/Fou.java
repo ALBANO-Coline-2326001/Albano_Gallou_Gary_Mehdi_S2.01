@@ -2,13 +2,22 @@ package fr.amu.iut.earthquakeapp.jeu.pieces;
 
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.scene.image.ImageView;
-
 import java.util.ArrayList;
 
+/**
+ * Classe représentant un fou dans le jeu d'échecs.
+ */
 public class Fou extends Piece {
 
-    private static int dernierId = 0;
+    private static int dernierId = 0;  // Compteur statique pour donner un identifiant unique à chaque fou
 
+    /**
+     * Constructeur de la classe Fou.
+     *
+     * @param isWhite Indique si le fou est blanc (true) ou noir (false).
+     * @param x       Coordonnée x initiale du fou sur l'échiquier.
+     * @param y       Coordonnée y initiale du fou sur l'échiquier.
+     */
     public Fou(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         setImage(isWhite ? new ImageView("/img/image echec/fou_blanc.png") : new ImageView("/img/image echec/fou_noir.png"));
@@ -18,11 +27,25 @@ public class Fou extends Piece {
         dernierId++;
     }
 
+    /**
+     * Déplace le fou vers de nouvelles coordonnées.
+     *
+     * @param x Nouvelle coordonnée x.
+     * @param y Nouvelle coordonnée y.
+     */
     @Override
     public void move(int x, int y) {
         setCoordonne(x, y);
     }
 
+    /**
+     * Vérifie si un mouvement est valide pour le fou.
+     *
+     * @param x       Coordonnée x de destination.
+     * @param y       Coordonnée y de destination.
+     * @param plateau Plateau de jeu contenant toutes les pièces.
+     * @return true si le mouvement est valide, false sinon.
+     */
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
         int deltaX = Math.abs(x - getX());
@@ -64,5 +87,4 @@ public class Fou extends Piece {
 
         return true;
     }
-
 }

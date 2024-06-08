@@ -45,7 +45,31 @@ public class AccueilController {
     private VBox VboxParties;
 
     @FXML
+    private Label pseudoJ1;
+
+    @FXML
+    private Label pseudoJ2;
+
+
+
+    @FXML
     private Button joueurContreJoueur;
+    @FXML
+    private String nomLoginJ1;
+
+    @FXML
+    private String nomLoginJ2;
+
+    @FXML
+    private Button bLogin;
+
+    @FXML
+    private TextField nomJ1;
+
+    @FXML
+    private TextField nomJ2;
+
+
 
     @FXML
     private Button joueurContreBot;
@@ -57,7 +81,6 @@ public class AccueilController {
 
     @FXML
     private Label timerLabel2;
-
 
     private Timeline whiteTimeline;
     private Timeline timeline;
@@ -458,6 +481,7 @@ public class AccueilController {
             tempsRestantBlanc = timerLabel1.getText();
             time = tempsRestantBlanc;
             winner = "1 - 0";
+            donnePartie = new GameStats(nomLoginJ1,nomLoginJ2,tempsRestantNoir,tempsRestantBlanc ,"1/0");
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -472,6 +496,8 @@ public class AccueilController {
             tempsRestantBlanc = timerLabel1.getText();
             time = tempsRestantBlanc;
             winner = "0 - 1";
+
+            donnePartie = new GameStats(nomLoginJ1,nomLoginJ2,tempsRestantNoir,tempsRestantBlanc ,"0/1");
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -488,6 +514,7 @@ public class AccueilController {
         recommencerPartie();
         startPlay = true;
         startTimer();
+
     }
 
     @FXML
@@ -497,6 +524,22 @@ public class AccueilController {
         startPlay = true;
         startTimer();
 
+    }
+
+
+    @FXML
+    public void Login(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -515,6 +558,16 @@ public class AccueilController {
         }
     }
 
+
+    @FXML
+    public void ButtonLogin(){
+        nomLoginJ1 = nomJ1.getText();
+        nomLoginJ2 = nomJ2.getText();
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
+
+
+    }
 
 
 }

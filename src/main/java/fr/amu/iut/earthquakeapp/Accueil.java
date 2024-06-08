@@ -11,12 +11,12 @@ import javafx.stage.Stage;
  * @version 1.0
  */
 
-public class Accueil extends Application {
+public class  Accueil extends Application {
 
     private static Scene scene;
 
     /**
-     * Permet de charger le fichier fxml principale ainsi que toutes les données, méthodes qui s'en suit
+     * Permet de charger le fichier fxml principale ainsi que toutes les données et méthodes qui s'en suit
      * @param stage Fenêtre du logiciel
      * @throws Exception
      */
