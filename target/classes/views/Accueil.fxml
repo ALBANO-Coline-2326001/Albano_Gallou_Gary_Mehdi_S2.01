@@ -102,9 +102,11 @@
                                 </VBox>
                             </content>
                         </Tab>
-                        <Tab text="Partie" fx:id="Partie" onSelectionChanged="#showData">
+                        <Tab text="Partie" fx:id="Partie" onSelectionChanged="#showData" styleClass="partieData">
                             <content>
-                                <Label fx:id="donnee" text="Contenu du tab Partie"/>
+                                <VBox fx:id="VboxParties" styleClass="vboxParties" spacing="20">
+                                    
+                                </VBox>
                             </content>
                         </Tab>
                         <Tab text="Joueurs">

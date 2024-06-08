@@ -9,10 +9,21 @@ import java.util.*;
 public class PlayerData {
     private int gamesPlayed;
     private int score;
+    private List<GameStats> games;
+
+    public int getScore() {
+        return score;
+    }
 
     public PlayerData() {
-     gamesPlayed = 0;
-       score = 0;
+        gamesPlayed = 0;
+        score = 0;
+        games = new ArrayList<>();
+
+    }
+
+    public void setGames(GameStats game){
+        games.add(game);
     }
 
     public void setGamesPlayed(int gamesPlayed) {
@@ -33,7 +44,15 @@ public class PlayerData {
             sb.append(this.score);
             sb.append('\n');
 
+
+
+
+            sb.append(games.get(games.size()-1).getOpponent() + " " + games.get(games.size()-1).getTime() + "  " + games.get(games.size()-1).getResult());
+            sb.append('\n');
+
+
             writer.write(sb.toString());
+
 
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());

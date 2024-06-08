@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -40,8 +41,8 @@ public class AccueilController {
     private boolean startPlay = false;
     @FXML
     private Label donnee;
-
-    private GameStats donnePartie;
+    @FXML
+    private VBox VboxParties;
 
     @FXML
     private Button joueurContreJoueur;
@@ -57,7 +58,10 @@ public class AccueilController {
     @FXML
     private Label timerLabel2;
 
+
     private Timeline whiteTimeline;
+    private Timeline timeline;
+    private Timeline timeline2;
     private Timeline blackTimeline;
     private String tempsRestantNoir;
     private String tempsRestantBlanc;
@@ -69,6 +73,10 @@ public class AccueilController {
     private int selectedCol = -1;
     private IntegerProperty nbpartie = new SimpleIntegerProperty(0);
     private PlayerData playerData = new PlayerData();
+    private GameStats donnePartie = new GameStats("","","");
+    private String time;
+    private String winner;
+
 
     @FXML
     private GridPane chessBoard;
@@ -196,6 +204,7 @@ public class AccueilController {
         }
 
         if (finJeu()) {
+            donnePartie = new GameStats("opponent",time,winner);
             recommencerPartie();
         }
     }
@@ -299,6 +308,13 @@ public class AccueilController {
         isWhiteTurn=true;
         chessBoard.getChildren().clear();
         affichage();
+        nbpartie.set(nbpartie.get() + 1);
+        if (winner == "1 - 0"){
+            playerData.setScore(playerData.getScore() + 1);
+        }
+        playerData.setGamesPlayed(nbpartie.get());
+        playerData.setGames(donnePartie);
+        playerData.writeDataToFile("playerData.json");
         // Réinitialiser le plateau de jeu
         // Rafraîchir l'affichage de l'échiquier
         startPlay = false; // Réinitialiser le contrôle de jeu
@@ -315,12 +331,14 @@ public class AccueilController {
 
 
     public void showData(){
-        donnee.setText(PlayerData.readDataFromFile("playerData.json"));
-        donnee.setTextFill(Color.WHITE);
+        VboxParties.getChildren().clear();
+        Label l = new Label(PlayerData.readDataFromFile("playerData.json"));
+        l.setTextFill(Color.WHITE);
+        VboxParties.getChildren().add(l);
 
     }
-    private Timeline timeline;
-    private Timeline timeline2;
+
+
     private String timeToString(int time) {
         int minutes = time / 60;
         int seconds = time % 60;
@@ -396,12 +414,12 @@ public class AccueilController {
 
 
 
-    public void start(){
-        nbpartie.set(nbpartie.get() + 1);
-        playerData.setGamesPlayed(nbpartie.get());
-        playerData.writeDataToFile("playerData.json");
-        startPlay = true;
-    }
+//    public void start(){
+//        nbpartie.set(nbpartie.get() + 1);
+//        playerData.setGamesPlayed(nbpartie.get());
+//        playerData.writeDataToFile("playerData.json");
+//        startPlay = true;
+//    }
 
     public boolean finJeu(){
 
@@ -438,7 +456,8 @@ public class AccueilController {
             stopBlackTimer();
             tempsRestantNoir = timerLabel2.getText();
             tempsRestantBlanc = timerLabel1.getText();
-
+            time = tempsRestantBlanc;
+            winner = "1 - 0";
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -451,7 +470,8 @@ public class AccueilController {
             stopBlackTimer();
             tempsRestantNoir = timerLabel2.getText();
             tempsRestantBlanc = timerLabel1.getText();
-
+            time = tempsRestantBlanc;
+            winner = "0 - 1";
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
