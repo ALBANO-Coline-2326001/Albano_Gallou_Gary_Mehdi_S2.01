@@ -127,13 +127,6 @@
 
 }
 
-.vboxParties {
-    -fx-padding: 10px;
-    -fx-background-color: lightgray;
-}
-
-
-
 .labelsParties{
     -fx-padding: 10;
     -fx-background-color: #6a6660;
