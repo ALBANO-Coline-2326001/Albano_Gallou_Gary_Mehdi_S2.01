@@ -56,10 +56,10 @@ public class AccueilController {
 
 
     @FXML
-    private String nomLoginJ1;
+    private String nomLoginJ1 = "Le Joueur1";
 
     @FXML
-    private String nomLoginJ2;
+    private String nomLoginJ2 = "Le Joueur2";
 
 
 
@@ -558,7 +558,8 @@ public class AccueilController {
         recommencerPartie();
         startPlay = true;
         startTimer();
-
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
     }
 
     @FXML
@@ -569,7 +570,8 @@ public class AccueilController {
         pseudoJ2.setText(nomLoginJ2);
         startPlay = true;
         startTimer();
-
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
     }
 
 
