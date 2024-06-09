@@ -60,7 +60,7 @@ public class PlayerData {
             sb.replace(0,22,"Games Played ," + this.gamesPlayed + '\n' + "Score" + this.score +'\n' );
 
             if (!games.isEmpty()) {
-                sb.append(games.get(games.size()-1).getOpponent() + " " + games.get(games.size()-1).getTime() + "  " + games.get(games.size()-1).getResult());
+                sb.append(games.get(games.size()-1).getOpponent1() + " " + games.get(games.size()-1).getTime1() + " "+ games.get(games.size()-1).getOpponent2() + " "  + games.get(games.size()-1).getTime2() + "  " + games.get(games.size()-1).getResult());
                 sb.append('\n');
             }
             writer.println(sb.toString());

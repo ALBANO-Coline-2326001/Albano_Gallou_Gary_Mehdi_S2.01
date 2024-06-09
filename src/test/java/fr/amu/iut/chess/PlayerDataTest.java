@@ -18,19 +18,17 @@ import static org.mockito.Mockito.when;
 public class PlayerDataTest {
 
 
-    @Mock
-    private GameStats gamePlayed; // Cette classe est touché par plusieurs personne et est souvent modifié il est préférable de la mocker
+
+    private GameStats gamePlayed;
     private PlayerData playerData;
 
 
     @BeforeEach
     public void init(){
-        MockitoAnnotations.openMocks(this);
+
         playerData = new PlayerData();
 
-        when(gamePlayed.getOpponent()).thenReturn("Opponent");
-        when(gamePlayed.getResult()).thenReturn("0-1");
-        when(gamePlayed.getTime()).thenReturn("05:00");
+        gamePlayed = new GameStats("Opponent1", "05:00", "Opponent2", "06:00", "0-1");
     }
 
     @Test
@@ -58,7 +56,7 @@ public class PlayerDataTest {
         String content = new String(Files.readAllBytes(Paths.get("testPlayerFile.json")));
         assertTrue(content.contains("Games Played ,1"));
         assertTrue(content.contains("Score10"));
-        assertTrue(content.contains("Opponent 05:00  0-1"));
+        assertTrue(content.contains("05:00 06:00 Opponent1 Opponent2  0-1"));
 
     }
 

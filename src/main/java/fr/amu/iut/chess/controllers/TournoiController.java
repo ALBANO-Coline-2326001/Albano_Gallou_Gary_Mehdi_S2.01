@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
@@ -15,19 +16,26 @@ import java.io.IOException;
 public class TournoiController {
 
     @FXML
-    private TableColumn player1Column;
+    private TableColumn<PlayerData, String> player1Column;
     @FXML
-    private TableColumn player2Column;
+    private TableColumn<PlayerData, String> player2Column;
     @FXML
-    private TableColumn resultColumn;
+    private TableColumn<PlayerData, String> resultColumn;
     @FXML
-    private TableView tournamentTable;
+    private TableView<PlayerData> tournamentTable;
 
     private static Stage previousStage;
     private static String nomLog1;
+    private static String nomLog2;
 
     public void initialize() {
-       addData(nomLog1,nomLog2,"i");
+        // Configure les colonnes
+        player1Column.setCellValueFactory(new PropertyValueFactory<>("player1"));
+        player2Column.setCellValueFactory(new PropertyValueFactory<>("player2"));
+        resultColumn.setCellValueFactory(new PropertyValueFactory<>("result"));
+
+        // Ajoute des données de test
+        addData(nomLog1, nomLog2, "");
     }
 
     public static String getNomLog2() {
@@ -46,12 +54,9 @@ public class TournoiController {
         TournoiController.nomLog2 = nomLog2;
     }
 
-    private static String nomLog2;
-
     public static void setPreviousStage(Stage stage) {
         previousStage = stage;
     }
-
 
     @FXML
     private void handleBackToMenu(ActionEvent event) {
@@ -71,19 +76,33 @@ public class TournoiController {
         }
     }
 
-//    public void addPlayers(){
-//        player1Column.
-//    }
     private void addData(String player1, String player2, String result) {
-        // Obtient la liste observable associée à la table
-        ObservableList<ObservableList<String>> data = tournamentTable.getItems();
-
-        // Crée une liste observable contenant les données du joueur
-        ObservableList<String> row = FXCollections.observableArrayList(player1, player2, result);
-
-        // Ajoute la liste observable à la liste observable principale
-        data.add(row);
+        // Ajoute les données de joueur au tableau
+        tournamentTable.getItems().add(new PlayerData(player1, player2, result));
     }
 
+    // Classe interne pour représenter les données des joueurs
+    public static class PlayerData {
+        private final String player1;
+        private final String player2;
+        private final String result;
 
+        public PlayerData(String player1, String player2, String result) {
+            this.player1 = player1;
+            this.player2 = player2;
+            this.result = result;
+        }
+
+        public String getPlayer1() {
+            return player1;
+        }
+
+        public String getPlayer2() {
+            return player2;
+        }
+
+        public String getResult() {
+            return result;
+        }
+    }
 }

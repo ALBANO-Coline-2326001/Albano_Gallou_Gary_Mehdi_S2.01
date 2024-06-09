@@ -26,6 +26,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,14 +56,15 @@ public class AccueilController {
 
     @FXML
     private Button joueurContreJoueur;
-    @FXML
-    private String nomLoginJ1;
+
 
     @FXML
-    private String nomLoginJ2;
+    private String nomLoginJ1 = "Le Joueur1";
 
     @FXML
-    private Button bLogin;
+    private String nomLoginJ2 = "Le Joueur2";
+
+
 
     @FXML
     private TextField nomJ1;
@@ -84,8 +86,6 @@ public class AccueilController {
     private Label timerLabel2;
 
     private Timeline whiteTimeline;
-    private Timeline timeline;
-    private Timeline timeline2;
     private Timeline blackTimeline;
     private String tempsRestantNoir;
     private String tempsRestantBlanc;
@@ -97,7 +97,7 @@ public class AccueilController {
     private int selectedCol = -1;
     private IntegerProperty nbpartie = new SimpleIntegerProperty(0);
     private PlayerData playerData = new PlayerData();
-    private GameStats donnePartie = new GameStats("","","");
+    private GameStats donnePartie = new GameStats("","","","","");
     private String time;
     private String winner;
 
@@ -168,6 +168,128 @@ public class AccueilController {
             plateau.add(row);
         }
     }
+
+
+
+
+
+    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
+        // Vérifiez que les coordonnées sont dans les limites du plateau
+        if (toRow < 0 || toRow >= 8 || toCol < 0 || toCol >= 8) {
+            return false;
+        }
+
+        // Vérifiez si le mouvement est valide
+        if (targetPiece.isValide(toRow, toCol, plateau)) {
+            // Mettre à jour les coordonnées de la pièce
+            targetPiece.move(toRow, toCol);
+
+            // Retirer la pièce de l'ancienne position
+            plateau.get(fromRow).set(fromCol, null);
+
+            // Placer la pièce dans la nouvelle position
+            plateau.get(toRow).set(toCol, targetPiece);
+
+            // Supprimer l'écouteur d'événements de la pièce d'origine
+            if (selectedImageView != null) {
+                selectedImageView.setOnMouseClicked(null);
+            }
+
+            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
+            ImageView newImageView = targetPiece.getImage();
+            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
+
+            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
+            selectedImageView = newImageView;
+
+            return true;
+        }
+        return false;
+    }
+
+
+    private void highlightValidMoves(Piece piece) {
+        clearHighlights(); // Efface les anciennes surbrillances
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (piece.isValide(i, j, plateau)) {
+                    Rectangle highlight = new Rectangle(75, 75, Color.YELLOW);
+                    highlight.setOpacity(0.5); // Ajustez l'opacité selon vos préférences
+                    highlight.setMouseTransparent(true); // Permet à la souris de cliquer à travers le rectangle
+                    chessBoard.add(highlight, j, i);
+                }
+            }
+        }
+    }
+
+
+    private void clearHighlights() {
+        chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
+    }
+
+
+
+    private void botPlay() {
+        if (isWhiteTurn) {
+            return; // Le bot joue pour les noirs seulement
+        }
+
+        // Générer tous les mouvements valides pour les noirs
+        ArrayList<int[]> allValidMoves = generateAllValidMoves(false);
+
+        if (!allValidMoves.isEmpty()) {
+            // Choisir un mouvement aléatoire parmi les mouvements valides
+            Random random = new Random();
+            int[] move = allValidMoves.get(random.nextInt(allValidMoves.size()));
+            int fromRow = move[0];
+            int fromCol = move[1];
+            int toRow = move[2];
+            int toCol = move[3];
+
+            Piece piece = plateau.get(fromRow).get(fromCol);
+            if (movePiece(fromRow, fromCol, toRow, toCol, piece)) {
+                System.out.println("Le bot a déplacé " + piece.getNom() + " de (" + fromRow + "," + fromCol + ") à (" + toRow + "," + toCol + ")");
+                if (finJeu()) {
+                    playerData.setGames(donnePartie);
+                    playerData.writeDataToFile("playerData.json");
+                    recommencerPartie();
+                } else {
+                    isWhiteTurn = !isWhiteTurn;
+                    whiteTimeline.playFromStart();
+                    blackTimeline.stop();
+                }
+                // Mettre à jour l'affichage après le déplacement du bot
+                affichage();
+            }
+        }
+    }
+
+
+
+
+
+    private ArrayList<int[]> generateAllValidMoves(boolean isWhite) {
+        ArrayList<int[]> allValidMoves = new ArrayList<>();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = plateau.get(i).get(j);
+                if (piece != null && piece.isWhite() == isWhite) {
+                    for (int row = 0; row < 8; row++) {
+                        for (int col = 0; col < 8; col++) {
+                            if (piece.isValide(row, col, plateau)) {
+                                allValidMoves.add(new int[]{i, j, row, col});
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return allValidMoves;
+    }
+
     @FXML
     private void handleMouseClick(int row, int col) {
         if (!startPlay) {
@@ -194,7 +316,6 @@ public class AccueilController {
                     plateau.get(selectedRow).set(selectedCol, null);
                     plateau.get(row).set(col, selectedPiece);
 
-                    // Ne mettez à jour le tour et ne démarrez les timers que si le mouvement est valide
                     isWhiteTurn = !isWhiteTurn;
 
                     if (isWhiteTurn) {
@@ -208,9 +329,14 @@ public class AccueilController {
                         }
                     }
 
+                    if (finJeu()) {
+                        playerData.setGames(donnePartie);
+                        playerData.writeDataToFile("playerData.json");
+                        recommencerPartie();
+                    }
+
                     resetSelection();
                 } else {
-                    // Ne réinitialise la sélection que si le mouvement n'est pas valide
                     resetSelection();
                 }
             } else {
@@ -223,108 +349,38 @@ public class AccueilController {
             selectedCol = col;
 
             highlightValidMoves(clickedPiece);
-
-            // Aucun changement de tour ici
-        }
-
-        if (finJeu()) {
-            playerData.setGames(donnePartie);
-            playerData.writeDataToFile("playerData.json");
-            recommencerPartie();
         }
     }
 
-
-
-
-    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
-        if (targetPiece.isValide(toRow, toCol, plateau)) {
-            // Appeler la méthode move de la pièce
-            targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
-
-            plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
-            plateau.get(toRow).set(toCol, targetPiece);  // Placer la pièce dans la nouvelle position
-
-            // Supprimer l'écouteur d'événements de la pièce d'origine
-            selectedImageView.setOnMouseClicked(null);
-
-            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
-            ImageView newImageView = targetPiece.getImage();
-            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
-
-            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
-            selectedImageView = newImageView;
-
-            return true;
-        }
-        return false;
-    }
-    private void highlightValidMoves(Piece piece) {
-        clearHighlights(); // Efface les anciennes surbrillances
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (piece.isValide(i, j, plateau)) {
-                    Rectangle highlight = new Rectangle(75, 75, Color.YELLOW);
-                    highlight.setOpacity(0.5); // Ajustez l'opacité selon vos préférences
-                    highlight.setMouseTransparent(true); // Permet à la souris de cliquer à travers le rectangle
-                    chessBoard.add(highlight, j, i);
-                }
-            }
-        }
-    }
-
-
-    private void clearHighlights() {
-        chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
-    }
-
-
-    private void botPlay() {
-        // Parcourez le plateau pour trouver une pièce du bot et un mouvement valide
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Piece piece = plateau.get(i).get(j);
-                if (piece != null && !piece.isWhite()) { // Si la pièce est une pièce du bot
-                    for (int x = 0; x < 8; x++) {
-                        for (int y = 0; y < 8; y++) {
-                            if (piece.isValide(x, y, plateau)) { // Si le mouvement est valide
-                                // Jouez le mouvement
-                                movePiece(i, j, x, y, piece);
-                                // Changez de tour
-                                isWhiteTurn = !isWhiteTurn;
-                                return; // Sortir de la méthode après avoir joué un mouvement
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private void affichage() {
+        // Effacer l'échiquier pour le redessiner
+        chessBoard.getChildren().clear();
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
+                // Créer chaque case de l'échiquier
                 Rectangle square = new Rectangle(75, 75);
                 square.setFill((i + j) % 2 == 0 ? Color.rgb(235, 236, 208) : Color.rgb(115, 149, 82));
                 chessBoard.add(square, j, i);
 
                 final int row = i;
                 final int col = j;
+                // Ajouter un événement de clic à chaque case
                 square.setOnMouseClicked(event -> handleMouseClick(row, col));
 
-                Piece indice = plateau.get(i).get(j);
-                if (indice != null) {
-                    chessBoard.add(indice.getImage(), j, i);
-                    indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
-                    indice.getImage().setOnMouseEntered(event -> indice.getImage().setCursor(Cursor.HAND));
-                    indice.getImage().setOnMouseExited(event -> indice.getImage().setCursor(Cursor.DEFAULT));
-
-
+                // Ajouter la pièce à la case si elle existe
+                Piece piece = plateau.get(i).get(j);
+                if (piece != null) {
+                    chessBoard.add(piece.getImage(), j, i);
+                    piece.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+                    piece.getImage().setOnMouseEntered(event -> piece.getImage().setCursor(Cursor.HAND));
+                    piece.getImage().setOnMouseExited(event -> piece.getImage().setCursor(Cursor.DEFAULT));
                 }
             }
         }
     }
+
 
 
 
@@ -440,12 +496,7 @@ public class AccueilController {
 
 
 
-//    public void start(){
-//        nbpartie.set(nbpartie.get() + 1);
-//        playerData.setGamesPlayed(nbpartie.get());
-//        playerData.writeDataToFile("playerData.json");
-//        startPlay = true;
-//    }
+
 
     public boolean finJeu(){
 
@@ -484,7 +535,7 @@ public class AccueilController {
             tempsRestantBlanc = timerLabel1.getText();
             time = tempsRestantBlanc;
             winner = "1 - 0";
-            donnePartie = new GameStats(nomLoginJ2,tempsRestantBlanc ,winner);
+            donnePartie = new GameStats(nomLoginJ2,nomLoginJ1,tempsRestantNoir,tempsRestantBlanc ,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -500,7 +551,7 @@ public class AccueilController {
             time = tempsRestantBlanc;
             winner = "0 - 1";
 
-            donnePartie = new GameStats(nomLoginJ2,tempsRestantNoir,winner);
+            donnePartie = new GameStats(nomLoginJ2,nomLoginJ1,tempsRestantNoir,tempsRestantBlanc ,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -517,33 +568,23 @@ public class AccueilController {
         recommencerPartie();
         startPlay = true;
         startTimer();
-
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
     }
 
     @FXML
     public void JoueurContreBot() {
         isBotMode = true; // Le mode Joueur contre Bot est activé
         recommencerPartie();
+        nomLoginJ2 = "LE ROBOT";
+        pseudoJ2.setText(nomLoginJ2);
         startPlay = true;
         startTimer();
-
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
     }
 
 
-    @FXML
-    public void Login(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setTitle("Login");
-            stage.getIcons().add(new Image("img/iconDame.png"));
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void lanceTournoie(ActionEvent event){
@@ -555,7 +596,7 @@ public class AccueilController {
             TournoiController.setPreviousStage(currentStage);
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
-            stage.setTitle("Tournament Mode");
+            stage.setTitle("Mode tournois");
             stage.getIcons().add(new Image("img/iconDame.png"));
             stage.setScene(scene);
             stage.show();
