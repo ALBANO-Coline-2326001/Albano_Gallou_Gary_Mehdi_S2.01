@@ -1,20 +1,22 @@
+/* styles.css */
 .joueur{
     -fx-background-color: #302E2B;
     -fx-font-size: 1em;
     -fx-text-fill: #FFF;
 }
-
+.label{
+    --block-font-family: Arial;
+}
 .plateau{
-
     -fx-pref-width: 40em;
     -fx-pref-height: 40em;
-
-
 }
+
 .partie_droite {
     -fx-background-color: #262522;
     -fx-hgrow: always; /* Permet à la partie droite de croître */
 }
+
 .buttonPlay {
     -fx-background-color: #87C04F;
     -fx-text-fill: #FFF;
@@ -22,11 +24,14 @@
     -fx-pref-height: 2.5em;
     -fx-font-size: 1.5em;
 }
+
 .buttonPlay:hover {
+
     -fx-background-color: #87be0f;
 }
 
 .tournoisBox{
+    -fx-background-color: #3C3B39;
     -fx-pref-height: 30em;
 }
 
@@ -43,8 +48,8 @@
 
 .infosEnLigne{
     -fx-pref-height: 8em;
-
 }
+
 .infosEnLigneTxt{
     -fx-text-fill: #FFF;
     -fx-font-size: 0.9em;
@@ -61,7 +66,6 @@
     -fx-background-color: rgba(60, 59, 57, 0.6);
 }
 
-/* styles.css */
 .combo-box .list-cell {
     -fx-background-color: #3C3B39;
     -fx-text-fill: #FFF;
@@ -71,7 +75,6 @@
     -fx-graphic-text-gap: 10px; /* Espacement entre l'image et le texte */
     -fx-text-fill: #FFF;
     -fx-font-size: 1.2em;
-
 }
 
 .combo-box .combo-box-popup .list-view .list-cell {
@@ -81,7 +84,6 @@
 .tab {
     -fx-background-color: #2b2b2b; /* Fond sombre pour les onglets non sélectionnés */
     -fx-border-color: transparent; /* Bordure transparente pour les onglets non sélectionnés */
-
 }
 
 .tab:selected {
@@ -98,7 +100,6 @@
     -fx-font-weight: bold;
 }
 
-/* Style du contenu des onglets */
 .tab-content {
     -fx-background-color: #3c3c3c; /* Fond sombre pour le contenu des onglets */
     -fx-padding: 10px;
@@ -106,7 +107,6 @@
     -fx-border-width: 1px;
     -fx-border-radius: 0 0 5px 5px; /* Bordure arrondie en bas */
 }
-
 
 .tab-header-area .tab-header-background {
     -fx-background-color: #262522;
@@ -116,13 +116,20 @@
     -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
     -fx-background-color: #989795;
     -fx-font-size: 2em;
-
-
 }
+
 .minuteur1{
     -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
     -fx-background-color: #989795;
     -fx-font-size: 2em;
+}
 
+.partieData{}
 
+.vboxParties{}
+
+.labelsParties{
+    -fx-padding: 10;
+    -fx-background-color: #6a6660;
+    -fx-border-radius: 5px 5px 0 0;
 }

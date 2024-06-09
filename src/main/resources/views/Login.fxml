@@ -2,33 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="fr.amu.iut.earthquakeapp.controllers.AccueilController"
-      alignment="CENTER"
-      spacing="10"
-      padding="20">
+<BorderPane fx:id="mainBP" prefHeight="250" prefWidth="500" stylesheets="@../css/Login.css"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.amu.iut.earthquakeapp.controllers.LoginController">
+    <center>
 
-    <Label text="Entrez votre nom:"/>
-
-    <GridPane>
-        <padding>
-            <Insets top="5" right="5" bottom="5" left="5"/>
-        </padding>
-        <VBox spacing="5">
-            <Label text="Prénom:"/>
-            <TextField fx:id="firstNameField"/>
-        </VBox>
-        <VBox spacing="5">
-            <Label text="Nom:"/>
-            <TextField fx:id="lastNameField"/>
-        </VBox>
-    </GridPane>
-
-    <Button text="Soumettre" />
-</VBox>
+    </center>
+</BorderPane>

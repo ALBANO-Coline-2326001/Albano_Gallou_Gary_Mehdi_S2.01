@@ -2,13 +2,22 @@ package fr.amu.iut.earthquakeapp.jeu.pieces;
 
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.scene.image.ImageView;
-
 import java.util.ArrayList;
 
+/**
+ * Classe représentant un roi dans le jeu d'échecs.
+ */
 public class Roi extends Piece {
 
-    private static int dernierId = 0;
+    private static int dernierId = 0;  // Compteur statique pour donner un identifiant unique à chaque roi
 
+    /**
+     * Constructeur de la classe Roi.
+     *
+     * @param isWhite Indique si le roi est blanc (true) ou noir (false).
+     * @param x       Coordonnée x initiale du roi sur l'échiquier.
+     * @param y       Coordonnée y initiale du roi sur l'échiquier.
+     */
     public Roi(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         if (isWhite) {
@@ -24,11 +33,25 @@ public class Roi extends Piece {
         ++dernierId;
     }
 
+    /**
+     * Déplace le roi vers de nouvelles coordonnées.
+     *
+     * @param x Nouvelle coordonnée x.
+     * @param y Nouvelle coordonnée y.
+     */
     @Override
     public void move(int x, int y) {
         setCoordonne(x, y);
     }
 
+    /**
+     * Vérifie si un mouvement est valide pour le roi.
+     *
+     * @param x       Coordonnée x de destination.
+     * @param y       Coordonnée y de destination.
+     * @param plateau Plateau de jeu contenant toutes les pièces.
+     * @return true si le mouvement est valide, false sinon.
+     */
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
         int deltaX = Math.abs(x - getX());
@@ -48,12 +71,4 @@ public class Roi extends Piece {
         return true;
     }
 
-    public boolean isDead(int x, int y, ArrayList<ArrayList<Piece>> plateau){
-        // Verifier si la case ou se trouve le roi vient d'être prise
-        if (this == plateau.get(x).get(y) ){
-
-        }
-        return false;
-
-    }
 }

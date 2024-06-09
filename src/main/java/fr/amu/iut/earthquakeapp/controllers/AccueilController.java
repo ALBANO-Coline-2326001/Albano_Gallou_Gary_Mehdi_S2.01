@@ -9,22 +9,25 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,14 +44,35 @@ public class AccueilController {
     private boolean startPlay = false;
     @FXML
     private Label donnee;
+    @FXML
+    private VBox VboxParties;
 
-    private GameStats donnePartie;
-    private PlayerData joueur1;
-    private PlayerData Joueur2;
+    @FXML
+    private Label pseudoJ1;
+
+    @FXML
+    private Label pseudoJ2;
+
 
 
     @FXML
     private Button joueurContreJoueur;
+    @FXML
+    private String nomLoginJ1;
+
+    @FXML
+    private String nomLoginJ2;
+
+    @FXML
+    private Button bLogin;
+
+    @FXML
+    private TextField nomJ1;
+
+    @FXML
+    private TextField nomJ2;
+
+
 
     @FXML
     private Button joueurContreBot;
@@ -62,6 +86,8 @@ public class AccueilController {
     private Label timerLabel2;
 
     private Timeline whiteTimeline;
+    private Timeline timeline;
+    private Timeline timeline2;
     private Timeline blackTimeline;
     private String tempsRestantNoir;
     private String tempsRestantBlanc;
@@ -73,6 +99,10 @@ public class AccueilController {
     private int selectedCol = -1;
     private IntegerProperty nbpartie = new SimpleIntegerProperty(0);
     private PlayerData playerData = new PlayerData();
+    private GameStats donnePartie = new GameStats("","","");
+    private String time;
+    private String winner;
+
 
     @FXML
     private GridPane chessBoard;
@@ -200,6 +230,8 @@ public class AccueilController {
         }
 
         if (finJeu()) {
+            playerData.setGames(donnePartie);
+            playerData.writeDataToFile("playerData.json");
             recommencerPartie();
         }
     }
@@ -303,6 +335,11 @@ public class AccueilController {
         isWhiteTurn=true;
         chessBoard.getChildren().clear();
         affichage();
+        nbpartie.set(nbpartie.get() + 1);
+        if (winner == "1 - 0"){
+            playerData.setScore(playerData.getScore() + 1);
+        }
+        playerData.setGamesPlayed(nbpartie.get());
         // Réinitialiser le plateau de jeu
         // Rafraîchir l'affichage de l'échiquier
         startPlay = false; // Réinitialiser le contrôle de jeu
@@ -317,14 +354,19 @@ public class AccueilController {
         selectedCol = -1;
     }
 
-
+    private int dataSize = 1;
     public void showData(){
-        donnee.setText(PlayerData.readDataFromFile("playerData.json"));
-        donnee.setTextFill(Color.WHITE);
+        VboxParties.getChildren().clear();
+        Label l = new Label(PlayerData.readDataFromFile("playerData.json"));
+        l.setTextFill(Color.WHITE);
+        l.getStyleClass().add("labelsParties");
+        VboxParties.getChildren().add(l);
 
     }
-    private Timeline timeline;
-    private Timeline timeline2;
+
+
+
+
     private String timeToString(int time) {
         int minutes = time / 60;
         int seconds = time % 60;
@@ -400,12 +442,12 @@ public class AccueilController {
 
 
 
-    public void start(){
-        nbpartie.set(nbpartie.get() + 1);
-        playerData.setGamesPlayed(nbpartie.get());
-        playerData.writeDataToFile("playerData.json");
-        startPlay = true;
-    }
+//    public void start(){
+//        nbpartie.set(nbpartie.get() + 1);
+//        playerData.setGamesPlayed(nbpartie.get());
+//        playerData.writeDataToFile("playerData.json");
+//        startPlay = true;
+//    }
 
     public boolean finJeu(){
 
@@ -442,7 +484,9 @@ public class AccueilController {
             stopBlackTimer();
             tempsRestantNoir = timerLabel2.getText();
             tempsRestantBlanc = timerLabel1.getText();
-
+            time = tempsRestantBlanc;
+            winner = "1 - 0";
+            donnePartie = new GameStats(nomLoginJ2,tempsRestantBlanc ,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -455,7 +499,10 @@ public class AccueilController {
             stopBlackTimer();
             tempsRestantNoir = timerLabel2.getText();
             tempsRestantBlanc = timerLabel1.getText();
+            time = tempsRestantBlanc;
+            winner = "0 - 1";
 
+            donnePartie = new GameStats(nomLoginJ2,tempsRestantNoir,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -471,8 +518,8 @@ public class AccueilController {
         isBotMode = false; // Le mode Joueur contre Joueur est activé
         recommencerPartie();
         startPlay = true;
-        showNameEntryDialog();
         startTimer();
+
     }
 
     @FXML
@@ -485,41 +532,52 @@ public class AccueilController {
     }
 
 
-    public static void showNameEntryDialog() {
-        // Créer la fenêtre de récupération de nom
-        JDialog nameDialog = new JDialog((Frame) null, "Récupération de Nom", true);
-        nameDialog.setSize(300, 200);
-        nameDialog.setLayout(new GridLayout(3, 2, 10, 10));
-
-        // Ajouter des composants à la fenêtre de récupération de nom
-        JLabel nameLabel1 = new JLabel("Entrez votre premier nom :");
-        JTextField nameField1 = new JTextField(20);
-
-        JLabel nameLabel2 = new JLabel("Entrez votre deuxième nom :");
-        JTextField nameField2 = new JTextField(20);
-
-        JButton submitButton = new JButton("Entrer nom");
-
-        nameDialog.add(nameLabel1);
-        nameDialog.add(nameField1);
-        nameDialog.add(nameLabel2);
-        nameDialog.add(nameField2);
-        nameDialog.add(submitButton);
-
-        // Ajouter un écouteur d'événements au bouton de soumission
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String firstName = nameField1.getText();
-                String secondName = nameField2.getText();
-                JOptionPane.showMessageDialog(nameDialog, "Noms enregistrés : " + firstName + " et " + secondName);
-                nameDialog.dispose();
-            }
-        });
-
-        // Afficher la fenêtre de récupération de nom
-        nameDialog.setVisible(true);
+    @FXML
+    public void Login(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    @FXML
+    public void lanceTournoie(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Tournoi.fxml"));
+            System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+            TournoiController tournoiController = new TournoiController();
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            TournoiController.setPreviousStage(currentStage);
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Tournament Mode");
+            stage.getIcons().add(new Image("img/iconDame.png"));
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    public void ButtonLogin(){
+        nomLoginJ1 = nomJ1.getText();
+        nomLoginJ2 = nomJ2.getText();
+        pseudoJ1.setText(nomLoginJ1);
+        pseudoJ2.setText(nomLoginJ2);
+        TournoiController.setNomLog1(nomLoginJ1);
+        TournoiController.setNomLog2(nomLoginJ2);
+
+    }
+
 
 }
 

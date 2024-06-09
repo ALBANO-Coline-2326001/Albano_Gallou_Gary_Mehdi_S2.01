@@ -2,14 +2,23 @@ package fr.amu.iut.earthquakeapp.jeu.pieces;
 
 import fr.amu.iut.earthquakeapp.jeu.Piece;
 import javafx.scene.image.ImageView;
-
 import java.util.ArrayList;
 
+/**
+ * Classe représentant un pion dans le jeu d'échecs.
+ */
 public class Pion extends Piece {
 
-    private static int dernierId = 0;
-    private boolean fristMove;
+    private static int dernierId = 0;  // Compteur statique pour donner un identifiant unique à chaque pion
+    private boolean fristMove;  // Indique si le pion est dans son premier mouvement
 
+    /**
+     * Constructeur de la classe Pion.
+     *
+     * @param isWhite Indique si le pion est blanc (true) ou noir (false).
+     * @param x       Coordonnée x initiale du pion sur l'échiquier.
+     * @param y       Coordonnée y initiale du pion sur l'échiquier.
+     */
     public Pion(boolean isWhite, int x, int y) {
         super(isWhite, x, y);
         setImage(isWhite ? new ImageView("/img/image echec/pion_blanc.png") : new ImageView("/img/image echec/pion_noir.png"));
@@ -22,6 +31,14 @@ public class Pion extends Piece {
         fristMove = true;
     }
 
+    /**
+     * Vérifie si un mouvement est valide pour le pion.
+     *
+     * @param x       Coordonnée x de destination.
+     * @param y       Coordonnée y de destination.
+     * @param plateau Plateau de jeu contenant toutes les pièces.
+     * @return true si le mouvement est valide, false sinon.
+     */
     @Override
     public boolean isValide(int x, int y, ArrayList<ArrayList<Piece>> plateau) {
         int direction = isWhite() ? -1 : 1;
@@ -36,13 +53,11 @@ public class Pion extends Piece {
             return true;
         }
 
-// Avancer de deux cases depuis la position initiale
+        // Avancer de deux cases depuis la position initiale
         if (fristMove && x == getX() + 2 * direction && y == getY() &&
-                plateau.get(getX() + direction).get(getY()) == null && plateau.get(x).get(y) == null &&
-                plateau.get(x - direction).get(y) == null) {
+                plateau.get(getX() + direction).get(getY()) == null && plateau.get(x).get(y) == null) {
             return true;
         }
-
 
         // Capturer une pièce en diagonale
         if (x == getX() + direction && (y == getY() + 1 || y == getY() - 1)) {
@@ -55,12 +70,16 @@ public class Pion extends Piece {
         return false;
     }
 
+    /**
+     * Déplace le pion vers de nouvelles coordonnées.
+     *
+     * @param x Nouvelle coordonnée x.
+     * @param y Nouvelle coordonnée y.
+     */
     @Override
     public void move(int x, int y) {
         // Ne désactivez le premier mouvement que si le pion a effectivement bougé
         fristMove = false;
         setCoordonne(x, y);
-
-
     }
 }
