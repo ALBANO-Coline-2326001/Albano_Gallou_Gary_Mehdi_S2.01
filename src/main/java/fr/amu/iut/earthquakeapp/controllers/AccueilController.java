@@ -12,12 +12,18 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -37,6 +43,9 @@ public class AccueilController {
     private Label donnee;
 
     private GameStats donnePartie;
+    private PlayerData joueur1;
+    private PlayerData Joueur2;
+
 
     @FXML
     private Button joueurContreJoueur;
@@ -462,6 +471,7 @@ public class AccueilController {
         isBotMode = false; // Le mode Joueur contre Joueur est activé
         recommencerPartie();
         startPlay = true;
+        showNameEntryDialog();
         startTimer();
     }
 
@@ -475,6 +485,41 @@ public class AccueilController {
     }
 
 
+    public static void showNameEntryDialog() {
+        // Créer la fenêtre de récupération de nom
+        JDialog nameDialog = new JDialog((Frame) null, "Récupération de Nom", true);
+        nameDialog.setSize(300, 200);
+        nameDialog.setLayout(new GridLayout(3, 2, 10, 10));
+
+        // Ajouter des composants à la fenêtre de récupération de nom
+        JLabel nameLabel1 = new JLabel("Entrez votre premier nom :");
+        JTextField nameField1 = new JTextField(20);
+
+        JLabel nameLabel2 = new JLabel("Entrez votre deuxième nom :");
+        JTextField nameField2 = new JTextField(20);
+
+        JButton submitButton = new JButton("Entrer nom");
+
+        nameDialog.add(nameLabel1);
+        nameDialog.add(nameField1);
+        nameDialog.add(nameLabel2);
+        nameDialog.add(nameField2);
+        nameDialog.add(submitButton);
+
+        // Ajouter un écouteur d'événements au bouton de soumission
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String firstName = nameField1.getText();
+                String secondName = nameField2.getText();
+                JOptionPane.showMessageDialog(nameDialog, "Noms enregistrés : " + firstName + " et " + secondName);
+                nameDialog.dispose();
+            }
+        });
+
+        // Afficher la fenêtre de récupération de nom
+        nameDialog.setVisible(true);
+    }
 
 }
 

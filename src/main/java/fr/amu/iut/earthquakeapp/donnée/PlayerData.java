@@ -9,10 +9,15 @@ import java.util.*;
 public class PlayerData {
     private int gamesPlayed;
     private int score;
+    private String name;
 
     public PlayerData() {
      gamesPlayed = 0;
        score = 0;
+    }
+
+    public PlayerData(String name) {
+        this.name = name;
     }
 
     public void setGamesPlayed(int gamesPlayed) {
