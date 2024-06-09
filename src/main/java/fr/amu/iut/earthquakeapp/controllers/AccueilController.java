@@ -26,6 +26,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -157,6 +158,189 @@ public class AccueilController {
             plateau.add(row);
         }
     }
+
+
+
+
+
+    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
+        // Vérifiez que les coordonnées sont dans les limites du plateau
+        if (toRow < 0 || toRow >= 8 || toCol < 0 || toCol >= 8) {
+            return false;
+        }
+
+        // Vérifiez si le mouvement est valide
+        if (targetPiece.isValide(toRow, toCol, plateau)) {
+            // Mettre à jour les coordonnées de la pièce
+            targetPiece.move(toRow, toCol);
+
+            // Retirer la pièce de l'ancienne position
+            plateau.get(fromRow).set(fromCol, null);
+
+            // Placer la pièce dans la nouvelle position
+            plateau.get(toRow).set(toCol, targetPiece);
+
+            // Supprimer l'écouteur d'événements de la pièce d'origine
+            if (selectedImageView != null) {
+                selectedImageView.setOnMouseClicked(null);
+            }
+
+            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
+            ImageView newImageView = targetPiece.getImage();
+            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
+
+            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
+            selectedImageView = newImageView;
+
+            return true;
+        }
+        return false;
+    }
+
+
+    private void highlightValidMoves(Piece piece) {
+        clearHighlights(); // Efface les anciennes surbrillances
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (piece.isValide(i, j, plateau)) {
+                    Rectangle highlight = new Rectangle(75, 75, Color.YELLOW);
+                    highlight.setOpacity(0.5); // Ajustez l'opacité selon vos préférences
+                    highlight.setMouseTransparent(true); // Permet à la souris de cliquer à travers le rectangle
+                    chessBoard.add(highlight, j, i);
+                }
+            }
+        }
+    }
+
+
+    private void clearHighlights() {
+        chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
+    }
+
+
+
+    private void botPlay() {
+        if (isWhiteTurn) {
+            return; // Le bot joue pour les noirs seulement
+        }
+
+        // Générer tous les mouvements valides pour les noirs
+        ArrayList<int[]> allValidMoves = generateAllValidMoves(false);
+
+        if (!allValidMoves.isEmpty()) {
+            // Choisir un mouvement aléatoire parmi les mouvements valides
+            Random random = new Random();
+            int[] move = allValidMoves.get(random.nextInt(allValidMoves.size()));
+            int fromRow = move[0];
+            int fromCol = move[1];
+            int toRow = move[2];
+            int toCol = move[3];
+
+            Piece piece = plateau.get(fromRow).get(fromCol);
+            if (movePiece(fromRow, fromCol, toRow, toCol, piece)) {
+                System.out.println("Le bot a déplacé " + piece.getNom() + " de (" + fromRow + "," + fromCol + ") à (" + toRow + "," + toCol + ")");
+                if (finJeu()) {
+                    playerData.setGames(donnePartie);
+                    playerData.writeDataToFile("playerData.json");
+                    recommencerPartie();
+                } else {
+                    isWhiteTurn = !isWhiteTurn;
+                    whiteTimeline.playFromStart();
+                    blackTimeline.stop();
+                }
+                // Mettre à jour l'affichage après le déplacement du bot
+                affichage();
+            }
+        }
+    }
+
+    @FXML
+    private void handleMouseClickForBot(int row, int col) {
+        if (!startPlay) {
+            return;
+        }
+
+        System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
+
+        Piece clickedPiece = plateau.get(row).get(col);
+        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
+
+        clearHighlights();
+
+        if (selectedPiece != null) {
+            if (row != selectedRow || col != selectedCol) {
+                if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
+                    chessBoard.getChildren().remove(selectedImageView);
+                    if (clickedImageView != null) {
+                        System.out.println("Pièce capturée : " + clickedPiece.getNom());
+                        chessBoard.getChildren().remove(clickedImageView);
+                    }
+                    chessBoard.add(selectedImageView, col, row);
+
+                    plateau.get(selectedRow).set(selectedCol, null);
+                    plateau.get(row).set(col, selectedPiece);
+
+                    isWhiteTurn = !isWhiteTurn;
+
+                    if (isWhiteTurn) {
+                        blackTimeline.stop();
+                        whiteTimeline.playFromStart();
+                    } else {
+                        whiteTimeline.stop();
+                        blackTimeline.playFromStart();
+                        if (isBotMode) { // Si c'est le tour du bot et que le mode joueur contre bot est activé
+                            botPlay(); // Fait jouer le bot de manière aléatoire
+                        }
+                    }
+
+                    if (finJeu()) {
+                        playerData.setGames(donnePartie);
+                        playerData.writeDataToFile("playerData.json");
+                        recommencerPartie();
+                    }
+
+                    resetSelection();
+                    affichage(); // Mettre à jour l'affichage après le déplacement du joueur
+                } else {
+                    resetSelection();
+                }
+            } else {
+                resetSelection();
+            }
+        } else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) {
+            selectedPiece = clickedPiece;
+            selectedImageView = clickedImageView;
+            selectedRow = row;
+            selectedCol = col;
+
+            highlightValidMoves(clickedPiece);
+        }
+    }
+
+
+
+    private ArrayList<int[]> generateAllValidMoves(boolean isWhite) {
+        ArrayList<int[]> allValidMoves = new ArrayList<>();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = plateau.get(i).get(j);
+                if (piece != null && piece.isWhite() == isWhite) {
+                    for (int row = 0; row < 8; row++) {
+                        for (int col = 0; col < 8; col++) {
+                            if (piece.isValide(row, col, plateau)) {
+                                allValidMoves.add(new int[]{i, j, row, col});
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return allValidMoves;
+    }
+
     @FXML
     private void handleMouseClick(int row, int col) {
         if (!startPlay) {
@@ -183,7 +367,6 @@ public class AccueilController {
                     plateau.get(selectedRow).set(selectedCol, null);
                     plateau.get(row).set(col, selectedPiece);
 
-                    // Ne mettez à jour le tour et ne démarrez les timers que si le mouvement est valide
                     isWhiteTurn = !isWhiteTurn;
 
                     if (isWhiteTurn) {
@@ -197,9 +380,14 @@ public class AccueilController {
                         }
                     }
 
+                    if (finJeu()) {
+                        playerData.setGames(donnePartie);
+                        playerData.writeDataToFile("playerData.json");
+                        recommencerPartie();
+                    }
+
                     resetSelection();
                 } else {
-                    // Ne réinitialise la sélection que si le mouvement n'est pas valide
                     resetSelection();
                 }
             } else {
@@ -212,110 +400,38 @@ public class AccueilController {
             selectedCol = col;
 
             highlightValidMoves(clickedPiece);
-
-            // Aucun changement de tour ici
-        }
-
-        if (finJeu()) {
-            playerData.setGames(donnePartie);
-            playerData.writeDataToFile("playerData.json");
-            recommencerPartie();
         }
     }
 
-
-
-
-    private boolean movePiece(int fromRow, int fromCol, int toRow, int toCol, Piece targetPiece) {
-        if (targetPiece.isValide(toRow, toCol, plateau)) {
-            // Appeler la méthode move de la pièce
-            targetPiece.move(toRow, toCol);  // Mettre à jour les coordonnées de la pièce
-
-            plateau.get(fromRow).set(fromCol, null);  // Retirer la pièce de l'ancienne position
-            plateau.get(toRow).set(toCol, targetPiece);  // Placer la pièce dans la nouvelle position
-
-            // Supprimer l'écouteur d'événements de la pièce d'origine
-            selectedImageView.setOnMouseClicked(null);
-
-            // Réaffecter un nouvel écouteur d'événements à la nouvelle position de la pièce
-            ImageView newImageView = targetPiece.getImage();
-            newImageView.setOnMouseClicked(event -> handleMouseClick(toRow, toCol));
-
-            // Mise à jour de selectedImageView pour la nouvelle pièce déplacée
-            selectedImageView = newImageView;
-
-            return true;
-        }
-        return false;
-    }
-    private void highlightValidMoves(Piece piece) {
-        clearHighlights(); // Efface les anciennes surbrillances
-
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (piece.isValide(i, j, plateau)) {
-                    Rectangle highlight = new Rectangle(75, 75, Color.YELLOW);
-                    highlight.setOpacity(0.5); // Ajustez l'opacité selon vos préférences
-                    highlight.setMouseTransparent(true); // Permet à la souris de cliquer à travers le rectangle
-                    chessBoard.add(highlight, j, i);
-                }
-            }
-        }
-    }
-
-
-    private void clearHighlights() {
-        chessBoard.getChildren().removeIf(node -> node instanceof Rectangle && ((Rectangle) node).getFill().equals(Color.YELLOW));
-    }
-
-
-    private void botPlay() {
-        // Parcourez le plateau pour trouver une pièce du bot et un mouvement valide
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Piece piece = plateau.get(i).get(j);
-                if (piece != null && !piece.isWhite()) { // Si la pièce est une pièce du bot
-                    for (int x = 0; x < 8; x++) {
-                        for (int y = 0; y < 8; y++) {
-                            if (piece.isValide(x, y, plateau)) { // Si le mouvement est valide
-                                // Jouez le mouvement
-                                movePiece(i, j, x, y, piece);
-                                System.out.println("piece bougé");
-                                afficherNomsDesPieces();
-                                // Changez de tour
-                                isWhiteTurn = !isWhiteTurn;
-                                return; // Sortir de la méthode après avoir joué un mouvement
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private void affichage() {
+        // Effacer l'échiquier pour le redessiner
+        chessBoard.getChildren().clear();
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
+                // Créer chaque case de l'échiquier
                 Rectangle square = new Rectangle(75, 75);
                 square.setFill((i + j) % 2 == 0 ? Color.rgb(235, 236, 208) : Color.rgb(115, 149, 82));
                 chessBoard.add(square, j, i);
 
                 final int row = i;
                 final int col = j;
+                // Ajouter un événement de clic à chaque case
                 square.setOnMouseClicked(event -> handleMouseClick(row, col));
 
-                Piece indice = plateau.get(i).get(j);
-                if (indice != null) {
-                    chessBoard.add(indice.getImage(), j, i);
-                    indice.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
-                    indice.getImage().setOnMouseEntered(event -> indice.getImage().setCursor(Cursor.HAND));
-                    indice.getImage().setOnMouseExited(event -> indice.getImage().setCursor(Cursor.DEFAULT));
-
-
+                // Ajouter la pièce à la case si elle existe
+                Piece piece = plateau.get(i).get(j);
+                if (piece != null) {
+                    chessBoard.add(piece.getImage(), j, i);
+                    piece.getImage().setOnMouseClicked(event -> handleMouseClick(row, col));
+                    piece.getImage().setOnMouseEntered(event -> piece.getImage().setCursor(Cursor.HAND));
+                    piece.getImage().setOnMouseExited(event -> piece.getImage().setCursor(Cursor.DEFAULT));
                 }
             }
         }
     }
+
 
 
 
