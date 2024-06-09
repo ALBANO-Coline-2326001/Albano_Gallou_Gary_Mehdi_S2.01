@@ -3,22 +3,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.amu.iut.earthquakeapp.controllers.TournoiController" stylesheets="@../css/stylesTournoi.css">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" prefHeight="400" prefWidth="210" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.amu.iut.earthquakeapp.controllers.TournoiController" stylesheets="@../css/stylesTournoi.css">
     <top>
-        <Label  styleClass="label" text="Tournament Mode" style="-fx-font-size: 24px;" BorderPane.alignment="CENTER"/>
+        <HBox styleClass="top" alignment="CENTER">
+            <Label styleClass="Titre" text="Mode Tournois" BorderPane.alignment="CENTER"/>
+        </HBox>
     </top>
     <center>
-        <VBox fx:id="tournoisBox" styleClass="tournoisBox" >
+        <VBox fx:id="tournoisBox" styleClass="tournoisBox" VBox.vgrow="ALWAYS">
             <TableView fx:id="tournamentTable" styleClass="tournois" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn text="Player 1" fx:id="player1Column"/>
-                    <TableColumn text="Player 2" fx:id="player2Column"/>
-                    <TableColumn text="Result" fx:id="resultColumn"/>
+                    <TableColumn text="Joueur 1" fx:id="player1Column" />
+                    <TableColumn text="Joueur 2" fx:id="player2Column" />
+                    <TableColumn text="Résultats" fx:id="resultColumn" />
                 </columns>
             </TableView>
         </VBox>
     </center>
     <bottom>
-        <Button text="Back to Main Menu" BorderPane.alignment="CENTER" onAction="#handleBackToMenu" styleClass="buttonPlay"/>
+        <HBox alignment="CENTER">
+            <Button text="Back to Main Menu" onAction="#handleBackToMenu" styleClass="buttonPlay" HBox.hgrow="ALWAYS"/>
+        </HBox>
     </bottom>
 </BorderPane>
