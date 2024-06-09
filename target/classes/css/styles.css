@@ -121,7 +121,7 @@
 }
 .minuteur1{
     -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
-    -fx-background-color: #989795;
+    -fx-background-color: #262522;
     -fx-font-size: 2em;
 
 
@@ -130,11 +130,21 @@
 
 }
 
-.vboxParties{
 
-}
 .labelsParties{
     -fx-padding: 10;
     -fx-background-color: #6a6660;
     -fx-border-radius: 5px 5px 0 0;
+}
+
+.titreDesJoueur {
+    -fx-font-size: 3em;
+    -fx-text-fill: beige;
+    -fx-font-weight: bold;
+}
+
+.boutonPseudo {
+    -fx-background-color: #87C04F;
+    -fx-text-fill: white;
+
 }
