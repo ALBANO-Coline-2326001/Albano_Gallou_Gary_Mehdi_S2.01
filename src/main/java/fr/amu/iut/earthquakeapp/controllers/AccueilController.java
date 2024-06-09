@@ -626,6 +626,8 @@ public class AccueilController {
     public void JoueurContreBot() {
         isBotMode = true; // Le mode Joueur contre Bot est activé
         recommencerPartie();
+        nomLoginJ2 = "LE ROBOT";
+        pseudoJ2.setText(nomLoginJ2);
         startPlay = true;
         startTimer();
 
