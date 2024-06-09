@@ -1,8 +1,5 @@
 package fr.amu.iut.earthquakeapp.donnée;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 import java.io.*;
 import java.util.*;
 
@@ -59,7 +56,7 @@ public class PlayerData {
             sb.replace(0,22,"Games Played ," + this.gamesPlayed + '\n' + "Score" + this.score +'\n' );
 
             if (!games.isEmpty()) {
-                sb.append(games.get(games.size()-1).getOpponent() + " " + games.get(games.size()-1).getTime() + "  " + games.get(games.size()-1).getResult());
+                sb.append(games.get(games.size()-1).getOpponent1() + " " + games.get(games.size()-1).getOpponent1() + " " + games.get(games.size()-1).getTime1() + " " + games.get(games.size()-1).getTime2() + "  " + games.get(games.size()-1).getResult());
                 sb.append('\n');
             }
             writer.println(sb.toString());

@@ -87,7 +87,7 @@ public class AccueilController {
     private int selectedCol = -1;
     private IntegerProperty nbpartie = new SimpleIntegerProperty(0);
     private PlayerData playerData = new PlayerData();
-    private GameStats donnePartie = new GameStats("","","");
+    private GameStats donnePartie = new GameStats("","","","","");
     private String time;
     private String winner;
 
@@ -255,68 +255,7 @@ public class AccueilController {
         }
     }
 
-    @FXML
-    private void handleMouseClickForBot(int row, int col) {
-        if (!startPlay) {
-            return;
-        }
 
-        System.out.println("Ligne cliquée : " + row + ", Colonne : " + col);
-
-        Piece clickedPiece = plateau.get(row).get(col);
-        ImageView clickedImageView = (clickedPiece != null) ? clickedPiece.getImage() : null;
-
-        clearHighlights();
-
-        if (selectedPiece != null) {
-            if (row != selectedRow || col != selectedCol) {
-                if (movePiece(selectedRow, selectedCol, row, col, selectedPiece)) {
-                    chessBoard.getChildren().remove(selectedImageView);
-                    if (clickedImageView != null) {
-                        System.out.println("Pièce capturée : " + clickedPiece.getNom());
-                        chessBoard.getChildren().remove(clickedImageView);
-                    }
-                    chessBoard.add(selectedImageView, col, row);
-
-                    plateau.get(selectedRow).set(selectedCol, null);
-                    plateau.get(row).set(col, selectedPiece);
-
-                    isWhiteTurn = !isWhiteTurn;
-
-                    if (isWhiteTurn) {
-                        blackTimeline.stop();
-                        whiteTimeline.playFromStart();
-                    } else {
-                        whiteTimeline.stop();
-                        blackTimeline.playFromStart();
-                        if (isBotMode) { // Si c'est le tour du bot et que le mode joueur contre bot est activé
-                            botPlay(); // Fait jouer le bot de manière aléatoire
-                        }
-                    }
-
-                    if (finJeu()) {
-                        playerData.setGames(donnePartie);
-                        playerData.writeDataToFile("playerData.json");
-                        recommencerPartie();
-                    }
-
-                    resetSelection();
-                    affichage(); // Mettre à jour l'affichage après le déplacement du joueur
-                } else {
-                    resetSelection();
-                }
-            } else {
-                resetSelection();
-            }
-        } else if (clickedPiece != null && clickedPiece.isWhite() == isWhiteTurn) {
-            selectedPiece = clickedPiece;
-            selectedImageView = clickedImageView;
-            selectedRow = row;
-            selectedCol = col;
-
-            highlightValidMoves(clickedPiece);
-        }
-    }
 
 
 
@@ -586,7 +525,7 @@ public class AccueilController {
             tempsRestantBlanc = timerLabel1.getText();
             time = tempsRestantBlanc;
             winner = "1 - 0";
-            donnePartie = new GameStats(nomLoginJ2,tempsRestantBlanc ,winner);
+            donnePartie = new GameStats(nomLoginJ2,nomLoginJ1,tempsRestantNoir,tempsRestantBlanc ,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -602,7 +541,7 @@ public class AccueilController {
             time = tempsRestantBlanc;
             winner = "0 - 1";
 
-            donnePartie = new GameStats(nomLoginJ2,tempsRestantNoir,winner);
+            donnePartie = new GameStats(nomLoginJ2,nomLoginJ1,tempsRestantNoir,tempsRestantBlanc ,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
