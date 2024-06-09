@@ -10,6 +10,7 @@ public class PlayerData {
     private int gamesPlayed;
     private int score;
     private List<GameStats> games;
+    private StringBuilder sb = new StringBuilder();
 
     public int getScore() {
         return score;
@@ -22,6 +23,7 @@ public class PlayerData {
         gamesPlayed = 0;
         score = 0;
         games = new ArrayList<>();
+
 
     }
 
@@ -53,29 +55,18 @@ public class PlayerData {
      * @param filename Le nom du fichier dans lequel écrire les données.
      */
     public void writeDataToFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new File(filename))) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Games Played ,");
-            sb.append(this.gamesPlayed);
-            sb.append(',');
-            sb.append('\n');
-            sb.append("Score");
-            sb.append(this.score);
-            sb.append('\n');
+        try (PrintWriter writer = new PrintWriter(filename)) {
+            sb.replace(0,22,"Games Played ," + this.gamesPlayed + '\n' + "Score" + this.score +'\n' );
 
-
-
-
-            sb.append(games.get(games.size()-1).getOpponent() + " " + games.get(games.size()-1).getTime() + "  " + games.get(games.size()-1).getResult());
-            sb.append('\n');
-
-
-            writer.write(sb.toString());
-
-
+            if (!games.isEmpty()) {
+                sb.append(games.get(games.size()-1).getOpponent() + " " + games.get(games.size()-1).getTime() + "  " + games.get(games.size()-1).getResult());
+                sb.append('\n');
+            }
+            writer.println(sb.toString());
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     /**
@@ -99,4 +90,6 @@ public class PlayerData {
 
         return fileContent.toString();
     }
+
+
 }

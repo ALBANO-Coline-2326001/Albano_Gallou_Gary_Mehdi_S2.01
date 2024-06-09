@@ -104,7 +104,7 @@
                         </Tab>
                         <Tab text="Partie" fx:id="Partie" onSelectionChanged="#showData" styleClass="partieData">
                             <content>
-                                <VBox fx:id="VboxParties" styleClass="vboxParties" spacing="20">
+                                <VBox fx:id="VboxParties" styleClass="vboxParties" spacing="10"  >
 
                                 </VBox>
                             </content>

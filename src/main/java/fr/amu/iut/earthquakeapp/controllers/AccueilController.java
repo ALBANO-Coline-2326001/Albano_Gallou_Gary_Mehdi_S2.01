@@ -9,9 +9,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -25,6 +27,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -227,7 +230,8 @@ public class AccueilController {
         }
 
         if (finJeu()) {
-            donnePartie = new GameStats("opponent",time,winner);
+            playerData.setGames(donnePartie);
+            playerData.writeDataToFile("playerData.json");
             recommencerPartie();
         }
     }
@@ -336,8 +340,6 @@ public class AccueilController {
             playerData.setScore(playerData.getScore() + 1);
         }
         playerData.setGamesPlayed(nbpartie.get());
-        playerData.setGames(donnePartie);
-        playerData.writeDataToFile("playerData.json");
         // Réinitialiser le plateau de jeu
         // Rafraîchir l'affichage de l'échiquier
         startPlay = false; // Réinitialiser le contrôle de jeu
@@ -352,14 +354,17 @@ public class AccueilController {
         selectedCol = -1;
     }
 
-
+    private int dataSize = 1;
     public void showData(){
         VboxParties.getChildren().clear();
         Label l = new Label(PlayerData.readDataFromFile("playerData.json"));
         l.setTextFill(Color.WHITE);
+        l.getStyleClass().add("labelsParties");
         VboxParties.getChildren().add(l);
 
     }
+
+
 
 
     private String timeToString(int time) {
@@ -481,7 +486,7 @@ public class AccueilController {
             tempsRestantBlanc = timerLabel1.getText();
             time = tempsRestantBlanc;
             winner = "1 - 0";
-            donnePartie = new GameStats(nomLoginJ1,nomLoginJ2,tempsRestantNoir,tempsRestantBlanc ,"1/0");
+            donnePartie = new GameStats(nomLoginJ2,tempsRestantBlanc ,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -497,7 +502,7 @@ public class AccueilController {
             time = tempsRestantBlanc;
             winner = "0 - 1";
 
-            donnePartie = new GameStats(nomLoginJ1,nomLoginJ2,tempsRestantNoir,tempsRestantBlanc ,"0/1");
+            donnePartie = new GameStats(nomLoginJ2,tempsRestantNoir,winner);
             System.out.println(tempsRestantNoir + "sec");
             System.out.println(tempsRestantBlanc + "sec");
 
@@ -543,10 +548,13 @@ public class AccueilController {
     }
 
     @FXML
-    public void lanceTournoie(){
+    public void lanceTournoie(ActionEvent event){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Tournoi.fxml"));
             System.setProperty("http.agent", "Gluon Mobile/1.0.3");
+            TournoiController tournoiController = new TournoiController();
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            TournoiController.setPreviousStage(currentStage);
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setTitle("Tournament Mode");
@@ -565,7 +573,8 @@ public class AccueilController {
         nomLoginJ2 = nomJ2.getText();
         pseudoJ1.setText(nomLoginJ1);
         pseudoJ2.setText(nomLoginJ2);
-
+        TournoiController.setNomLog1(nomLoginJ1);
+        TournoiController.setNomLog2(nomLoginJ2);
 
     }
 
