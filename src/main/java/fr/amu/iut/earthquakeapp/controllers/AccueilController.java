@@ -1,6 +1,5 @@
 package fr.amu.iut.earthquakeapp.controllers;
 
-import fr.amu.iut.earthquakeapp.Accueil;
 import fr.amu.iut.earthquakeapp.donnée.GameStats;
 import fr.amu.iut.earthquakeapp.donnée.PlayerData;
 import fr.amu.iut.earthquakeapp.jeu.Piece;
@@ -27,7 +26,6 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,8 +40,8 @@ import java.util.regex.Pattern;
 public class AccueilController {
     private boolean isWhiteTurn = true;
     private boolean startPlay = false;
-    @FXML
-    private Label donnee;
+
+
     @FXML
     private VBox VboxParties;
 
@@ -55,29 +53,20 @@ public class AccueilController {
 
 
 
-    @FXML
-    private Button joueurContreJoueur;
+
     @FXML
     private String nomLoginJ1;
 
     @FXML
     private String nomLoginJ2;
 
-    @FXML
-    private Button bLogin;
+
 
     @FXML
     private TextField nomJ1;
 
     @FXML
     private TextField nomJ2;
-
-
-
-    @FXML
-    private Button joueurContreBot;
-    @FXML
-    private Tab Partie;
 
     @FXML
     private Label timerLabel1;
@@ -86,8 +75,6 @@ public class AccueilController {
     private Label timerLabel2;
 
     private Timeline whiteTimeline;
-    private Timeline timeline;
-    private Timeline timeline2;
     private Timeline blackTimeline;
     private String tempsRestantNoir;
     private String tempsRestantBlanc;
@@ -293,6 +280,8 @@ public class AccueilController {
                             if (piece.isValide(x, y, plateau)) { // Si le mouvement est valide
                                 // Jouez le mouvement
                                 movePiece(i, j, x, y, piece);
+                                System.out.println("piece bougé");
+                                afficherNomsDesPieces();
                                 // Changez de tour
                                 isWhiteTurn = !isWhiteTurn;
                                 return; // Sortir de la méthode après avoir joué un mouvement
@@ -442,12 +431,7 @@ public class AccueilController {
 
 
 
-//    public void start(){
-//        nbpartie.set(nbpartie.get() + 1);
-//        playerData.setGamesPlayed(nbpartie.get());
-//        playerData.writeDataToFile("playerData.json");
-//        startPlay = true;
-//    }
+
 
     public boolean finJeu(){
 
@@ -532,20 +516,6 @@ public class AccueilController {
     }
 
 
-    @FXML
-    public void Login(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Login.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setTitle("Login");
-            stage.getIcons().add(new Image("img/iconDame.png"));
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void lanceTournoie(ActionEvent event){
