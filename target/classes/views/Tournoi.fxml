@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.amu.iut.earthquakeapp.controllers.TournoiController" stylesheets="@../css/stylesTournoi.css">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.amu.iut.chess.controllers.TournoiController" stylesheets="@../css/stylesTournoi.css">
     <top>
         <Label  styleClass="label" text="Tournament Mode" style="-fx-font-size: 24px;" BorderPane.alignment="CENTER"/>
     </top>

@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="mainBP" prefHeight="250" prefWidth="500" stylesheets="@../css/Login.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fr.amu.iut.earthquakeapp.controllers.LoginController">
+            fx:controller="fr.amu.iut.chess.controllers.LoginController">
     <center>
 
     </center>
