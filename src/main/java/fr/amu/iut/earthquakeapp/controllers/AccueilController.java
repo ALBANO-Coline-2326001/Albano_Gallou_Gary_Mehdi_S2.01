@@ -645,7 +645,7 @@ public class AccueilController {
             TournoiController.setPreviousStage(currentStage);
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
-            stage.setTitle("Tournament Mode");
+            stage.setTitle("Mode tournois");
             stage.getIcons().add(new Image("img/iconDame.png"));
             stage.setScene(scene);
             stage.show();
