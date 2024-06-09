@@ -1,21 +1,56 @@
-/* styles.css */
-.joueur{
-    -fx-background-color: #302E2B;
-    -fx-font-size: 1em;
-    -fx-text-fill: #FFF;
-}
-.label{
-    --block-font-family: Arial;
-}
-.plateau{
-    -fx-pref-width: 40em;
-    -fx-pref-height: 40em;
+.BorderPane {
+    -fx-background-color: #2b2b2b;
 }
 
-.partie_droite {
-    -fx-background-color: #262522;
-    -fx-hgrow: always; /* Permet à la partie droite de croître */
+.table-view.tournois {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #1a1a1a;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
 }
+
+.table-view.tournois .column-header-background {
+    -fx-background-color: #444444;
+}
+
+.table-view.tournois .column-header,
+.table-view.tournois .column-header .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-color: #444444;
+}
+
+.table-view.tournois .table-row-cell {
+    -fx-background-color: #333333;
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view.tournois .table-row-cell:odd {
+    -fx-background-color: #3b3b3b;
+}
+
+.table-view.tournois .table-row-cell:selected {
+    -fx-background-color: #555555;
+}
+
+.table-view.tournois .table-cell {
+    -fx-text-fill: #dddddd;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+
+.table-view.tournois .table-cell:selected {
+    -fx-background-color: #555555;
+    -fx-text-fill: #ffffff;
+}
+
+.table-view.tournois .table-view-border {
+    -fx-border-color: #1a1a1a;
+    -fx-border-width: 0 2 2 2;
+}
+
 
 .buttonPlay {
     -fx-background-color: #87C04F;
@@ -24,112 +59,15 @@
     -fx-pref-height: 2.5em;
     -fx-font-size: 1.5em;
 }
-
 .buttonPlay:hover {
-
     -fx-background-color: #87be0f;
 }
 
-.tournoisBox{
-    -fx-background-color: #3C3B39;
-    -fx-pref-height: 30em;
-}
-
-.tournois{
-    -fx-background-color: #1E1E1B;
-    -fx-text-fill: #FFF;
-    -fx-pref-width: 21em;
-    -fx-pref-height: 3em;
-}
-
-.tournois:hover{
-    -fx-background-color: rgba(30, 30, 27, 0.7);
-}
-
-.infosEnLigne{
-    -fx-pref-height: 8em;
-}
-
-.infosEnLigneTxt{
-    -fx-text-fill: #FFF;
-    -fx-font-size: 0.9em;
-}
-
-.combo-box{
-    -fx-background-color: #3C3B39;
-    -fx-alignment: center-bottom;
-    -fx-pref-height: 4em;
-    -fx-pref-width: 21em;
-}
-
-.combo-box:hover {
-    -fx-background-color: rgba(60, 59, 57, 0.6);
-}
-
-.combo-box .list-cell {
-    -fx-background-color: #3C3B39;
-    -fx-text-fill: #FFF;
-}
-
-.combo-box .list-cell .label {
-    -fx-graphic-text-gap: 10px; /* Espacement entre l'image et le texte */
-    -fx-text-fill: #FFF;
-    -fx-font-size: 1.2em;
-}
-
-.combo-box .combo-box-popup .list-view .list-cell {
-    -fx-alignment: center-left;
-}
-
-.tab {
-    -fx-background-color: #2b2b2b; /* Fond sombre pour les onglets non sélectionnés */
-    -fx-border-color: transparent; /* Bordure transparente pour les onglets non sélectionnés */
-}
-
-.tab:selected {
-    -fx-background-color: #3c3c3c; /* Fond sombre pour l'onglet sélectionné */
-    -fx-border-color: #1f1f1f; /* Bordure sombre pour l'onglet sélectionné */
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px 5px 0 0; /* Bordure arrondie en haut */
-    -fx-padding: 5px 10px;
-}
-
-.tab-label {
-    -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
-
-.tab-content {
-    -fx-background-color: #3c3c3c; /* Fond sombre pour le contenu des onglets */
-    -fx-padding: 10px;
-    -fx-border-color: #1f1f1f; /* Bordure sombre pour le contenu des onglets */
-    -fx-border-width: 1px;
-    -fx-border-radius: 0 0 5px 5px; /* Bordure arrondie en bas */
-}
-
-.tab-header-area .tab-header-background {
-    -fx-background-color: #262522;
-}
-
-.minuteur{
-    -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
-    -fx-background-color: #989795;
+.Titre {
     -fx-font-size: 2em;
+    -fx-text-fill: white;
 }
 
-.minuteur1{
-    -fx-text-fill: #ffffff; /* Couleur du texte des onglets */
-    -fx-background-color: #989795;
-    -fx-font-size: 2em;
-}
-
-.partieData{}
-
-.vboxParties{}
-
-.labelsParties{
-    -fx-padding: 10;
-    -fx-background-color: #6a6660;
-    -fx-border-radius: 5px 5px 0 0;
+.top {
+    -fx-background-color: #333333;
 }

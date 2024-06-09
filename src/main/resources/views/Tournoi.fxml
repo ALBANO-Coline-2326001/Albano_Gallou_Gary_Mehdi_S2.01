@@ -22,7 +22,7 @@
     </center>
     <bottom>
         <HBox alignment="CENTER">
-            <Button text="Back to Main Menu" onAction="#handleBackToMenu" styleClass="buttonPlay" HBox.hgrow="ALWAYS"/>
+            <Button text="Retournez au menu" onAction="#handleBackToMenu" styleClass="buttonPlay" HBox.hgrow="ALWAYS"/>
         </HBox>
     </bottom>
 </BorderPane>
