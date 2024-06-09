@@ -7,10 +7,12 @@ L'objectif de la SAE est de développer un jeu d'échec similaire au jeu d'éche
 
 ## Répartition des tâches :
 
-ALBANO Coline : 
+Voici une explication approximative des tâches de chacun car nous avons travaillé à plusieurs sur diverses parties :
 
-GALLOU Loic : 
+ALBANO Coline : 25% - Initialisation du plateau, détecteur des clics et conversion des coordonnées afin de bouger les pièces, rapport de projet, commentaire du code, diaporama
+ 
+GALLOU Loïc : 25% - interface graphique, mise en place du bon déplacement des pions, prédiction des coups possible, chronomètre, commentaire du code
 
-GARY Felicité : 
+GARY Félicité : 25% - joueur contre bot, mise en place du bon déplacement des pions et de toutes les classes modèles, possibilité de changer le nom des joueurs
 
-MEHDI Yousra : 
+MEHDI Yousra : 25% - base de données (enregistrement des statistiques), tournois, conditions de fin et relancement d’un partie
