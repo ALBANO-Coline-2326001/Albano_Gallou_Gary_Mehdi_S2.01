@@ -102,13 +102,15 @@
                                 </VBox>
                             </content>
                         </Tab>
-                        <Tab text="Partie" fx:id="Partie" onSelectionChanged="#showData" styleClass="partieData" >
-                            <content >
-                                <VBox fx:id="VboxParties" styleClass="vboxParties" spacing="10"  >
 
-                                </VBox>
-                            </content>
-                        </Tab>
+                                <Tab text="Partie" fx:id="Partie" onSelectionChanged="#showData" styleClass="partieData">
+                                    <content>
+                                        <VBox fx:id="VboxParties" styleClass="vboxParties" spacing="10" VBox.vgrow="ALWAYS">
+
+                                        </VBox>
+                                    </content>
+                                </Tab>
+
                         <Tab text="Joueurs">
                             <content>
                                 <VBox alignment="CENTER" spacing="10.0" fillWidth="true" styleClass="fond">
